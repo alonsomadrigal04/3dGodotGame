@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://bspat26hbqmut"]
+
+[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/pngwing.com.png" id="1_ljiij"]
+
+[sub_resource type="CurveTexture" id="CurveTexture_tinpj"]
+
+[sub_resource type="Curve" id="Curve_10d02"]
+_data = [Vector2(0, 0.090564), 0.0, -0.263276, 0, 0, Vector2(1, 0), -0.297642, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xwwmi"]
+curve = SubResource("Curve_10d02")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8bawg"]
+lifetime_randomness = 0.13
+emission_shape = 1
+emission_sphere_radius = 4.28
+gravity = Vector3(0, 0.065, 0)
+scale_curve = SubResource("CurveTexture_xwwmi")
+emission_curve = SubResource("CurveTexture_tinpj")
+turbulence_enabled = true
+turbulence_noise_strength = 0.2
+turbulence_noise_scale = 3.527
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u73s5"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("1_ljiij")
+
+[sub_resource type="QuadMesh" id="QuadMesh_wrpft"]
+material = SubResource("StandardMaterial3D_u73s5")
+
+[node name="Bubbles" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+amount = 66
+lifetime = 3.69
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_8bawg")
+draw_pass_1 = SubResource("QuadMesh_wrpft")

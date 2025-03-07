@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://8xvp8xk8kbol"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
