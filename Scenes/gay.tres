@@ -1,0 +1,20 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://dmkxx8c4x40m"]
+
+[sub_resource type="Curve" id="Curve_kdq5m"]
+_data = [Vector2(0, 0.154013), 0.0, 0.0, 0, 0, Vector2(0.764543, 0.172234), 0.803687, 0.803687, 0, 0, Vector2(1, 0), -0.376766, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_v64ub"]
+curve = SubResource("Curve_kdq5m")
+
+[resource]
+lifetime_randomness = 0.03
+emission_shape = 1
+emission_sphere_radius = 6.57
+initial_velocity_min = -14.0
+initial_velocity_max = 16.0
+gravity = Vector3(0, -0.2, 0)
+scale_curve = SubResource("CurveTexture_v64ub")
+turbulence_enabled = true
+turbulence_noise_strength = 0.55
+turbulence_noise_scale = 0.425
