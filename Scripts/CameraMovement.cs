@@ -29,7 +29,7 @@ public partial class CameraMovement : Camera3D
             targetPosition
         );
 
-        LookAt(_target.GlobalTransform.Origin, Vector3.Up);
+        //LookAt(_target.GlobalTransform.Origin, Vector3.Up);
     }
 
 

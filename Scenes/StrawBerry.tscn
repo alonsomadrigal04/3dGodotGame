@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci0va1io2oceu"]
+
+[ext_resource type="PackedScene" uid="uid://b1014wr25k4l4" path="res://3dGodotGame/Models/strawberry.fbx" id="1_60vki"]
+[ext_resource type="Script" uid="uid://dvfhggtuo8x0u" path="res://3dGodotGame/Scripts/StrawBerry.cs" id="1_fsncg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fsncg"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_qjlqx"]
+sky_material = SubResource("ProceduralSkyMaterial_fsncg")
+
+[sub_resource type="Environment" id="Environment_v7w0p"]
+background_mode = 2
+sky = SubResource("Sky_qjlqx")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v7w0p")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.496486, 0.0592043, 0, 0.118408, 0.992965, -0.500003, 0.859931, -0.102544, 0, 0, 0)
+shadow_enabled = true
+
+[node name="strawberry" parent="." instance=ExtResource("1_60vki")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0854688, -0.64555, -0.0176696)
+script = ExtResource("1_fsncg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0014739, -0.0172532, 2.70761)

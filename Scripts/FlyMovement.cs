@@ -52,7 +52,6 @@ public partial class FlyMovement : RigidBody3D
     {
         float targetSpeed = Input.GetLastMouseVelocity().Length() > 0 ? minSpeed : maxSpeed;
 
-        GD.Print(LinearVelocity.Length());
 		
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, (float)delta * speedLerpFactor);
     }
