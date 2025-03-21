@@ -6,6 +6,8 @@ public partial class CameraMovement : Camera3D
 	[Export] private Node3D _target;
 	[Export] private float cameraDistance = 5.0f;
     [Export] private float followSpeed = 5.0f;
+	[Export] private float cameraHeight = 0.5f;
+
 
 	public override void _Ready()
 	{
@@ -48,6 +50,9 @@ public partial class CameraMovement : Camera3D
             GlobalTransform.Origin.Lerp(targetPosition, (float)delta * followSpeed)
         );
 
-        LookAt(_target.GlobalTransform.Origin, Vector3.Up);
+		Vector3 targetPoint = _target.GlobalTransform.Origin;
+		targetPoint.Y += cameraHeight; 
+
+        LookAt(targetPoint, Vector3.Up);
 	}
 }

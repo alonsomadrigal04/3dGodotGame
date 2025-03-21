@@ -10,8 +10,8 @@ height = 1.34626
 
 [node name="Area3D" type="Area3D"]
 script = ExtResource("2_qjlqx")
-RotationSpeed = 0.5
-FloatSpeed = 0.8
+RotationSpeed = 0.9
+FloatSpeed = 3.0
 ParticleEffect = ExtResource("2_v7w0p")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
