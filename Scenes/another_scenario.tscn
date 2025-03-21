@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://c8bhcpq0vv6ay" path="res://3dGodotGame/Scripts/FlyMovement.cs" id="1_7awta"]
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="2_2rvpb"]
-[ext_resource type="PackedScene" uid="uid://diqc257er36rn" path="res://3dGodotGame/Models/fly dest.fbx" id="2_je283"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_xifaf"]
 [ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="4_je283"]
 [ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="4_lkg2u"]
+[ext_resource type="PackedScene" uid="uid://bvjdu2bskvyk6" path="res://3dGodotGame/Models/Heredadas/Newfly_dest.tscn" id="5_lkg2u"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -99,9 +99,6 @@ aceleration = 2.0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fly"]
 shape = SubResource("CapsuleShape3D_7awta")
 
-[node name="Model" parent="Fly" instance=ExtResource("2_je283")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-
 [node name="StrawGenerator" parent="Fly" instance=ExtResource("3_xifaf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.94403)
 SpawnRadius = 50.0
@@ -112,7 +109,10 @@ FruitLifetime = 15.0
 [node name="Bubbles" parent="Fly" instance=ExtResource("4_je283")]
 transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 1.00136e-05, 0, -8.01477)
 
+[node name="fly dest2" parent="Fly" instance=ExtResource("5_lkg2u")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("_target")]
-transform = Transform3D(-1, 5.32785e-16, 8.9407e-08, 5.32785e-16, 1, 0, -8.9407e-08, 4.76347e-23, -1, -1.369, 5.15935, -1.694)
+transform = Transform3D(-1, 5.32785e-16, 8.9407e-08, 5.32785e-16, 1, 0, -8.9407e-08, 4.76347e-23, -1, -1.369, 6.35083, -1.694)
 script = ExtResource("2_2rvpb")
 _target = NodePath("../Fly")

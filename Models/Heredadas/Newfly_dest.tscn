@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvjdu2bskvyk6"]
+
+[ext_resource type="PackedScene" uid="uid://btffbvnbxsgc5" path="res://3dGodotGame/Models/fly dest.blend" id="1_lfk0m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lfk0m"]
+cull_mode = 1
+shading_mode = 0
+grow = true
+grow_amount = 0.03
+
+[node name="fly dest" instance=ExtResource("1_lfk0m")]
+
+[node name="Cube_002" parent="Armature/Skeleton3D" index="0"]
+material_overlay = SubResource("StandardMaterial3D_lfk0m")

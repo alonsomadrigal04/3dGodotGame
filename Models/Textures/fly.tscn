@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6ev7lndmt7o5"]
+
+[ext_resource type="PackedScene" uid="uid://svmnsqwq2d1b" path="res://Models/uploads_files_4179525_LowPolyBee01.gltf" id="1_wtjby"]
+
+[node name="fly" instance=ExtResource("1_wtjby")]

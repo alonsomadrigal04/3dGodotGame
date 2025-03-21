@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdvh8drnmtw2g"
-path.s3tc="res://.godot/imported/pngwing.com.png-0baa17ac1c92ada9cde8934632768af6.s3tc.ctex"
+path.s3tc="res://.godot/imported/Buble.png-8c9aa94a81a11a59185b524b145510ef.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://3dGodotGame/Sprites/pngwing.com.png"
-dest_files=["res://.godot/imported/pngwing.com.png-0baa17ac1c92ada9cde8934632768af6.s3tc.ctex"]
+source_file="res://3dGodotGame/Sprites/Buble.png"
+dest_files=["res://.godot/imported/Buble.png-8c9aa94a81a11a59185b524b145510ef.s3tc.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c4wa711r0sn43"]
 
-[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/pngwing.com.png" id="1_2uutv"]
+[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/Buble.png" id="1_2uutv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jwxnf"]
 transparency = 1
@@ -17,7 +17,7 @@ point_count = 2
 curve = SubResource("Curve_p3yl1")
 
 [sub_resource type="Curve" id="Curve_32qc2"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.125097, 0.0, 0, 0]
+_data = [Vector2(0, 0.562931), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.125097, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_eypcm"]
@@ -26,7 +26,7 @@ curve = SubResource("Curve_32qc2")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5xboh"]
 emission_shape = 1
 emission_sphere_radius = 1.0
-gravity = Vector3(0, 3.355, 0)
+gravity = Vector3(0, 13.56, 0)
 radial_accel_min = -2.23517e-06
 radial_accel_max = 0.699998
 radial_accel_curve = SubResource("CurveTexture_urw8t")
@@ -37,7 +37,10 @@ scale_curve = SubResource("CurveTexture_eypcm")
 [node name="GPUParticles3D" type="GPUParticles3D"]
 material_override = SubResource("StandardMaterial3D_jwxnf")
 extra_cull_margin = 16384.0
-amount = 16
+emitting = false
+amount = 12
+lifetime = 0.57
+one_shot = true
 explosiveness = 1.0
 transform_align = 1
 process_material = SubResource("ParticleProcessMaterial_5xboh")

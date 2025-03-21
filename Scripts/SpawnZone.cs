@@ -49,7 +49,9 @@ public partial class SpawnZone : Area3D
         tween.TweenProperty(fruit, "scale", Vector3.One, 1.5f).SetTrans(Tween.TransitionType.Elastic);
         tween.Play();
         
-        _spawnedFruits.Add(fruit);
+        if(fruit != null){
+            _spawnedFruits.Add(fruit);
+        }
         GetTree().CreateTimer(FruitLifetime).Timeout += () => RemoveFruit(fruit);
     }
 

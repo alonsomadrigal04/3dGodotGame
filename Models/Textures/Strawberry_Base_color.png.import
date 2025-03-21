@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgv4ckal2vlwi"
-path.s3tc="res://.godot/imported/face.png-d29e0a952c187385dad22eb494d94f96.s3tc.ctex"
+uid="uid://cgjbunh3r2ni6"
+path.s3tc="res://.godot/imported/Strawberry_Base_color.png-74043caf004f8dd5300ef22ec10c1f67.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://3dGodotGame/Sprites/face.png"
-dest_files=["res://.godot/imported/face.png-d29e0a952c187385dad22eb494d94f96.s3tc.ctex"]
+source_file="res://3dGodotGame/Models/Textures/Strawberry_Base_color.png"
+dest_files=["res://.godot/imported/Strawberry_Base_color.png-74043caf004f8dd5300ef22ec10c1f67.s3tc.ctex"]
 
 [params]
 

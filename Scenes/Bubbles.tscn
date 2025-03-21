@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bspat26hbqmut"]
 
-[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/pngwing.com.png" id="1_ljiij"]
+[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/Buble.png" id="1_ljiij"]
 
 [sub_resource type="Curve" id="Curve_kdq5m"]
 _data = [Vector2(0, 0.237931), 0.0, 0.0, 0, 0, Vector2(0.764543, 0.172234), 0.803687, 0.803687, 0, 0, Vector2(1, 0), -0.376766, 0.0, 0, 0]

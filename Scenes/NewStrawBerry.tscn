@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://b58kuddpbjdxo"]
+
+[ext_resource type="PackedScene" uid="uid://bbfaplaha5o82" path="res://3dGodotGame/Models/SM_Strawberry.fbx" id="1_dvq1c"]
+[ext_resource type="Texture2D" uid="uid://cgjbunh3r2ni6" path="res://3dGodotGame/Models/Textures/Strawberry_Base_color.png" id="2_7n8mf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d7dw3"]
+albedo_texture = ExtResource("2_7n8mf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvq1c"]
+cull_mode = 1
+shading_mode = 0
+grow = true
+grow_amount = 0.03
+
+[node name="SM_Strawberry" instance=ExtResource("1_dvq1c")]
+
+[node name="SM_Strawberry" parent="." index="0"]
+material_override = SubResource("StandardMaterial3D_d7dw3")
+material_overlay = SubResource("StandardMaterial3D_dvq1c")
