@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public partial class SpawnZone : Area3D
 {
     [Export] public float SpawnRadius = 5f;
-    [Export] public PackedScene FruitScene; // Escena de la fresa
-    [Export] public float SpawnInterval = 2f; // Tiempo entre spawns
-    [Export] public float FruitLifetime = 5f; // Tiempo de vida de la fresa
+    [Export] public PackedScene FruitScene;
+    [Export] public float SpawnInterval = 2f; 
+    [Export] public float FruitLifetime = 5f; 
 
     private Timer _spawnTimer;
     private List<Node3D> _spawnedFruits = new List<Node3D>();
@@ -44,9 +44,9 @@ public partial class SpawnZone : Area3D
 
         
         Tween tween = CreateTween();
-        fruit.Scale = Vector3.Zero;
+        fruit.Scale = Vector3.One * 0.05f;
 
-        tween.TweenProperty(fruit, "scale", Vector3.One, 0.5f).SetTrans(Tween.TransitionType.Elastic);
+        tween.TweenProperty(fruit, "scale", Vector3.One, 1.5f).SetTrans(Tween.TransitionType.Elastic);
         tween.Play();
         
         _spawnedFruits.Add(fruit);
@@ -63,7 +63,7 @@ public partial class SpawnZone : Area3D
         }
         
         Tween tween = CreateTween();
-        tween.TweenProperty(fruit, "scale", Vector3.Zero, 0.5f).SetTrans(Tween.TransitionType.Quad);
+        tween.TweenProperty(fruit, "scale", Vector3.One * 0.01f, 0.5f).SetTrans(Tween.TransitionType.Quad);
         tween.Play();
         tween.Finished += () => fruit.QueueFree();
     }

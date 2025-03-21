@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4wa711r0sn43"]
+
+[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/pngwing.com.png" id="1_2uutv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jwxnf"]
+transparency = 1
+shading_mode = 0
+specular_mode = 2
+albedo_texture = ExtResource("1_2uutv")
+
+[sub_resource type="Curve" id="Curve_p3yl1"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 65.5173), 0.0, 92.2701, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_urw8t"]
+curve = SubResource("Curve_p3yl1")
+
+[sub_resource type="Curve" id="Curve_32qc2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.125097, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_eypcm"]
+curve = SubResource("Curve_32qc2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5xboh"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 3.355, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 0.699998
+radial_accel_curve = SubResource("CurveTexture_urw8t")
+scale_curve = SubResource("CurveTexture_eypcm")
+
+[sub_resource type="QuadMesh" id="QuadMesh_o0aai"]
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_jwxnf")
+extra_cull_margin = 16384.0
+amount = 16
+explosiveness = 1.0
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_5xboh")
+draw_pass_1 = SubResource("QuadMesh_o0aai")
