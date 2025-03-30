@@ -7,6 +7,9 @@ public partial class MenuBehaviour : Control
     private Button optionsButton;
     private Button exitButton;
     private AudioStreamPlayer hoverSound;
+    private AudioStreamPlayer pressSound;
+	[Export] private AnimationPlayer animationPlayer;
+
 
     public override void _Ready()
     {
@@ -14,6 +17,7 @@ public partial class MenuBehaviour : Control
         optionsButton = GetNode<Button>("OptionsButton");
         exitButton = GetNode<Button>("ExitButton");
         hoverSound = GetNode<AudioStreamPlayer>("HoverSound");
+		pressSound = GetNode<AudioStreamPlayer>("PressSound");
 
         // Animación de entrada de los botones
         AnimateButtonEntry(startButton);
@@ -23,16 +27,17 @@ public partial class MenuBehaviour : Control
         SetupButtonAnimations(startButton);
         SetupButtonAnimations(optionsButton);
         SetupButtonAnimations(exitButton);
+
     }
 
     private void AnimateButtonEntry(Button button)
     {
         var tween = GetTree().CreateTween();
         button.Scale = new Vector2(0.5f, 0.5f);
-        tween.TweenProperty(button, "position", new Vector2(1.0f, 1.0f), 0.2f)
+        tween.TweenProperty(button, "scale", new Vector2(1.0f, 1.0f), 0.2f)
              .SetTrans(Tween.TransitionType.Back)
              .SetEase(Tween.EaseType.Out)
-			 .SetDelay(0.5f);
+			 .SetDelay(0.2f);
     }
 
     private void SetupButtonAnimations(Button button)
@@ -42,7 +47,11 @@ public partial class MenuBehaviour : Control
             hoverSound.Play();
         };
         button.MouseExited += () => AnimateHover(button, false);
-        button.Pressed += () => AnimatePress(button);
+        button.Pressed += () => {
+			AnimatePress(button);
+			pressSound.Play();
+			};
+
         button.ButtonUp += () => AnimateRelease(button);
     }
 
