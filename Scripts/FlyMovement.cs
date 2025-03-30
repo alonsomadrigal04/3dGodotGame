@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+namespace Player;
 public partial class FlyMovement : RigidBody3D
 {
 	[ExportGroup("Movimiento")]
@@ -11,6 +12,20 @@ public partial class FlyMovement : RigidBody3D
     [ExportGroup("Control")]
     [Export] private float speedLerpFactor = 5f;
     [Export] private float aceleration = 5f;
+    [Export] public AnimationPlayer animationPlayer;
+
+    [ExportGroup("Shader")]
+    [Export] private ColorRect ShaderLines;
+    [Export] private float MinIntensityOfLines = 0.2f;
+    [Export] private float MaxIntensityOfLines = 1.5f;
+    [ExportGroup("Arc")]
+    [Export] public bool InArc = false;
+    [Export] private float maxSpeedArc = 11f;
+    [Export] private float timeSpeedArc = 11f;
+    private Timer arcTimer;
+
+
+
 
 
     private Vector2 mouseDelta = Vector2.Zero;
@@ -20,7 +35,25 @@ public partial class FlyMovement : RigidBody3D
     {
         Input.MouseMode = Input.MouseModeEnum.Captured;
         currentSpeed = maxSpeed;
+
+        ArcTimerSetUp();
+        
     }
+
+    private void ArcTimerSetUp()
+    {
+        arcTimer = new Timer();
+        arcTimer.WaitTime = timeSpeedArc;
+        arcTimer.OneShot = true;
+        arcTimer.Timeout += () => {
+            InArc = false; 
+            maxSpeed = 15f;
+            MaxIntensityOfLines = 1.5f;
+            
+            };
+        AddChild(arcTimer);
+    }
+
 
     public override void _Input(InputEvent @event)
     {
@@ -35,7 +68,48 @@ public partial class FlyMovement : RigidBody3D
         RotatePlayer(delta);
         AdjustSpeed(delta);
         MovePlayer(delta);
+        LinesAnimation(delta);
     }
+
+    private void LinesAnimation(double delta){
+        if (ShaderLines.Material is ShaderMaterial shaderMat)
+    {
+        float speed = LinearVelocity.Length();
+
+        float normalizedSpeed = Mathf.InverseLerp(minSpeed, maxSpeed * aceleration, speed);
+        float lineDensity = Mathf.Lerp(MinIntensityOfLines, MaxIntensityOfLines, normalizedSpeed);
+
+        shaderMat.SetShaderParameter("line_density", lineDensity);
+    }
+    }
+
+    public void ArcAnimation()
+{
+    if (InArc) return;
+
+    InArc = true;
+    arcTimer.Start();
+
+    maxSpeed = maxSpeedArc; 
+    MaxIntensityOfLines = 2.0f; 
+
+    Tween tween = GetTree().CreateTween();
+
+    tween.SetTrans(Tween.TransitionType.Back)
+         .SetEase(Tween.EaseType.Out)
+         .SetProcessMode(Tween.TweenProcessMode.Physics);
+
+    Vector3 rotationAxis = GlobalTransform.Basis.Z.Normalized();
+    float rotationAmount = Mathf.DegToRad(360); 
+
+    GD.Print(rotationAmount);
+
+    tween.TweenMethod(Callable.From<float>((t) =>
+    {
+        Rotate(rotationAxis, 0.202f);
+    }), 0, 1, 0.5f);
+}
+
 
     private void RotatePlayer(double delta)
     {
@@ -59,6 +133,7 @@ public partial class FlyMovement : RigidBody3D
     private void MovePlayer(double delta)
     {
 
+
         if (Input.IsMouseButtonPressed(MouseButton.Left))
         {
             currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed * aceleration, (float)delta * speedLerpFactor);
@@ -68,4 +143,6 @@ public partial class FlyMovement : RigidBody3D
 
         LinearVelocity = targetVelocity;
     }
+
+
 }

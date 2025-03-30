@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public partial class SpawnZone : Area3D
 {
-    [Export] public float SpawnRadius = 5f;
+    [Export] public float SpawnRadius = 5f; 
+    [Export] public float NegativeZone = 2f; 
     [Export] public PackedScene FruitScene;
     [Export] public float SpawnInterval = 2f; 
     [Export] public float FruitLifetime = 5f; 
@@ -25,51 +26,57 @@ public partial class SpawnZone : Area3D
     {
         if (FruitScene == null) return;
 
-        Vector3 ZoneSize = Vector3.One * SpawnRadius;
-        
-        Vector3 randomPosition = new Vector3(
-            (float)GD.RandRange(-ZoneSize.X / 2, ZoneSize.X / 2),
-            (float)GD.RandRange(-ZoneSize.Y / 2, ZoneSize.Y / 2),
-            (float)GD.RandRange(-ZoneSize.Z / 2, ZoneSize.Z / 2)
-        );
+        Vector3 randomPosition = GetValidSpawnPosition();
 
         Node3D fruit = (Node3D)FruitScene.Instantiate();
-        fruit.Position = randomPosition;
-
         fruit.Position = GlobalPosition + randomPosition;
 
-        GD.Print(randomPosition);
 
         GetTree().CurrentScene.AddChild(fruit);
 
-        
         Tween tween = CreateTween();
         fruit.Scale = Vector3.One * 0.05f;
-
         tween.TweenProperty(fruit, "scale", Vector3.One, 1.5f).SetTrans(Tween.TransitionType.Elastic);
         tween.Play();
-        
-        if(fruit != null){
-            _spawnedFruits.Add(fruit);
-        }
+
+        _spawnedFruits.Add(fruit);
+
         GetTree().CreateTimer(FruitLifetime).Timeout += () => RemoveFruit(fruit);
     }
 
-    
+    private Vector3 GetValidSpawnPosition()
+    {
+        Vector3 position;
+        float distance;
+
+        do
+        {
+            float theta = (float)GD.RandRange(0, Math.PI * 2);
+            float phi = (float)GD.RandRange(0, Math.PI);
+            float x = Mathf.Sin(phi) * Mathf.Cos(theta);
+            float y = Mathf.Sin(phi) * Mathf.Sin(theta);
+            float z = Mathf.Cos(phi);
+
+            distance = (float)GD.RandRange(NegativeZone, SpawnRadius);
+            position = new Vector3(x, y, z) * distance;
+
+        } while (position.Length() < NegativeZone);
+
+        return position;
+    }
 
     private void RemoveFruit(Node3D fruit)
     {
-        if (fruit == null){
+        if (fruit == null)
+        {
             GD.PrintErr("SZ: NO FRUIT ADDED");
             return;
         }
-        
+
         Tween tween = CreateTween();
         tween.TweenProperty(fruit, "scale", Vector3.One * 0.01f, 0.5f).SetTrans(Tween.TransitionType.Quad);
         tween.Play();
         tween.Finished += () => fruit.QueueFree();
     }
-
-    
 
 }

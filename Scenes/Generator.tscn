@@ -55,7 +55,7 @@ _bundled = {
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v12it"]
-size = Vector3(16.5498, 11.2471, 19.1252)
+size = Vector3(16.5498, 15.0254, 19.1252)
 
 [node name="Area3D" type="Area3D"]
 script = ExtResource("1_mckop")

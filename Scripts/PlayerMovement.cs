@@ -4,7 +4,7 @@ using System;
 public partial class PlayerMovement : CharacterBody3D
 {
     private Camera3D camera;
-    private float rotationSpeed = 5f;  // Velocidad de rotación del jugador
+    private float rotationSpeed = 5f;
     [Export] private float constantVelocity = 5f;
 
     [Export] private float axisVelocity = 10f;

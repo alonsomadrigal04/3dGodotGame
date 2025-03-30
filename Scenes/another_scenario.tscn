@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=19 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://c8bhcpq0vv6ay" path="res://3dGodotGame/Scripts/FlyMovement.cs" id="1_7awta"]
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="2_2rvpb"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="4_je283"]
 [ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="4_lkg2u"]
 [ext_resource type="PackedScene" uid="uid://bvjdu2bskvyk6" path="res://3dGodotGame/Models/Heredadas/Newfly_dest.tscn" id="5_lkg2u"]
+[ext_resource type="Shader" uid="uid://dlttr1pc4fsu2" path="res://SpeedLines.gdshader" id="6_u6msq"]
+[ext_resource type="PackedScene" uid="uid://djl2w82i7nicq" path="res://3dGodotGame/Scenes/Arc.tscn" id="8_6q0ho"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -24,11 +26,38 @@ fog_enabled = true
 fog_light_color = Color(0.722217, 0.466271, 0.516637, 1)
 fog_density = 0.0438
 
-[sub_resource type="TorusMesh" id="TorusMesh_i886c"]
-inner_radius = 0.657
-rings = 9
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7awta"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6q0ho"]
+noise_type = 5
+frequency = 0.2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gqnjj"]
+noise = SubResource("FastNoiseLite_6q0ho")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h00e6"]
+shader = ExtResource("6_u6msq")
+shader_parameter/noise = SubResource("NoiseTexture2D_gqnjj")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_count = 2.0
+shader_parameter/line_density = 1.0
+shader_parameter/line_faloff = 1.0
+shader_parameter/mask_size = 0.0
+shader_parameter/mask_edge = 1.0
+shader_parameter/animation_speed = 20.0
+
+[sub_resource type="Animation" id="Animation_bhfm7"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_1vnci"]
+resource_name = "rotateFly"
+length = 0.5
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f6a75"]
+_data = {
+&"RESET": SubResource("Animation_bhfm7"),
+&"rotateFly": SubResource("Animation_1vnci")
+}
 
 [node name="AnotherScenario" type="Node3D"]
 
@@ -42,52 +71,7 @@ shadow_enabled = true
 [node name="Toroides" type="Node3D" parent="."]
 transform = Transform3D(3.41, 0, 0, 0, 3.41, 0, 0, 0, 3.41, 0, 0, 0)
 
-[node name="Toroide" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, 0.589535, 0.807743, 0, -0.807743, 0.589535, 0, 0.714572, -2.37291)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../..")
-
-[node name="Toroide2" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, -0.686567, 0.727066, 0, -0.727066, -0.686567, 3.48934, 9.97933, 11.5745)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide3" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, -0.0572504, -0.99836, 0, 0.99836, -0.0572504, -1927.53, 4.23364, -0.18572)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide5" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, 0.171, 0.985271, 0, -0.985271, 0.171, -2.4589, -0.125943, 4.40832)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide4" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, 0.76518, 0.643817, 0, -0.643817, 0.76518, 6.07121, 2.07779, 2.19615)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide6" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, -0.941518, 0.336964, 0, -0.336964, -0.941518, -8.30282, 5.55627, 5.58096)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide7" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, -0.503488, 0.864002, 0, -0.864002, -0.503488, -3.50501, 2.63906, -1.16412)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide8" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, 0.171, 0.985271, 0, -0.985271, 0.171, 12.1424, 5.08159, 2.53889)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Toroide9" type="MeshInstance3D" parent="Toroides"]
-transform = Transform3D(1, 0, 0, 0, -0.503488, 0.864002, 0, -0.864002, -0.503488, -8.48011, 4.11142, -5.62789)
-mesh = SubResource("TorusMesh_i886c")
-skeleton = NodePath("../Toroide")
-
-[node name="Fly" type="RigidBody3D" parent="."]
+[node name="Fly" type="RigidBody3D" parent="." node_paths=PackedStringArray("animationPlayer", "ShaderLines")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
 gravity_scale = 0.0
 script = ExtResource("1_7awta")
@@ -95,6 +79,11 @@ minSpeed = 10.0
 maxSpeed = 15.0
 rotationSpeed = 5.0
 aceleration = 2.0
+animationPlayer = NodePath("AnimationPlayer")
+ShaderLines = NodePath("ColorRect")
+MinIntensityOfLines = 0.5
+maxSpeedArc = 25.0
+timeSpeedArc = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fly"]
 shape = SubResource("CapsuleShape3D_7awta")
@@ -102,6 +91,7 @@ shape = SubResource("CapsuleShape3D_7awta")
 [node name="StrawGenerator" parent="Fly" instance=ExtResource("3_xifaf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.94403)
 SpawnRadius = 50.0
+NegativeZone = 5.0
 FruitScene = ExtResource("4_lkg2u")
 SpawnInterval = 0.115
 FruitLifetime = 15.0
@@ -112,8 +102,28 @@ transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 1.00136e
 [node name="fly dest2" parent="Fly" instance=ExtResource("5_lkg2u")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
+[node name="ColorRect" type="ColorRect" parent="Fly"]
+material = SubResource("ShaderMaterial_h00e6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fly"]
+callback_mode_process = 0
+libraries = {
+&"": SubResource("AnimationLibrary_f6a75")
+}
+
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("_target")]
 transform = Transform3D(-1, 5.32785e-16, 8.9407e-08, 5.32785e-16, 1, 0, -8.9407e-08, 4.76347e-23, -1, -1.369, 6.35083, -1.694)
 script = ExtResource("2_2rvpb")
 _target = NodePath("../Fly")
 cameraHeight = 1.2
+
+[node name="Arcs" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
+
+[node name="Toroide" parent="Arcs" instance=ExtResource("8_6q0ho")]
+transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 3.46188, -38.0174)

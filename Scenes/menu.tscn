@@ -1,0 +1,163 @@
+[gd_scene load_steps=10 format=3 uid="uid://gy67uboa31r5"]
+
+[ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scenes/MenuBehaviour.cs" id="1_33wqf"]
+[ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="2_nplmm"]
+[ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="2_v7uyn"]
+[ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="3_u3ryc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_og5f5"]
+shader = ExtResource("2_nplmm")
+shader_parameter/Line_Smoothness = 0.045
+shader_parameter/Line_Width = 0.09
+shader_parameter/Brightness = 3.0
+shader_parameter/Rotation_deg = 30.0
+shader_parameter/Distortion = 1.8
+shader_parameter/Speed = 0.7
+shader_parameter/Position = 0.0
+shader_parameter/Position_Min = 0.25
+shader_parameter/Position_Max = 0.5
+shader_parameter/Alpha = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_e5dym"]
+
+[sub_resource type="Animation" id="Animation_33wqf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartButton:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(204, 51)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StartButton:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(481, 391)]
+}
+
+[sub_resource type="Animation" id="Animation_m56e5"]
+resource_name = "StartHoldAnimation"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StartButton:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(204, 51), Vector2(544, 31), Vector2(258, 93), Vector2(204, 51)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StartButton:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(481, 391), Vector2(311, 401), Vector2(454, 370), Vector2(481, 391)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v7uyn"]
+_data = {
+&"RESET": SubResource("Animation_33wqf"),
+&"StartHoldAnimation": SubResource("Animation_m56e5")
+}
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_33wqf")
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.418
+anchor_top = 0.603
+anchor_right = 0.595
+anchor_bottom = 0.682
+offset_left = -0.536011
+offset_top = 0.255981
+offset_right = -0.440063
+offset_bottom = 0.0639648
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+text = "START SWIMING"
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="StartButton"]
+material = SubResource("ShaderMaterial_og5f5")
+layout_mode = 0
+offset_right = 204.0
+offset_bottom = 50.995
+texture = SubResource("CanvasTexture_e5dym")
+
+[node name="OptionsButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.418
+anchor_top = 0.694049
+anchor_right = 0.595
+anchor_bottom = 0.773049
+offset_left = -0.536407
+offset_top = 0.256104
+offset_right = -0.44043
+offset_bottom = 0.0640869
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+text = "OPTIONS"
+metadata/_edit_use_anchors_ = true
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.418
+anchor_top = 0.789728
+anchor_right = 0.595
+anchor_bottom = 0.868728
+offset_left = -0.536407
+offset_top = 0.256104
+offset_right = -0.44043
+offset_bottom = 0.0640869
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+text = "EXIT"
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_v7uyn")
+}
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_v7uyn")
+
+[node name="PressSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_u3ryc")
