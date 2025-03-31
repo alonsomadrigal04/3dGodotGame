@@ -1,0 +1,170 @@
+[gd_scene load_steps=18 format=3 uid="uid://3qeg74ks873"]
+
+[ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_uskpf"]
+[ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="4_np7fq"]
+[ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="5_tavbi"]
+[ext_resource type="PackedScene" uid="uid://bvjdu2bskvyk6" path="res://3dGodotGame/Models/Heredadas/Newfly_dest.tscn" id="6_vcwsx"]
+[ext_resource type="Shader" uid="uid://dlttr1pc4fsu2" path="res://SpeedLines.gdshader" id="7_15rqn"]
+[ext_resource type="PackedScene" uid="uid://djl2w82i7nicq" path="res://3dGodotGame/Scenes/Arc.tscn" id="8_gxru5"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_7awta"]
+sky_material = SubResource("ProceduralSkyMaterial_i886c")
+
+[sub_resource type="Environment" id="Environment_2rvpb"]
+background_mode = 1
+background_color = Color(0.871987, 0.536566, 0.519464, 1)
+sky = SubResource("Sky_7awta")
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.722217, 0.466271, 0.516637, 1)
+fog_density = 0.0438
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7awta"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6q0ho"]
+noise_type = 5
+frequency = 0.2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gqnjj"]
+noise = SubResource("FastNoiseLite_6q0ho")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h00e6"]
+shader = ExtResource("7_15rqn")
+shader_parameter/noise = SubResource("NoiseTexture2D_gqnjj")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_count = 2.0
+shader_parameter/line_density = 1.0
+shader_parameter/line_faloff = 1.0
+shader_parameter/mask_size = 0.0
+shader_parameter/mask_edge = 1.0
+shader_parameter/animation_speed = 20.0
+
+[sub_resource type="Animation" id="Animation_bhfm7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.36901, 5.15935, 3.69496)]
+}
+
+[sub_resource type="Animation" id="Animation_1vnci"]
+resource_name = "rotateFly"
+length = 0.5
+
+[sub_resource type="Animation" id="Animation_6vycy"]
+resource_name = "INIT"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.26667, 1.96667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.731293), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.56, 0.633333, 1.96667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.601376, 5.40842, 4.74181), Vector3(0.601376, 5.40842, 3.13012), Vector3(0.601376, 7.14063, 3.13012), Vector3(-1.29153, 6.17927, 10.2055), Vector3(-1.23953, 5.22068, 3.38459)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f6a75"]
+_data = {
+&"INIT": SubResource("Animation_6vycy"),
+&"RESET": SubResource("Animation_bhfm7"),
+&"rotateFly": SubResource("Animation_1vnci")
+}
+
+[node name="AnotherScenario" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2rvpb")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.496486, 0.0592043, 0, 0.118408, 0.992965, -0.500003, 0.859931, -0.102544, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Toroides" type="Node3D" parent="."]
+transform = Transform3D(3.41, 0, 0, 0, 3.41, 0, 0, 0, 3.41, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.00860447, 0, 0.999963, 0, 1, 0, -0.999963, 0, 0.00860447, 0.737679, 5.50144, 4.65894)
+fov = 71.4468
+
+[node name="Fly" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
+gravity_scale = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Fly"]
+shape = SubResource("CapsuleShape3D_7awta")
+
+[node name="StrawGenerator" parent="Fly" instance=ExtResource("3_uskpf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0462601)
+SpawnRadius = 50.0
+NegativeZone = 5.0
+FruitScene = ExtResource("4_np7fq")
+SpawnInterval = 0.115
+FruitLifetime = 15.0
+
+[node name="Bubbles" parent="Fly" instance=ExtResource("5_tavbi")]
+transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 1.00136e-05, 0, 0.267463)
+
+[node name="fly dest2" parent="Fly" instance=ExtResource("6_vcwsx")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="ColorRect" type="ColorRect" parent="Fly"]
+visible = false
+material = SubResource("ShaderMaterial_h00e6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fly"]
+callback_mode_process = 0
+libraries = {
+&"": SubResource("AnimationLibrary_f6a75")
+}
+autoplay = "INIT"
+
+[node name="Arcs" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
+
+[node name="Toroide" parent="Arcs" instance=ExtResource("8_gxru5")]
+transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 3.46188, -14.0587)

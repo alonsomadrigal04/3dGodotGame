@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://da4jr0uxr0v5j"]
+[gd_scene load_steps=13 format=3 uid="uid://da4jr0uxr0v5j"]
 
 [ext_resource type="Script" uid="uid://c8bhcpq0vv6ay" path="res://3dGodotGame/Scripts/FlyMovement.cs" id="1_1vnci"]
 [ext_resource type="PackedScene" uid="uid://bvjdu2bskvyk6" path="res://3dGodotGame/Models/Heredadas/Newfly_dest.tscn" id="2_3uahx"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="2_bhfm7"]
 [ext_resource type="Shader" uid="uid://dlttr1pc4fsu2" path="res://SpeedLines.gdshader" id="3_3doa8"]
-[ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="3_f6a75"]
 [ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="4_pa1qv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1vnci"]
@@ -58,11 +57,6 @@ shape = SubResource("CapsuleShape3D_1vnci")
 
 [node name="StrawGenerator2" parent="." instance=ExtResource("2_bhfm7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.94403)
-SpawnRadius = 50.0
-NegativeZone = 5.0
-FruitScene = ExtResource("3_f6a75")
-SpawnInterval = 0.115
-FruitLifetime = 15.0
 
 [node name="Bubbles2" parent="." instance=ExtResource("4_pa1qv")]
 transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 1.00136e-05, 0, -8.01477)

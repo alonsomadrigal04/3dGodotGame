@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://djl2w82i7nicq"]
 
 [ext_resource type="Shader" uid="uid://c42onsbpe6a8n" path="res://3dGodotGame/Scenes/StarEffect.gdshader" id="1_pexby"]
-[ext_resource type="Script" uid="uid://daly1viexup56" path="res://3dGodotGame/Scenes/ArcBehaviour.cs" id="2_4786t"]
+[ext_resource type="Script" uid="uid://daly1viexup56" path="res://3dGodotGame/Scripts/ArcBehaviour.cs" id="2_4786t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gqnjj"]
 render_priority = 0

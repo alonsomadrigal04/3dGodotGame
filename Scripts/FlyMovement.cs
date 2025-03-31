@@ -84,31 +84,27 @@ public partial class FlyMovement : RigidBody3D
     }
 
     public void ArcAnimation()
-{
-    if (InArc) return;
-
-    InArc = true;
-    arcTimer.Start();
-
-    maxSpeed = maxSpeedArc; 
-    MaxIntensityOfLines = 2.0f; 
-
-    Tween tween = GetTree().CreateTween();
-
-    tween.SetTrans(Tween.TransitionType.Back)
-         .SetEase(Tween.EaseType.Out)
-         .SetProcessMode(Tween.TweenProcessMode.Physics);
-
-    Vector3 rotationAxis = GlobalTransform.Basis.Z.Normalized();
-    float rotationAmount = Mathf.DegToRad(360); 
-
-    GD.Print(rotationAmount);
-
-    tween.TweenMethod(Callable.From<float>((t) =>
     {
-        Rotate(rotationAxis, 0.202f);
-    }), 0, 1, 0.5f);
-}
+        if (InArc) return;
+
+        InArc = true;
+        arcTimer.Start();
+
+        maxSpeed = maxSpeedArc; 
+        MaxIntensityOfLines = 2.0f; 
+
+        Tween tween = GetTree().CreateTween();
+
+        tween.SetTrans(Tween.TransitionType.Elastic)
+            .SetEase(Tween.EaseType.Out)
+            .SetProcessMode(Tween.TweenProcessMode.Physics);
+
+        tween.TweenProperty(this, "scale", this.Scale * 0.5f, 0.3f);
+        tween.Chain();
+        tween.TweenProperty(this, "scale", this.Scale, 0.6f);
+
+        
+    }
 
 
     private void RotatePlayer(double delta)
