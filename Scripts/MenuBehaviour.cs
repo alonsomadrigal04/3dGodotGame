@@ -1,22 +1,40 @@
 using Godot;
 using System;
+using System.IO;
 
 public partial class MenuBehaviour : Control
 {
+    [ExportGroup("botones")]
     private Button startButton;
     private Button optionsButton;
     private Button exitButton;
-    private AudioStreamPlayer hoverSound;
-    private AudioStreamPlayer pressSound;
+
+    [ExportGroup("Sonidos")]
+    [Export] private AudioStreamPlayer hoverSound;
+    [Export] private AudioStreamPlayer pressSound;
+    [Export] private AudioStreamPlayer explosionAudio;
+
+    [ExportGroup("Others")]
+
 	[Export] private AnimationPlayer animationPlayer;
+    private bool isSound = false;
     
+    [ExportGroup("animation Settings")]
     [Export] private float animationDelay = 0.2f;
-    [Export] private Vector2 offsetPosition = new Vector2(0, -100); // Desde dónde entra el botón
-    
+    [Export] private Vector2 offsetPosition = new Vector2(0, -100);
+
+    public override void _Process(double delta)
+    {
+        if(!isSound){
+            AudioManager.Instance.PlaySound("explosion", 2.0f);
+            isSound = true;
+        }
+    }
 
 
     public override void _Ready()
     {
+
         startButton = GetNode<Button>("StartButton");
         optionsButton = GetNode<Button>("OptionsButton");
         exitButton = GetNode<Button>("ExitButton");
@@ -33,6 +51,9 @@ public partial class MenuBehaviour : Control
         SetupButtonAnimations(exitButton);
 
     }
+
+
+
 
     private void AnimateButtonEntry(Button button)
     {
@@ -51,21 +72,19 @@ public partial class MenuBehaviour : Control
         tween.TweenProperty(button, "scale", new Vector2(1.0f, 1.0f), 0.2f)
             .SetTrans(Tween.TransitionType.Back)
             .SetEase(Tween.EaseType.Out);
-
     }
 
     private void SetupButtonAnimations(Button button)
     {
         button.MouseEntered += () => {
             AnimateHover(button, true);
-            hoverSound.Play();
+            AudioManager.Instance.PlaySound("hover");
         };
         button.MouseExited += () => AnimateHover(button, false);
         button.Pressed += () => {
 			AnimatePress(button);
-			pressSound.Play();
+			AudioManager.Instance.PlaySound("press");       
 			};
-
         button.ButtonUp += () => AnimateRelease(button);
     }
 

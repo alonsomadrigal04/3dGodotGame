@@ -1,12 +1,14 @@
-[gd_scene load_steps=27 format=4 uid="uid://bw64nritfwmm8"]
+[gd_scene load_steps=29 format=4 uid="uid://bw64nritfwmm8"]
 
 [ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scripts/MenuBehaviour.cs" id="1_7dvn3"]
+[ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="2_7dvn3"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="2_vwexf"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_tsss7"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="3_xu04i"]
 [ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="4_7dvn3"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="4_jert0"]
 [ext_resource type="Material" uid="uid://dgbva3yjqol08" path="res://3dGodotGame/Models/Materials/moscaMaterial.tres" id="5_vwexf"]
+[ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="6_vwexf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cxmgt"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -383,7 +385,6 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
-text = "START SWIMING"
 metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="Menu/StartButton"]
@@ -393,6 +394,21 @@ offset_right = 204.0
 offset_bottom = 50.995
 texture = SubResource("CanvasTexture_e5dym")
 metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu/StartButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 15.0
+offset_right = -33.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[wave amp=50 freq=2]START SWIMING[/wave]"
+scroll_active = false
 
 [node name="OptionsButton" type="Button" parent="Menu"]
 layout_mode = 1
@@ -427,12 +443,6 @@ grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
 text = "EXIT"
-
-[node name="HoverSound" type="AudioStreamPlayer" parent="Menu"]
-stream = ExtResource("3_xu04i")
-
-[node name="PressSound" type="AudioStreamPlayer" parent="Menu"]
-stream = ExtResource("4_jert0")
 
 [node name="Fly" type="RigidBody3D" parent="."]
 transform = Transform3D(-0.0614349, 0, -0.998111, 0, 1, 0, 0.998111, 0, -0.0614349, -7.401, -3.579, -5.489)
@@ -659,3 +669,11 @@ libraries = {
 &"Presentacion": SubResource("AnimationLibrary_dyn11")
 }
 autoplay = "Presentacion/IntroFly"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource("6_vwexf")
+Sounds = Dictionary[String, AudioStream]({
+"explosion": ExtResource("2_7dvn3"),
+"hover": ExtResource("3_xu04i"),
+"press": ExtResource("4_jert0")
+})
