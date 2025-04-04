@@ -3,12 +3,16 @@ using System;
 
 public partial class MenuBehaviour : Control
 {
-        private Button startButton;
+    private Button startButton;
     private Button optionsButton;
     private Button exitButton;
     private AudioStreamPlayer hoverSound;
     private AudioStreamPlayer pressSound;
 	[Export] private AnimationPlayer animationPlayer;
+    
+    [Export] private float animationDelay = 0.2f;
+    [Export] private Vector2 offsetPosition = new Vector2(0, -100); // Desde dónde entra el botón
+    
 
 
     public override void _Ready()
@@ -33,11 +37,21 @@ public partial class MenuBehaviour : Control
     private void AnimateButtonEntry(Button button)
     {
         var tween = GetTree().CreateTween();
+
+        Vector2 finalPosition = button.Position;
+
+        button.Position += offsetPosition;
         button.Scale = new Vector2(0.5f, 0.5f);
+
+        tween.TweenProperty(button, "position", finalPosition, 0.3f)
+            .SetTrans(Tween.TransitionType.Elastic)
+            .SetEase(Tween.EaseType.Out)
+            .SetDelay(animationDelay);
+
         tween.TweenProperty(button, "scale", new Vector2(1.0f, 1.0f), 0.2f)
-             .SetTrans(Tween.TransitionType.Back)
-             .SetEase(Tween.EaseType.Out)
-			 .SetDelay(0.2f);
+            .SetTrans(Tween.TransitionType.Back)
+            .SetEase(Tween.EaseType.Out);
+
     }
 
     private void SetupButtonAnimations(Button button)

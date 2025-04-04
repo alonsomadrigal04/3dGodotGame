@@ -16,13 +16,13 @@
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
 ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
 
-[sub_resource type="Sky" id="Sky_7awta"]
+[sub_resource type="Sky" id="Sky_pd433"]
 sky_material = SubResource("ProceduralSkyMaterial_i886c")
 
 [sub_resource type="Environment" id="Environment_2rvpb"]
 background_mode = 1
 background_color = Color(0.871987, 0.536566, 0.519464, 1)
-sky = SubResource("Sky_7awta")
+sky = SubResource("Sky_pd433")
 tonemap_mode = 2
 glow_enabled = true
 fog_enabled = true

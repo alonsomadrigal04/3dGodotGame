@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://gy67uboa31r5"]
 
-[ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scenes/MenuBehaviour.cs" id="1_33wqf"]
+[ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scripts/MenuBehaviour.cs" id="1_33wqf"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="2_nplmm"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="2_v7uyn"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="3_u3ryc"]
@@ -169,7 +169,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0.133333, 0.233333, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-230, 280), Vector2(44.0001, 283), Vector2(29, 285)]
+"values": [Vector2(-229.999, 286), Vector2(44, 286), Vector2(21, 286)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_towvw"]
@@ -206,7 +206,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0.133333, 0.233333, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-229, 359), Vector2(68, 345), Vector2(40, 350)]
+"values": [Vector2(-228.999, 356), Vector2(68, 356), Vector2(21, 356)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rmnv7"]
@@ -260,14 +260,14 @@ autoplay = "summonStart"
 [node name="OptionsButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.477028
-anchor_top = 0.13695
-anchor_right = 0.654028
-anchor_bottom = 0.21595
-offset_left = -795.536
-offset_top = 270.256
-offset_right = -795.44
-offset_bottom = 270.064
+anchor_left = 0.018
+anchor_top = 0.451
+anchor_right = 0.195
+anchor_bottom = 0.52
+offset_left = -266.736
+offset_top = 66.752
+offset_right = -266.64
+offset_bottom = 73.0399
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(100, 25)
@@ -284,20 +284,18 @@ autoplay = "summonOptions"
 [node name="ExitButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.260014
-anchor_top = 0.306704
-anchor_right = 0.437014
-anchor_bottom = 0.385704
-offset_left = -525.536
-offset_top = 282.256
-offset_right = -525.44
-offset_bottom = 282.064
-grow_horizontal = 2
+anchor_left = -0.0149861
+anchor_top = 0.563148
+anchor_right = 0.162014
+anchor_bottom = 0.642148
+offset_left = -208.736
+offset_top = 116.08
+offset_right = -208.64
+offset_bottom = 115.888
 grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
 text = "EXIT"
-metadata/_edit_use_anchors_ = true
 
 [node name="ExitAnimator" type="AnimationPlayer" parent="ExitButton"]
 libraries = {
@@ -310,8 +308,3 @@ stream = ExtResource("2_v7uyn")
 
 [node name="PressSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_u3ryc")
-
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0

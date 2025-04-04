@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bivjpc528r3o3"]
 
-[ext_resource type="Script" uid="uid://dvfhggtuo8x0u" path="res://3dGodotGame/Scripts/StrawBerry.cs" id="2_qjlqx"]
+[ext_resource type="Script" uid="uid://bq4jlsp3qqny6" path="res://3dGodotGame/Scripts/StrawBerry.cs" id="2_qjlqx"]
 [ext_resource type="PackedScene" uid="uid://c4wa711r0sn43" path="res://3dGodotGame/Scenes/Explosion.tscn" id="2_v7w0p"]
 [ext_resource type="PackedScene" uid="uid://b58kuddpbjdxo" path="res://3dGodotGame/Scenes/NewStrawBerry.tscn" id="3_qjlqx"]
 
@@ -20,3 +20,5 @@ shape = SubResource("CapsuleShape3D_qjlqx")
 
 [node name="SM_Strawberry" parent="." instance=ExtResource("3_qjlqx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.828076, -0.133054)
+
+[editable path="SM_Strawberry"]

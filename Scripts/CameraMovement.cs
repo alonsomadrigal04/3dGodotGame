@@ -7,6 +7,7 @@ public partial class CameraMovement : Camera3D
 	[Export] private float cameraDistance = 5.0f;
     [Export] private float followSpeed = 5.0f;
 	[Export] private float cameraHeight = 0.5f;
+	
 
 
 	public override void _Ready()

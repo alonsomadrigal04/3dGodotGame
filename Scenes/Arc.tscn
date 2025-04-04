@@ -50,6 +50,7 @@ height = 0.12
 [node name="Toroide" type="MeshInstance3D" node_paths=PackedStringArray("detectionZone")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 top_level = true
+lod_bias = 0.1
 mesh = SubResource("TorusMesh_4786t")
 skeleton = NodePath("../..")
 script = ExtResource("2_4786t")
@@ -65,4 +66,5 @@ shape = SubResource("BoxShape3D_4786t")
 layers = 2
 sorting_offset = -1.0
 material_override = SubResource("ShaderMaterial_4786t")
+lod_bias = 0.1
 mesh = SubResource("CylinderMesh_4786t")

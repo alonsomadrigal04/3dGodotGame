@@ -17,3 +17,4 @@ grow_amount = 0.03
 [node name="SM_Strawberry" parent="." index="0"]
 material_override = SubResource("StandardMaterial3D_d7dw3")
 material_overlay = SubResource("StandardMaterial3D_dvq1c")
+lod_bias = 0.3
