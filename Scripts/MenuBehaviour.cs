@@ -9,26 +9,73 @@ public partial class MenuBehaviour : Control
     private Button optionsButton;
     private Button exitButton;
 
-    [ExportGroup("Sonidos")]
-    [Export] private AudioStreamPlayer hoverSound;
-    [Export] private AudioStreamPlayer pressSound;
-    [Export] private AudioStreamPlayer explosionAudio;
+    [ExportGroup("booleanos")]
+    private bool optionsDisplay = false;
+
+    [ExportGroup("Others")]
+    [Export] Slider musicSlider;
+    [Export] Slider sfxSlider;
+
 
     [ExportGroup("Others")]
 
 	[Export] private AnimationPlayer animationPlayer;
     private bool isSound = false;
+    Vector2 optionsControlPos;
     
     [ExportGroup("animation Settings")]
     [Export] private float animationDelay = 0.2f;
     [Export] private Vector2 offsetPosition = new Vector2(0, -100);
+
+    [ExportGroup("Others")]
+    [Export] private Control optionsMenu;
 
     public override void _Process(double delta)
     {
         if(!isSound){
             AudioManager.Instance.PlaySound("explosion", 2.0f);
             isSound = true;
+            AudioManager.Instance.PlayMusic("metal");
         }
+
+        AudioManager.Instance.audioStreamMusic.VolumeDb = AudioManager.Instance.linearToDb(musicSlider.Value);
+        AudioManager.Instance.audioStreamSFX.VolumeDb = AudioManager.Instance.linearToDb(sfxSlider.Value);
+
+    }
+
+    private void DisplayOptions()
+    {
+        optionsDisplay = true;
+        Vector2 startPos = startButton.Position + new Vector2(-500, 0);
+        Vector2 exitPos = exitButton.Position + new Vector2(-500, 0);
+
+        AnimateMoveToPosition(startButton, startPos);
+        AnimateMoveToPosition(exitButton, exitPos);
+
+        AnimateMoveToPosition(optionsMenu, optionsControlPos);
+
+    }
+
+    private void HideOptions()
+    {
+        optionsDisplay = false;
+        Vector2 startPos = startButton.Position + new Vector2(500, 0);
+        Vector2 exitPos = exitButton.Position + new Vector2(500, 0);
+        Vector2 newoptionsControlPos = new Vector2(800, 0);
+
+        AnimateMoveToPosition(startButton, startPos);
+        AnimateMoveToPosition(exitButton, exitPos);
+
+        AnimateMoveToPosition(optionsMenu, newoptionsControlPos);
+
+    }
+
+    private void AnimateMoveToPosition(Node button, Vector2 targetPosition)
+    {
+        var tween = GetTree().CreateTween();
+        tween.TweenProperty(button, "position", targetPosition, 0.4f)
+            .SetTrans(Tween.TransitionType.Cubic)
+            .SetEase(Tween.EaseType.Out);
     }
 
 
@@ -38,8 +85,6 @@ public partial class MenuBehaviour : Control
         startButton = GetNode<Button>("StartButton");
         optionsButton = GetNode<Button>("OptionsButton");
         exitButton = GetNode<Button>("ExitButton");
-        hoverSound = GetNode<AudioStreamPlayer>("HoverSound");
-		pressSound = GetNode<AudioStreamPlayer>("PressSound");
 
         // Animación de entrada de los botones
         AnimateButtonEntry(startButton);
@@ -50,12 +95,15 @@ public partial class MenuBehaviour : Control
         SetupButtonAnimations(optionsButton);
         SetupButtonAnimations(exitButton);
 
+        optionsControlPos = optionsMenu.Position;
+        optionsMenu.Position = new Vector2(800, 0);
+
     }
 
 
 
 
-    private void AnimateButtonEntry(Button button)
+    private void AnimateButtonEntry(Control button)
     {
         var tween = GetTree().CreateTween();
 
@@ -101,6 +149,14 @@ public partial class MenuBehaviour : Control
         var tween = GetTree().CreateTween();
         tween.TweenProperty(button, "scale", new Vector2(0.9f, 0.85f), 0.1f)
              .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.InOut);
+        
+        if (button == optionsButton && !optionsDisplay)
+        {
+            DisplayOptions();
+        }
+        else if(button == optionsButton && optionsDisplay){
+            HideOptions();
+        }
     }
 
     private void AnimateRelease(Button button)

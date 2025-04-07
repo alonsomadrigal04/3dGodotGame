@@ -1,14 +1,16 @@
-[gd_scene load_steps=29 format=4 uid="uid://bw64nritfwmm8"]
+[gd_scene load_steps=31 format=4 uid="uid://bw64nritfwmm8"]
 
 [ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scripts/MenuBehaviour.cs" id="1_7dvn3"]
-[ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="2_7dvn3"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="2_vwexf"]
+[ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="3_jert0"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_tsss7"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="3_xu04i"]
 [ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="4_7dvn3"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="4_jert0"]
 [ext_resource type="Material" uid="uid://dgbva3yjqol08" path="res://3dGodotGame/Models/Materials/moscaMaterial.tres" id="5_vwexf"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="6_vwexf"]
+[ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="7_xu04i"]
+[ext_resource type="AudioStream" uid="uid://b7h0p48pryjch" path="res://3dGodotGame/Sounds/MetalIntro.mp3" id="10_xu04i"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cxmgt"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -358,7 +360,7 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.36147, -3.32842, -3.39582)
 
-[node name="Menu" type="Control" parent="." node_paths=PackedStringArray("animationPlayer")]
+[node name="Menu" type="Control" parent="." node_paths=PackedStringArray("musicSlider", "sfxSlider", "animationPlayer", "optionsMenu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -366,9 +368,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7dvn3")
+musicSlider = NodePath("Control/MusicSlider")
+sfxSlider = NodePath("Control/SfxSlider")
 animationPlayer = NodePath("../Fly/AnimationPlayer")
 animationDelay = 2.0
 offsetPosition = Vector2(-500, 0)
+optionsMenu = NodePath("Control")
 
 [node name="StartButton" type="Button" parent="Menu"]
 layout_mode = 1
@@ -443,6 +448,63 @@ grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
 text = "EXIT"
+
+[node name="Control" type="Control" parent="Menu"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Menu/Control"]
+modulate = Color(1, 1, 1, 0.556863)
+position = Vector2(898.125, 335.5)
+scale = Vector2(0.773926, 0.607422)
+texture = ExtResource("3_jert0")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu/Control"]
+layout_mode = 0
+offset_left = 741.25
+offset_top = 209.0
+offset_right = 1054.25
+offset_bottom = 469.0
+bbcode_enabled = true
+text = "[center][b][color=#f39c12]⚙️ Settings ⚙️[/color][/b][/center]
+
+[font_size=18][color=#ecf0f1][b][wave amp=50.0 freq=5.0 connected=1]Music[/wave] Volume:[/b][/color][/font_size]
+
+[font_size=18][color=#ecf0f1][b][wave amp=50.0 freq=5.0 connected=1]SFX[/wave] Volume:[/b][/color][/font_size]
+
+[font_size=18][color=#ecf0f1][b]Fog:[/b][/color][/font_size]
+
+[font_size=18][color=#ecf0f1][shake rate=20.0 level=10 connected=1][b]Metal Mode:[/b][/shake][/color][/font_size]
+"
+
+[node name="MusicSlider" type="HSlider" parent="Menu/Control"]
+layout_mode = 0
+offset_left = 889.0
+offset_top = 257.0
+offset_right = 1066.0
+offset_bottom = 281.0
+value = 50.0
+
+[node name="SfxSlider" type="HSlider" parent="Menu/Control"]
+offset_left = 889.0
+offset_top = 306.0
+offset_right = 1066.0
+offset_bottom = 330.0
+value = 50.0
+
+[node name="CheckBox" type="CheckBox" parent="Menu/Control"]
+layout_mode = 0
+offset_left = 786.0
+offset_top = 356.0
+offset_right = 810.0
+offset_bottom = 380.0
+
+[node name="CheckBox2" type="CheckBox" parent="Menu/Control"]
+offset_left = 867.0
+offset_top = 404.0
+offset_right = 891.0
+offset_bottom = 428.0
 
 [node name="Fly" type="RigidBody3D" parent="."]
 transform = Transform3D(-0.0614349, 0, -0.998111, 0, 1, 0, 0.998111, 0, -0.0614349, -7.401, -3.579, -5.489)
@@ -670,10 +732,18 @@ libraries = {
 }
 autoplay = "Presentacion/IntroFly"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioControler" type="Node" parent="." node_paths=PackedStringArray("audioStreamMusic", "audioStreamSFX")]
 script = ExtResource("6_vwexf")
+audioStreamMusic = NodePath("AudioStreamMusic")
+audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
-"explosion": ExtResource("2_7dvn3"),
+"explosion": ExtResource("7_xu04i"),
 "hover": ExtResource("3_xu04i"),
+"metal": ExtResource("10_xu04i"),
 "press": ExtResource("4_jert0")
 })
+
+[node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -4.179
+
+[node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
