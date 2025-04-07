@@ -20,9 +20,18 @@ public partial class AudioManager : Node
 	}
 
     public float linearToDb(double linear){
-        if(linear <= 0)
-            return -80;
-        return (float)(20.0f * Math.Log10(linear));
+        if (linear <= 0)
+        return -80f; // silencio total
+        else if (linear <= 50)
+        {
+            // Mapea de 0-50 a -80 a 0 dB
+            return (float)((linear / 50.0) * 40.0 - 40.0); 
+        }
+        else
+        {
+            // Mapea de 50-100 a 0 a +10 dB
+            return (float)(((linear - 50.0) / 50.0) * 2f);
+        }
     }
 
 	[Export] public Godot.Collections.Dictionary<string, AudioStream> Sounds = new();

@@ -1,12 +1,12 @@
-[gd_scene load_steps=31 format=4 uid="uid://bw64nritfwmm8"]
+[gd_scene load_steps=36 format=4 uid="uid://bw64nritfwmm8"]
 
 [ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scripts/MenuBehaviour.cs" id="1_7dvn3"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="2_vwexf"]
 [ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="3_jert0"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_tsss7"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="3_xu04i"]
-[ext_resource type="PackedScene" uid="uid://bspat26hbqmut" path="res://3dGodotGame/Scenes/Bubbles.tscn" id="4_7dvn3"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="4_jert0"]
+[ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/Buble.png" id="5_jert0"]
 [ext_resource type="Material" uid="uid://dgbva3yjqol08" path="res://3dGodotGame/Models/Materials/moscaMaterial.tres" id="5_vwexf"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="6_vwexf"]
 [ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="7_xu04i"]
@@ -47,6 +47,34 @@ shader_parameter/Alpha = 1.0
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1vnci"]
 radius = 0.470304
 height = 1.65483
+
+[sub_resource type="Curve" id="Curve_kdq5m"]
+_data = [Vector2(0, 0.237931), 0.0, 0.0, 0, 0, Vector2(0.764543, 0.172234), 0.803687, 0.803687, 0, 0, Vector2(1, 0), -0.376766, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_v64ub"]
+curve = SubResource("Curve_kdq5m")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ljiij"]
+lifetime_randomness = 0.03
+emission_shape = 1
+emission_sphere_radius = 6.57
+initial_velocity_min = -14.0
+initial_velocity_max = 16.0
+gravity = Vector3(0, -0.2, 0)
+scale_curve = SubResource("CurveTexture_v64ub")
+turbulence_enabled = true
+turbulence_noise_strength = 0.55
+turbulence_noise_scale = 0.425
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u73s5"]
+transparency = 1
+shading_mode = 0
+specular_mode = 2
+albedo_texture = ExtResource("5_jert0")
+
+[sub_resource type="QuadMesh" id="QuadMesh_wrpft"]
+material = SubResource("StandardMaterial3D_u73s5")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jert0"]
 shading_mode = 0
@@ -360,7 +388,7 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.36147, -3.32842, -3.39582)
 
-[node name="Menu" type="Control" parent="." node_paths=PackedStringArray("musicSlider", "sfxSlider", "animationPlayer", "optionsMenu")]
+[node name="Menu" type="Control" parent="." node_paths=PackedStringArray("musicSlider", "sfxSlider", "worldEnvironment", "metalMode", "animationPlayer", "optionsMenu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -370,6 +398,8 @@ grow_vertical = 2
 script = ExtResource("1_7dvn3")
 musicSlider = NodePath("Control/MusicSlider")
 sfxSlider = NodePath("Control/SfxSlider")
+worldEnvironment = NodePath("../WorldEnvironment2")
+metalMode = NodePath("Control/CheckBox2")
 animationPlayer = NodePath("../Fly/AnimationPlayer")
 animationDelay = 2.0
 offsetPosition = Vector2(-500, 0)
@@ -487,6 +517,7 @@ offset_bottom = 281.0
 value = 50.0
 
 [node name="SfxSlider" type="HSlider" parent="Menu/Control"]
+layout_mode = 0
 offset_left = 889.0
 offset_top = 306.0
 offset_right = 1066.0
@@ -501,6 +532,7 @@ offset_right = 810.0
 offset_bottom = 380.0
 
 [node name="CheckBox2" type="CheckBox" parent="Menu/Control"]
+layout_mode = 0
 offset_left = 867.0
 offset_top = 404.0
 offset_right = 891.0
@@ -519,8 +551,16 @@ shape = SubResource("CapsuleShape3D_1vnci")
 [node name="StrawGenerator2" parent="Fly" instance=ExtResource("3_tsss7")]
 transform = Transform3D(1, -1.49012e-08, -2.98023e-08, 0, 1, -1.49012e-08, -1.78814e-07, 0, 1, -3.32307, -0.143974, 1.99154)
 
-[node name="Bubbles2" parent="Fly" instance=ExtResource("4_7dvn3")]
+[node name="Bubbles2" type="Node3D" parent="Fly"]
 transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 0.481687, 0, -0.188729)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Fly/Bubbles2"]
+extra_cull_margin = 16384.0
+amount = 50
+lifetime = 3.69
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_ljiij")
+draw_pass_1 = SubResource("QuadMesh_wrpft")
 
 [node name="FlyModel" type="Node3D" parent="Fly"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, -7.45058e-09, -4.47035e-08, 0, 0.5, 0.0973892, 0, -0.418854)
@@ -744,6 +784,5 @@ Sounds = Dictionary[String, AudioStream]({
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
-volume_db = -4.179
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]

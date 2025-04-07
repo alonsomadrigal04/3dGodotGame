@@ -15,6 +15,8 @@ public partial class MenuBehaviour : Control
     [ExportGroup("Others")]
     [Export] Slider musicSlider;
     [Export] Slider sfxSlider;
+    [Export] WorldEnvironment worldEnvironment;
+    [Export] CheckBox metalMode;
 
 
     [ExportGroup("Others")]
@@ -36,6 +38,10 @@ public partial class MenuBehaviour : Control
             AudioManager.Instance.PlaySound("explosion", 2.0f);
             isSound = true;
             AudioManager.Instance.PlayMusic("metal");
+        }
+
+        if(metalMode.ButtonPressed){
+            worldEnvironment.Environment.FogLightColor = new Color("a42733"); // Rojo puro
         }
 
         AudioManager.Instance.audioStreamMusic.VolumeDb = AudioManager.Instance.linearToDb(musicSlider.Value);
