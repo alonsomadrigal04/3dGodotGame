@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=31 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -19,6 +19,10 @@
 [ext_resource type="AudioStream" uid="uid://b7h0p48pryjch" path="res://3dGodotGame/Sounds/MetalIntro.mp3" id="17_c6hgj"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="18_1cye3"]
 [ext_resource type="AudioStream" uid="uid://bx12oo77uhot5" path="res://3dGodotGame/Sounds/straw-slurp-7066.mp3" id="19_5bcww"]
+[ext_resource type="AudioStream" uid="uid://cp6qrnw00don8" path="res://3dGodotGame/Sounds/guitar/perfunctory-careless-rock-guitar-one-shot_D#_major.wav" id="20_1cye3"]
+[ext_resource type="AudioStream" uid="uid://cqwtqvfvwbo71" path="res://3dGodotGame/Sounds/guitar/stir-forced-rock-guitar-one-shot_D#_major.wav" id="21_5bcww"]
+[ext_resource type="AudioStream" uid="uid://bsgn5vc85b120" path="res://3dGodotGame/Sounds/guitar/chanting-shivering-rock-guitar-one-shot_D#_major.wav" id="22_fw6st"]
+[ext_resource type="AudioStream" uid="uid://nvtitbwvdx3v" path="res://3dGodotGame/Sounds/guitar/heavy-metal-trap-guitar-riff_150bpm_F_minor.wav" id="23_iyibn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -59,9 +63,11 @@ shader_parameter/animation_speed = 20.0
 
 [node name="AnotherScenario" type="Node3D"]
 
-[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite")]
+[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "countLabel2", "countDown")]
 script = ExtResource("1_gknf6")
 transitionSprite = NodePath("../Transicion")
+countLabel2 = NodePath("../Control/GO!")
+countDown = NodePath("../Control/CountDown")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_2rvpb")
@@ -139,15 +145,6 @@ rotation = 0.541052
 scale = Vector2(2.6488, 2.4335)
 texture = ExtResource("12_7lpgg")
 
-[node name="Label" type="Label" parent="Transicion"]
-layout_mode = 0
-offset_left = 529.0
-offset_top = 259.0
-offset_right = 671.0
-offset_bottom = 381.0
-theme_override_font_sizes/font_size = 80
-text = "1"
-
 [node name="AudioControler" type="Node" parent="." node_paths=PackedStringArray("audioStreamMusic", "audioStreamSFX")]
 script = ExtResource("14_5eaic")
 audioStreamMusic = NodePath("AudioStreamMusic")
@@ -155,11 +152,42 @@ audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
 "Beber": ExtResource("19_5bcww"),
 "explosion": ExtResource("15_1plvy"),
+"guitar1": ExtResource("20_1cye3"),
+"guitar2": ExtResource("21_5bcww"),
+"guitar3": ExtResource("22_fw6st"),
 "hover": ExtResource("16_rqvth"),
 "metal": ExtResource("17_c6hgj"),
+"metalMusicFondo": ExtResource("23_iyibn"),
 "press": ExtResource("18_1cye3")
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GO!" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 1148.0
+offset_bottom = 647.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "GO!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CountDown" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 1151.0
+offset_bottom = 649.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 80
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1

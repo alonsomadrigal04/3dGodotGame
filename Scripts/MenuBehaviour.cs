@@ -184,9 +184,9 @@ public partial class MenuBehaviour : Control
     }
 
     private void StartGame(){
-
+        AudioManager.Instance.FadeOutMusic(1f);
         var tween = GetTree().CreateTween();
-        tween.TweenProperty(transitionSprite, "position", new Vector2(1152.0f, 648.0f), 0.4f)
+        tween.TweenProperty(transitionSprite, "position", new Vector2(1152.0f, 648.0f), 1f)
             .SetTrans(Tween.TransitionType.Cubic)
             .SetEase(Tween.EaseType.Out);
 
