@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=27 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -13,6 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://bvjdu2bskvyk6" path="res://3dGodotGame/Models/Heredadas/Newfly_dest.tscn" id="10_1plvy"]
 [ext_resource type="Shader" uid="uid://dlttr1pc4fsu2" path="res://SpeedLines.gdshader" id="11_rqvth"]
 [ext_resource type="Texture2D" uid="uid://c7rk3rp0d17x8" path="res://3dGodotGame/Sprites/447732.png" id="12_7lpgg"]
+[ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="14_5eaic"]
+[ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="15_1plvy"]
+[ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="16_rqvth"]
+[ext_resource type="AudioStream" uid="uid://b7h0p48pryjch" path="res://3dGodotGame/Sounds/MetalIntro.mp3" id="17_c6hgj"]
+[ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="18_1cye3"]
+[ext_resource type="AudioStream" uid="uid://bx12oo77uhot5" path="res://3dGodotGame/Sounds/straw-slurp-7066.mp3" id="19_5bcww"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -121,14 +127,39 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
 transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 3.46188, -14.0587)
 
 [node name="Transicion" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
+visible = false
 position = Vector2(568, 324)
 rotation = 0.541052
 scale = Vector2(2.6488, 2.4335)
 texture = ExtResource("12_7lpgg")
+
+[node name="Label" type="Label" parent="Transicion"]
+layout_mode = 0
+offset_left = 529.0
+offset_top = 259.0
+offset_right = 671.0
+offset_bottom = 381.0
+theme_override_font_sizes/font_size = 80
+text = "1"
+
+[node name="AudioControler" type="Node" parent="." node_paths=PackedStringArray("audioStreamMusic", "audioStreamSFX")]
+script = ExtResource("14_5eaic")
+audioStreamMusic = NodePath("AudioStreamMusic")
+audioStreamSFX = NodePath("AudioStreamSFX")
+Sounds = Dictionary[String, AudioStream]({
+"Beber": ExtResource("19_5bcww"),
+"explosion": ExtResource("15_1plvy"),
+"hover": ExtResource("16_rqvth"),
+"metal": ExtResource("17_c6hgj"),
+"press": ExtResource("18_1cye3")
+})
+
+[node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
+
+[node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]

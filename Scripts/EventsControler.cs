@@ -23,6 +23,7 @@ public partial class EventsControler : Node
         {
             Label countLabel = new Label();
             countLabel.Text = i.ToString();
+            countLabel.AddThemeFontSizeOverride("font_size", 80);
 
             countLabel.HorizontalAlignment = HorizontalAlignment.Center;
             countLabel.VerticalAlignment = VerticalAlignment.Center;
