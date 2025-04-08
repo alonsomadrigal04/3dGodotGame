@@ -28,6 +28,9 @@ public partial class MenuBehaviour : Control
     [ExportGroup("animation Settings")]
     [Export] private float animationDelay = 0.2f;
     [Export] private Vector2 offsetPosition = new Vector2(0, -100);
+    [Export] private Control transitionSprite;
+
+    [Export] private PackedScene gameScene;
 
 
     public override void _Process(double delta)
@@ -174,6 +177,31 @@ public partial class MenuBehaviour : Control
         else if(button == optionsButton && optionsDisplay){
             HideOptions();
         }
+
+        if(button == startButton){
+            StartGame();
+        }
+    }
+
+    private void StartGame(){
+
+        var tween = GetTree().CreateTween();
+        tween.TweenProperty(transitionSprite, "position", new Vector2(1152.0f, 648.0f), 0.4f)
+            .SetTrans(Tween.TransitionType.Cubic)
+            .SetEase(Tween.EaseType.Out);
+
+        tween.Finished += () => ChangeScene("Scenes/TuEscena.tscn"); // Llama cuando termina el tween
+
+    }
+
+    private void ChangeScene(string escena)
+    {
+        //Node level = GetTree().Root;
+        //GetTree().Root.RemoveChild(level);
+        //level.CallDeferred("free");
+
+        
+        GetTree().ChangeSceneToPacked(gameScene);
     }
 
     private void AnimateRelease(Button button)

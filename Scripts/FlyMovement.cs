@@ -23,6 +23,7 @@ public partial class FlyMovement : RigidBody3D
     [Export] private float maxSpeedArc = 11f;
     [Export] private float timeSpeedArc = 11f;
     private Timer arcTimer;
+    public bool canMove = false;
 
 
 
@@ -65,10 +66,12 @@ public partial class FlyMovement : RigidBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        RotatePlayer(delta);
-        AdjustSpeed(delta);
-        MovePlayer(delta);
-        LinesAnimation(delta);
+        if(canMove){
+            RotatePlayer(delta);
+            AdjustSpeed(delta);
+            MovePlayer(delta);
+            LinesAnimation(delta);
+        }
     }
 
     private void LinesAnimation(double delta){
