@@ -9,28 +9,26 @@ public partial class MenuBehaviour : Control
     private Button optionsButton;
     private Button exitButton;
 
-    [ExportGroup("booleanos")]
-    private bool optionsDisplay = false;
-
-    [ExportGroup("Others")]
+    [ExportGroup("Music")]
     [Export] Slider musicSlider;
     [Export] Slider sfxSlider;
+    private bool isSound = false;
+
+    [ExportGroup("CheckBoxes")]
     [Export] WorldEnvironment worldEnvironment;
     [Export] CheckBox metalMode;
+    [Export] CheckBox fogMode;
 
 
-    [ExportGroup("Others")]
-
-	[Export] private AnimationPlayer animationPlayer;
-    private bool isSound = false;
+    [ExportGroup("Options")]
+    private bool optionsDisplay = false;
     Vector2 optionsControlPos;
+    [Export] private Control optionsMenu;
     
     [ExportGroup("animation Settings")]
     [Export] private float animationDelay = 0.2f;
     [Export] private Vector2 offsetPosition = new Vector2(0, -100);
 
-    [ExportGroup("Others")]
-    [Export] private Control optionsMenu;
 
     public override void _Process(double delta)
     {
@@ -40,8 +38,21 @@ public partial class MenuBehaviour : Control
             AudioManager.Instance.PlayMusic("metal");
         }
 
+
+
+
         if(metalMode.ButtonPressed){
             worldEnvironment.Environment.FogLightColor = new Color("a42733"); // Rojo puro
+        }
+        else{
+            worldEnvironment.Environment.FogLightColor = new Color("b87784"); // Rojo puro
+        }
+
+        if(fogMode.ButtonPressed){
+            worldEnvironment.Environment.FogEnabled = true;
+        }
+        else{
+            worldEnvironment.Environment.FogEnabled = false;
         }
 
         AudioManager.Instance.audioStreamMusic.VolumeDb = AudioManager.Instance.linearToDb(musicSlider.Value);
