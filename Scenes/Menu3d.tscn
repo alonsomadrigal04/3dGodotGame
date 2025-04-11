@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://bw64nritfwmm8"]
+[gd_scene load_steps=40 format=4 uid="uid://bw64nritfwmm8"]
 
 [ext_resource type="Script" uid="uid://dnabmf7hd0oqu" path="res://3dGodotGame/Scripts/MenuBehaviour.cs" id="1_7dvn3"]
 [ext_resource type="PackedScene" uid="uid://b4x5kjpy2cw8l" path="res://3dGodotGame/Scenes/MainScenario.tscn" id="2_dyn11"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://b7h0p48pryjch" path="res://3dGodotGame/Sounds/MetalIntro.mp3" id="10_xu04i"]
 [ext_resource type="Texture2D" uid="uid://c7rk3rp0d17x8" path="res://3dGodotGame/Sprites/447732.png" id="12_k2ux0"]
 [ext_resource type="AudioStream" uid="uid://bx12oo77uhot5" path="res://3dGodotGame/Sounds/straw-slurp-7066.mp3" id="13_f338p"]
+[ext_resource type="AudioStream" uid="uid://itq1vhkdirug" path="res://3dGodotGame/Sounds/guitar/GoGoGo.wav" id="14_l5waa"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cxmgt"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -784,6 +785,7 @@ audioStreamMusic = NodePath("AudioStreamMusic")
 audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
 "Beber": ExtResource("13_f338p"),
+"Go": ExtResource("14_l5waa"),
 "explosion": ExtResource("7_xu04i"),
 "hover": ExtResource("3_xu04i"),
 "metal": ExtResource("10_xu04i"),

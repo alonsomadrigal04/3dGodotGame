@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=36 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -23,6 +23,11 @@
 [ext_resource type="AudioStream" uid="uid://cqwtqvfvwbo71" path="res://3dGodotGame/Sounds/guitar/stir-forced-rock-guitar-one-shot_D#_major.wav" id="21_5bcww"]
 [ext_resource type="AudioStream" uid="uid://bsgn5vc85b120" path="res://3dGodotGame/Sounds/guitar/chanting-shivering-rock-guitar-one-shot_D#_major.wav" id="22_fw6st"]
 [ext_resource type="AudioStream" uid="uid://nvtitbwvdx3v" path="res://3dGodotGame/Sounds/guitar/heavy-metal-trap-guitar-riff_150bpm_F_minor.wav" id="23_iyibn"]
+[ext_resource type="AudioStream" uid="uid://itq1vhkdirug" path="res://3dGodotGame/Sounds/guitar/GoGoGo.wav" id="24_5bcww"]
+[ext_resource type="Texture2D" uid="uid://s6ousatb45os" path="res://3dGodotGame/Sprites/tail.png" id="25_fw6st"]
+[ext_resource type="AudioStream" uid="uid://cxp5a2a6ksxar" path="res://3dGodotGame/Sounds/pickIt.wav" id="25_o4us8"]
+[ext_resource type="FontFile" uid="uid://dx3bbcidfjome" path="res://3dGodotGame/Sprites/minecraft/Minecraft.ttf" id="26_iyibn"]
+[ext_resource type="Texture2D" uid="uid://bcfke8vkc77e4" path="res://3dGodotGame/Sprites/relleno.png" id="27_o1qp2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -63,9 +68,10 @@ shader_parameter/animation_speed = 20.0
 
 [node name="AnotherScenario" type="Node3D"]
 
-[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "countLabel2", "countDown")]
+[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown")]
 script = ExtResource("1_gknf6")
 transitionSprite = NodePath("../Transicion")
+playerMovementSc = NodePath("../Fly")
 countLabel2 = NodePath("../Control/GO!")
 countDown = NodePath("../Control/CountDown")
 
@@ -81,7 +87,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 6.2583)
 script = ExtResource("1_7o0r7")
 _target = NodePath("../Fly")
 
-[node name="Fly" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines")]
+[node name="Fly" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines", "energyBar", "energyLabel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
 gravity_scale = 0.0
 script = ExtResource("2_7lpgg")
@@ -93,6 +99,8 @@ MinIntensityOfLines = 0.8
 MaxIntensityOfLines = 1.7
 maxSpeedArc = 15.0
 timeSpeedArc = 3.0
+energyBar = NodePath("../UI/Relleno")
+energyLabel = NodePath("../UI/Label")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Fly"]
 shape = SubResource("CapsuleShape3D_7awta")
@@ -118,7 +126,6 @@ transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 1.00136e
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="ColorRect" type="ColorRect" parent="Fly"]
-visible = false
 material = SubResource("ShaderMaterial_h00e6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -139,7 +146,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
-visible = false
 position = Vector2(568, 324)
 rotation = 0.541052
 scale = Vector2(2.6488, 2.4335)
@@ -152,18 +158,22 @@ audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
 "Beber": ExtResource("19_5bcww"),
 "explosion": ExtResource("15_1plvy"),
+"go": ExtResource("24_5bcww"),
 "guitar1": ExtResource("20_1cye3"),
 "guitar2": ExtResource("21_5bcww"),
 "guitar3": ExtResource("22_fw6st"),
 "hover": ExtResource("16_rqvth"),
 "metal": ExtResource("17_c6hgj"),
 "metalMusicFondo": ExtResource("23_iyibn"),
+"pick": ExtResource("25_o4us8"),
 "press": ExtResource("18_1cye3")
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -53.405
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -51.217
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -177,7 +187,6 @@ offset_right = 1148.0
 offset_bottom = 647.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-text = "GO!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -188,6 +197,36 @@ offset_bottom = 649.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 80
-text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Tail" type="Sprite2D" parent="UI"]
+position = Vector2(189.354, 35.75)
+scale = Vector2(0.449045, 0.449045)
+texture = ExtResource("25_fw6st")
+
+[node name="Label" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 376.0
+offset_top = 6.0
+offset_right = 477.0
+offset_bottom = 69.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("26_iyibn")
+theme_override_font_sizes/font_size = 26
+text = "< 100% >"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Relleno" type="Sprite2D" parent="UI"]
+position = Vector2(15, 36)
+scale = Vector2(0.445455, 0.445455)
+texture = ExtResource("27_o1qp2")
+centered = false
+offset = Vector2(0, -54.545)

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
+using Player;
 
 public partial class StrawBerry : Area3D
 {
@@ -8,7 +9,7 @@ public partial class StrawBerry : Area3D
 	[Export] public float FloatSpeed = 1f; // Velocidad del movimiento de arriba a abajo
 	[Export] public float FloatAmplitude = 0.5f; // Amplitud del movimiento vertical
 	[Export] public PackedScene ParticleEffect; // Efecto de partículas al desaparecer
-	[Export] public CollisionShape3D CollisionShape; // Referencia al CollisionShape para desactivarlo
+	[Export] public CollisionShape3D CollisionShape; // Referencia al CollisionShape para desactivarlos
 	
 	private Vector3 initialPosition;
 	private float timeElapsed = 0f;
@@ -79,8 +80,12 @@ public partial class StrawBerry : Area3D
 		Free();
 	}
 
-	private void _on_body_entered(Node body)
+	private void _on_body_entered(Node3D body)
 	{
-		Disappear();
+		if (body is FlyMovement flyMovement)
+		{
+			Disappear();
+			flyMovement.EatStraw();
+		}
 	}
 }

@@ -1,13 +1,16 @@
 using Godot;
+using Player;
 using System;
 
 public partial class EventsControler : Node
 {
     [ExportGroup("transitions")]
     [Export] private Control transitionSprite;
-    [Export] private PlayerMovement playerMovementSc;
+    [Export] private FlyMovement playerMovementSc;
     [Export] public Label countLabel2;
     [Export] public Label countDown;
+
+
 
 
 
@@ -27,11 +30,15 @@ public partial class EventsControler : Node
 
         for (int i = 3; i > 0; i--)
         {
+            playerMovementSc.CameraSchake(1);
             countDown.Text = i.ToString();
 
             var tween = GetTree().CreateTween();
 
-            countLabel2.Scale = new Vector2(0.8f, 0.8f);
+            countDown.Scale = new Vector2(0.8f, 0.8f);
+            var modulateColor = countDown.Modulate;
+            modulateColor.A = 1.0f;
+            countDown.Modulate = modulateColor;
             tween.TweenProperty(countDown, "scale", new Vector2(1.0f, 1.0f), 0.25f)
                 .SetTrans(Tween.TransitionType.Elastic)
                 .SetEase(Tween.EaseType.Out);
@@ -45,6 +52,9 @@ public partial class EventsControler : Node
             await ToSignal(tween, "finished");
 
             await ToSignal(GetTree().CreateTimer(0.1), "timeout");
+
+
+            GD.Print(countLabel2.Scale);
         }
         StartGame();
         GD.Print("Cuenta regresiva terminada!");
@@ -53,6 +63,8 @@ public partial class EventsControler : Node
     public async void StartGame()
     {
         var fontSizes = new int[] { 80, 120, 160 }; // Tamaños crecientes
+        AudioManager.Instance.PlaySound("go");
+        int shakeintensity = 2;
 
         foreach (var size in fontSizes)
         {
@@ -67,10 +79,12 @@ public partial class EventsControler : Node
                 .SetEase(Tween.EaseType.Out);
 
             // Espera entre cada "GO"
+            playerMovementSc.CameraSchake(shakeintensity++);
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
         }
 
         // Al terminar, oculta el label o lo limpia
+        playerMovementSc.canMove = true;
         countLabel2.Text = "";
     }
 
