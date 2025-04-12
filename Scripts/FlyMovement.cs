@@ -78,6 +78,10 @@ public partial class FlyMovement : RigidBody3D
         tween.Parallel().TweenProperty(energyBar, "scale", new Vector2(targetScaleX, currentScaleY), 0.3f)
             .SetTrans(Tween.TransitionType.Back)
             .SetEase(Tween.EaseType.Out);
+        
+        tween.Parallel().TweenProperty(energyBar, "rotation", Mathf.DegToRad(5.0f), 0.3f)
+            .SetTrans(Tween.TransitionType.Elastic)
+            .SetEase(Tween.EaseType.Out);
 
         tween.Parallel().TweenProperty(energyBar, "modulate", new Color(0f, 1f, 0f), 0.3f)
             .SetTrans(Tween.TransitionType.Sine)
@@ -88,7 +92,11 @@ public partial class FlyMovement : RigidBody3D
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.In);
 
-        energyLabel.Text = energy.ToString();
+        tween.Parallel().TweenProperty(energyBar, "rotation", 0, 0.3f)
+            .SetTrans(Tween.TransitionType.Elastic)
+            .SetEase(Tween.EaseType.Out);
+
+        energyLabel.Text = "< " + energy.ToString() + "% >";
         AudioManager.Instance.PlaySound("pick");
         //CameraSchake(2);
     }
