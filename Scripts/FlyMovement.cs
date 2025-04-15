@@ -30,6 +30,7 @@ public partial class FlyMovement : RigidBody3D
     public int energy = 100;
     private int maxEnergy = 100; // Define the maximum energy
     private float originalBarScaleX;
+    private Vector2 originalLabelScale;
     private float energyTickCooldown = 0.3f; // cada cuántos segundos se aplica daño
     private float energyTickTimer = 0f;
 
@@ -46,6 +47,7 @@ public partial class FlyMovement : RigidBody3D
         Input.MouseMode = Input.MouseModeEnum.Captured;
         currentSpeed = maxSpeed;
         originalBarScaleX = energyBar.Scale.X;
+        originalLabelScale = energyLabel.Scale;
 
 
         ArcTimerSetUp();
@@ -96,10 +98,50 @@ public partial class FlyMovement : RigidBody3D
             .SetTrans(Tween.TransitionType.Elastic)
             .SetEase(Tween.EaseType.Out);
 
+        ////////////////////////////////////
+        
+        AnimateLabel(energyLabel);
+
         energyLabel.Text = "< " + energy.ToString() + "% >";
         AudioManager.Instance.PlaySound("pick");
         //CameraSchake(2);
     }
+
+    private void AnimateLabel(Label label){
+
+        var tween = GetTree().CreateTween();
+
+
+        float targetScaleX = energyLabel.Scale.X * 1.5f;
+        float currentScaleY = energyLabel.Scale.Y * 1.5f;
+
+        tween.Parallel().TweenProperty(label, "scale", new Vector2(targetScaleX, currentScaleY), 0.3f)
+            .SetTrans(Tween.TransitionType.Back)
+            .SetEase(Tween.EaseType.Out);
+        
+        tween.Parallel().TweenProperty(label, "rotation", Mathf.DegToRad(5.0f), 0.3f)
+            .SetTrans(Tween.TransitionType.Elastic)
+            .SetEase(Tween.EaseType.Out);
+
+        tween.Parallel().TweenProperty(label, "modulate", new Color(0f, 1f, 0f), 0.3f)
+            .SetTrans(Tween.TransitionType.Sine)
+            .SetEase(Tween.EaseType.Out);
+
+        tween.TweenProperty(label, "modulate", Colors.White, 0.3f)
+            .SetDelay(0.3f)
+            .SetTrans(Tween.TransitionType.Sine)
+            .SetEase(Tween.EaseType.In);
+
+        tween.Parallel().TweenProperty(label, "rotation", 0, 0.3f)
+            .SetTrans(Tween.TransitionType.Elastic)
+            .SetEase(Tween.EaseType.Out);
+
+            tween.Parallel().TweenProperty(label, "scale", new Vector2(targetScaleX / 1.5f, currentScaleY / 1.5f), 0.3f)
+            .SetTrans(Tween.TransitionType.Back)
+            .SetEase(Tween.EaseType.Out);
+    }
+
+    
 
     public override void _Input(InputEvent @event)
     {
@@ -152,6 +194,8 @@ public partial class FlyMovement : RigidBody3D
             ChangeEnergy(delta);
         }
     }
+
+
 
     private void LinesAnimation(double delta){
         if (ShaderLines.Material is ShaderMaterial shaderMat)

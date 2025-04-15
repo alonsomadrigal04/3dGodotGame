@@ -10,18 +10,21 @@ public partial class EventsControler : Node
     [Export] public Label countLabel2;
     [Export] public Label countDown;
 
+    [ExportGroup("Pause")]
+    [Export] private Control pauseMenu;
+    private bool pauseDisplayed;
 
 
 
 
     public override async void _Ready()
-{
-    AnimateMoveToPosition(transitionSprite, new Vector2(1769.0f, 1003.0f));
-    
-    await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
+    {
+        AnimateMoveToPosition(transitionSprite, new Vector2(1769.0f, 1003.0f));
+        
+        await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
 
-    BeginCountDown();
-}
+        BeginCountDown();
+    }
 
     private async void BeginCountDown()
     {
@@ -86,6 +89,48 @@ public partial class EventsControler : Node
         // Al terminar, oculta el label o lo limpia
         playerMovementSc.canMove = true;
         countLabel2.Text = "";
+    }
+
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape && playerMovementSc.canMove && !pauseDisplayed)
+        {
+            PauseDisplay();
+        }
+        else if(pauseDisplayed){
+            HidePause();
+        }
+    }
+
+    private void HidePause(){
+        pauseDisplayed = false;
+    }
+
+    private void PauseDisplay()
+    {
+        pauseDisplayed = true;
+        pauseMenu.Visible = true;
+        pauseMenu.Modulate = new Color(1, 1, 1, 0);
+        pauseMenu.Scale = new Vector2(1.2f, 1.2f);
+
+        Vector2 originalPosition = pauseMenu.Position;
+
+        var tween = GetTree().CreateTween();
+
+        // Fade-in y scale
+        tween.Parallel().TweenProperty(pauseMenu, "modulate:a", 1.0f, 0.4f)
+            .SetEase(Tween.EaseType.Out)
+            .SetTrans(Tween.TransitionType.Sine);
+
+        tween.Parallel().TweenProperty(pauseMenu, "scale", new Vector2(1.0f, 1.0f), 0.4f)
+            .SetEase(Tween.EaseType.Out)
+            .SetTrans(Tween.TransitionType.Elastic);
+
+
+
+        AudioManager.Instance.PlaySound("pausa");
+        //GetTree().Paused = true;
     }
 
 

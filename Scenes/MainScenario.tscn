@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=41 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -26,8 +26,11 @@
 [ext_resource type="AudioStream" uid="uid://itq1vhkdirug" path="res://3dGodotGame/Sounds/guitar/GoGoGo.wav" id="24_5bcww"]
 [ext_resource type="Texture2D" uid="uid://s6ousatb45os" path="res://3dGodotGame/Sprites/tail.png" id="25_fw6st"]
 [ext_resource type="AudioStream" uid="uid://cxp5a2a6ksxar" path="res://3dGodotGame/Sounds/pickIt.wav" id="25_o4us8"]
+[ext_resource type="AudioStream" uid="uid://ctgnarpgyl1v0" path="res://3dGodotGame/Sounds/guitar/Pausa.wav" id="26_6vx1e"]
 [ext_resource type="FontFile" uid="uid://dx3bbcidfjome" path="res://3dGodotGame/Sprites/minecraft/Minecraft.ttf" id="26_iyibn"]
 [ext_resource type="Texture2D" uid="uid://bcfke8vkc77e4" path="res://3dGodotGame/Sprites/relleno.png" id="27_o1qp2"]
+[ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="29_t7aau"]
+[ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="30_o07ff"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -66,14 +69,31 @@ shader_parameter/mask_size = 0.0
 shader_parameter/mask_edge = 1.0
 shader_parameter/animation_speed = 20.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o07ff"]
+shader = ExtResource("29_t7aau")
+shader_parameter/Line_Smoothness = 0.045
+shader_parameter/Line_Width = 0.09
+shader_parameter/Brightness = 3.0
+shader_parameter/Rotation_deg = 30.0
+shader_parameter/Distortion = 1.8
+shader_parameter/Speed = 0.7
+shader_parameter/Position = 0.0
+shader_parameter/Position_Min = 0.25
+shader_parameter/Position_Max = 0.5
+shader_parameter/Alpha = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_6vx1e"]
+
 [node name="AnotherScenario" type="Node3D"]
 
-[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown")]
+[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown", "pauseMenu")]
+process_mode = 3
 script = ExtResource("1_gknf6")
 transitionSprite = NodePath("../Transicion")
 playerMovementSc = NodePath("../Fly")
-countLabel2 = NodePath("../Control/GO!")
-countDown = NodePath("../Control/CountDown")
+countLabel2 = NodePath("../CountDown/GO!")
+countDown = NodePath("../CountDown/CountDown")
+pauseMenu = NodePath("../PauseMenu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_2rvpb")
@@ -165,6 +185,7 @@ Sounds = Dictionary[String, AudioStream]({
 "hover": ExtResource("16_rqvth"),
 "metal": ExtResource("17_c6hgj"),
 "metalMusicFondo": ExtResource("23_iyibn"),
+"pausa": ExtResource("26_6vx1e"),
 "pick": ExtResource("25_o4us8"),
 "press": ExtResource("18_1cye3")
 })
@@ -173,13 +194,13 @@ Sounds = Dictionary[String, AudioStream]({
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
 
-[node name="Control" type="Control" parent="."]
+[node name="CountDown" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="GO!" type="Label" parent="Control"]
+[node name="GO!" type="Label" parent="CountDown"]
 layout_mode = 0
 offset_right = 1148.0
 offset_bottom = 647.0
@@ -188,7 +209,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CountDown" type="Label" parent="Control"]
+[node name="CountDown" type="Label" parent="CountDown"]
 layout_mode = 0
 offset_right = 1151.0
 offset_bottom = 649.0
@@ -229,3 +250,95 @@ scale = Vector2(0.445455, 0.445455)
 texture = ExtResource("27_o1qp2")
 centered = false
 offset = Vector2(0, -54.545)
+
+[node name="PauseMenu" type="Control" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 4.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(583.36, 319.185)
+
+[node name="Sprite2D" type="Sprite2D" parent="PauseMenu"]
+modulate = Color(1, 1, 1, 0.592157)
+position = Vector2(583, 317.5)
+scale = Vector2(2.52344, 1.47852)
+texture = ExtResource("30_o07ff")
+
+[node name="StartButton" type="Button" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.62279
+anchor_top = 0.138494
+anchor_right = -1.44579
+anchor_bottom = 0.217494
+offset_left = 2354.95
+offset_top = 108.84
+offset_right = 2355.04
+offset_bottom = 108.648
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="PauseMenu/StartButton"]
+material = SubResource("ShaderMaterial_o07ff")
+layout_mode = 0
+offset_right = 204.0
+offset_bottom = 50.995
+texture = SubResource("CanvasTexture_6vx1e")
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseMenu/StartButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 15.0
+offset_right = -33.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[wave amp=50 freq=2]START SWIMING[/wave]"
+scroll_active = false
+
+[node name="OptionsButton" type="Button" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0352482
+anchor_top = 0.514826
+anchor_right = 0.212248
+anchor_bottom = 0.593826
+offset_left = 438.253
+offset_top = -72.1516
+offset_right = 438.349
+offset_bottom = -72.3438
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+text = "OPTIONS"
+metadata/_edit_use_anchors_ = true
+
+[node name="ExitButton" type="Button" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.041
+anchor_top = 0.665
+anchor_right = 0.218
+anchor_bottom = 0.744
+offset_left = 431.604
+offset_top = -101.915
+offset_right = 431.7
+offset_bottom = -102.107
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+text = "EXIT"

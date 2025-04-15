@@ -426,7 +426,6 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
-metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="Menu/StartButton"]
 material = SubResource("ShaderMaterial_og5f5")
