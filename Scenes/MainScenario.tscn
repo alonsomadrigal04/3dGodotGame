@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=44 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -30,7 +30,10 @@
 [ext_resource type="FontFile" uid="uid://dx3bbcidfjome" path="res://3dGodotGame/Sprites/minecraft/Minecraft.ttf" id="26_iyibn"]
 [ext_resource type="Texture2D" uid="uid://bcfke8vkc77e4" path="res://3dGodotGame/Sprites/relleno.png" id="27_o1qp2"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="29_t7aau"]
+[ext_resource type="Script" uid="uid://cdfp2ko0ygvg5" path="res://3dGodotGame/Scripts/Pause_menu.cs" id="30_mf7sh"]
 [ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="30_o07ff"]
+[ext_resource type="Script" uid="uid://cc5s5ahltctwg" path="res://3dGodotGame/EnemiesGenerator.cs" id="33_7kg48"]
+[ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -86,14 +89,13 @@ shader_parameter/Alpha = 1.0
 
 [node name="AnotherScenario" type="Node3D"]
 
-[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown", "pauseMenu")]
+[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown")]
 process_mode = 3
 script = ExtResource("1_gknf6")
 transitionSprite = NodePath("../Transicion")
-playerMovementSc = NodePath("../Fly")
+playerMovementSc = NodePath("../player")
 countLabel2 = NodePath("../CountDown/GO!")
 countDown = NodePath("../CountDown/CountDown")
-pauseMenu = NodePath("../PauseMenu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_2rvpb")
@@ -105,9 +107,9 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("_target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 6.2583)
 script = ExtResource("1_7o0r7")
-_target = NodePath("../Fly")
+_target = NodePath("../player")
 
-[node name="Fly" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines", "energyBar", "energyLabel")]
+[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines", "energyBar", "energyLabel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
 gravity_scale = 0.0
 script = ExtResource("2_7lpgg")
@@ -122,10 +124,10 @@ timeSpeedArc = 3.0
 energyBar = NodePath("../UI/Relleno")
 energyLabel = NodePath("../UI/Label")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Fly"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
 shape = SubResource("CapsuleShape3D_7awta")
 
-[node name="StrawGenerator" parent="Fly" instance=ExtResource("3_gknf6")]
+[node name="StrawGenerator" parent="player" instance=ExtResource("3_gknf6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.94403)
 script = ExtResource("4_qoe48")
 SpawnRadius = 50.0
@@ -133,19 +135,19 @@ NegativeZone = 10.0
 FruitScene = ExtResource("5_44cn4")
 SpawnInterval = 0.115
 
-[node name="ArcGenerator" parent="Fly" instance=ExtResource("6_ef8kw")]
+[node name="ArcGenerator" parent="player" instance=ExtResource("6_ef8kw")]
 script = ExtResource("7_2k2wy")
 ArcScene = ExtResource("8_7mway")
 SpawnRadius = 80.0
 SpawnInterval = 0.1
 
-[node name="Bubbles" parent="Fly" instance=ExtResource("9_5eaic")]
+[node name="Bubbles" parent="player" instance=ExtResource("9_5eaic")]
 transform = Transform3D(1, 8.46356e-37, 0, -8.46356e-37, 1, 0, 0, 0, 1, 1.00136e-05, 0, -8.01477)
 
-[node name="fly dest2" parent="Fly" instance=ExtResource("10_1plvy")]
+[node name="fly dest2" parent="player" instance=ExtResource("10_1plvy")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
-[node name="ColorRect" type="ColorRect" parent="Fly"]
+[node name="ColorRect" type="ColorRect" parent="player"]
 material = SubResource("ShaderMaterial_h00e6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -153,11 +155,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="EnemiesSpawner" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36901, -0.17201, -15.3408)
+script = ExtResource("33_7kg48")
+enemyScene = ExtResource("34_68hwm")
+generationRadius = 30.0
+safeRadius = 5.0
+enemySpawnInterval = 1.0
+
 [node name="Arcs" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
 
 [node name="Toroide" parent="Arcs" instance=ExtResource("8_7mway")]
-transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 3.46188, -14.0587)
+transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 13.5757, -14.0587)
 
 [node name="Transicion" type="Control" parent="."]
 layout_mode = 3
@@ -191,8 +201,10 @@ Sounds = Dictionary[String, AudioStream]({
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -80.0
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -80.0
 
 [node name="CountDown" type="Control" parent="."]
 layout_mode = 3
@@ -251,8 +263,10 @@ texture = ExtResource("27_o1qp2")
 centered = false
 offset = Vector2(0, -54.545)
 
-[node name="PauseMenu" type="Control" parent="."]
+[node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc")]
 process_mode = 3
+process_priority = 5
+process_physics_priority = 1
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -263,6 +277,9 @@ offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(583.36, 319.185)
+script = ExtResource("30_mf7sh")
+menuPanel = NodePath(".")
+playerMovementSc = NodePath("../player")
 
 [node name="Sprite2D" type="Sprite2D" parent="PauseMenu"]
 modulate = Color(1, 1, 1, 0.592157)
