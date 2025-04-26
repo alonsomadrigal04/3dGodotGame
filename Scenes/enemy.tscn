@@ -1,16 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://iatq3n38h062"]
+[gd_scene load_steps=6 format=3 uid="uid://iatq3n38h062"]
 
 [ext_resource type="Script" uid="uid://kid8tg2xnj0" path="res://3dGodotGame/Scripts/enemiesMovement.cs" id="1_yfslq"]
 [ext_resource type="PackedScene" uid="uid://b8v7eos33v558" path="res://3dGodotGame/Models/enemies.fbx" id="2_1jgfu"]
 [ext_resource type="Script" uid="uid://lpt4f862jxxs" path="res://3dGodotGame/Scripts/DetectionGizmo.cs" id="3_f2eph"]
+[ext_resource type="PackedScene" uid="uid://dlgulx7i1a7nl" path="res://3dGodotGame/Scenes/exclamation.tscn" id="4_1jgfu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xypuf"]
 
-[node name="Enemy" type="RigidBody3D"]
+[node name="Enemy" type="RigidBody3D" node_paths=PackedStringArray("exclamation")]
 gravity_scale = 0.0
 script = ExtResource("1_yfslq")
 moveSpeed = 5.0
 playerPath = NodePath("../../Fly")
+exclamation = NodePath("exclamation")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0820959, 0)
@@ -19,7 +21,12 @@ shape = SubResource("CapsuleShape3D_xypuf")
 [node name="enemies" parent="." instance=ExtResource("2_1jgfu")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="Gizmo" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0382028, -0.0205364)
 script = ExtResource("3_f2eph")
-GizmoColor = Color(0, 0.591393, 0.755779, 0.552941)
+GizmoColor = Color(0, 0.592157, 0.756863, 0.211765)
+
+[node name="exclamation" parent="." instance=ExtResource("4_1jgfu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6558, 0)
+emitting = false
+one_shot = true

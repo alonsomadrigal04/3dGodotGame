@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=45 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -30,6 +30,7 @@
 [ext_resource type="AudioStream" uid="uid://ctgnarpgyl1v0" path="res://3dGodotGame/Sounds/guitar/Pausa.wav" id="26_6vx1e"]
 [ext_resource type="FontFile" uid="uid://dx3bbcidfjome" path="res://3dGodotGame/Sprites/minecraft/Minecraft.ttf" id="26_iyibn"]
 [ext_resource type="Texture2D" uid="uid://bcfke8vkc77e4" path="res://3dGodotGame/Sprites/relleno.png" id="27_o1qp2"]
+[ext_resource type="AudioStream" uid="uid://djd2fsoh5fq0r" path="res://3dGodotGame/Sounds/Sorprendido.mp3" id="29_68hwm"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="29_t7aau"]
 [ext_resource type="Script" uid="uid://cdfp2ko0ygvg5" path="res://3dGodotGame/Scripts/Pause_menu.cs" id="30_mf7sh"]
 [ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="30_o07ff"]
@@ -183,6 +184,7 @@ audioStreamMusic = NodePath("AudioStreamMusic")
 audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
 "Beber": ExtResource("19_5bcww"),
+"exclamation": ExtResource("29_68hwm"),
 "explosion": ExtResource("15_1plvy"),
 "go": ExtResource("24_5bcww"),
 "guitar1": ExtResource("20_1cye3"),
@@ -197,10 +199,8 @@ Sounds = Dictionary[String, AudioStream]({
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
-volume_db = -80.0
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
-volume_db = -80.0
 
 [node name="CountDown" type="Control" parent="."]
 layout_mode = 3

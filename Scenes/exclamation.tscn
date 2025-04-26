@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://dlgulx7i1a7nl"]
+
+[ext_resource type="Texture2D" uid="uid://doybd554f81sy" path="res://3dGodotGame/Sprites/exclamation.png" id="1_2bcnv"]
+
+[sub_resource type="Curve" id="Curve_2bcnv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.232394, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_74yjp"]
+curve = SubResource("Curve_2bcnv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2ekl4"]
+gravity = Vector3(0, 3, 0)
+linear_accel_min = 1.24
+linear_accel_max = 8.08
+scale_curve = SubResource("CurveTexture_74yjp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74yjp"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("1_2bcnv")
+
+[sub_resource type="QuadMesh" id="QuadMesh_2bcnv"]
+material = SubResource("StandardMaterial3D_74yjp")
+size = Vector2(0.82, 2)
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+amount = 1
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_2ekl4")
+draw_pass_1 = SubResource("QuadMesh_2bcnv")

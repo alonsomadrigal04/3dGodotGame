@@ -1,6 +1,6 @@
 using Godot;
 
-[Tool] // Esto permite que se ejecute también en el editor
+[Tool] 
 public partial class DetectionGizmo : Node3D
 {
     [Export] public float Radius = 5.0f;

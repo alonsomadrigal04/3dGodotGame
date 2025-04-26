@@ -7,6 +7,7 @@ public partial class enemiesMovement : RigidBody3D
     [Export] public float moveSpeed = 3.0f;
     [Export] public float detectionRadius = 5.0f;
     [Export] public NodePath playerPath;
+    [Export] private GpuParticles3D exclamation;
     
     private Node3D player;
     private Vector3 currentDirection;
@@ -30,10 +31,11 @@ public partial class enemiesMovement : RigidBody3D
     {
         float distanceToPlayer = GlobalPosition.DistanceTo(player.GlobalPosition);
 
-        // Cambia el comportamiento según la distancia
         if (distanceToPlayer <= detectionRadius)
         {
             isChasing = true;
+            exclamation.Emitting = true;
+            AudioManager.Instance.PlaySound("exclamation");
         }
         else
         {
@@ -59,7 +61,6 @@ public partial class enemiesMovement : RigidBody3D
             PickNewDirection();
         }
 
-        // Interpolamos gradualmente entre la dirección actual y la nueva dirección
         currentDirection = currentDirection.Lerp(targetDirection, directionChangeSpeed * delta);
 
         Vector3 velocity = currentDirection * moveSpeed;
@@ -74,7 +75,7 @@ public partial class enemiesMovement : RigidBody3D
         float angle = (float)(random.NextDouble() * Math.PI * 2);
         targetDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).Normalized();
 
-        directionDuration = (float)(random.NextDouble() * 3 + 2); // 2 a 5 segundos
+        directionDuration = (float)(random.NextDouble() * 3 + 2);
         directionTimer = 0f;
     }
 
@@ -82,7 +83,7 @@ public partial class enemiesMovement : RigidBody3D
     private void FollowPlayer(float delta)
     {
         Vector3 toPlayer = (player.GlobalPosition - GlobalPosition).Normalized();
-        LinearVelocity = toPlayer * moveSpeed * 1.2f; // un poco más rápido al seguir
+        LinearVelocity = toPlayer * moveSpeed * 1.2f; // Hardcode momento yeah
 
         LookAt(player.GlobalPosition, Vector3.Up);
     }
