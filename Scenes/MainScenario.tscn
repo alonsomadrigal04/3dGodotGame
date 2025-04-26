@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bvjdu2bskvyk6" path="res://3dGodotGame/Models/Heredadas/Newfly_dest.tscn" id="10_1plvy"]
 [ext_resource type="Shader" uid="uid://dlttr1pc4fsu2" path="res://SpeedLines.gdshader" id="11_rqvth"]
 [ext_resource type="Texture2D" uid="uid://c7rk3rp0d17x8" path="res://3dGodotGame/Sprites/447732.png" id="12_7lpgg"]
+[ext_resource type="Script" uid="uid://cc5s5ahltctwg" path="res://3dGodotGame/Scripts/EnemiesGenerator.cs" id="13_7kg48"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="14_5eaic"]
 [ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="15_1plvy"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="16_rqvth"]
@@ -32,7 +33,6 @@
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="29_t7aau"]
 [ext_resource type="Script" uid="uid://cdfp2ko0ygvg5" path="res://3dGodotGame/Scripts/Pause_menu.cs" id="30_mf7sh"]
 [ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="30_o07ff"]
-[ext_resource type="Script" uid="uid://cc5s5ahltctwg" path="res://3dGodotGame/EnemiesGenerator.cs" id="33_7kg48"]
 [ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
@@ -155,13 +155,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="EnemiesSpawner" type="Node3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.36901, -0.17201, -15.3408)
-script = ExtResource("33_7kg48")
+[node name="EnemiSpawner" type="Node3D" parent="player"]
+script = ExtResource("13_7kg48")
 enemyScene = ExtResource("34_68hwm")
-generationRadius = 30.0
-safeRadius = 5.0
-enemySpawnInterval = 1.0
 
 [node name="Arcs" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
@@ -359,3 +355,6 @@ grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
 text = "EXIT"
+
+[node name="Enemy" parent="." instance=ExtResource("34_68hwm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62383, 5.51619, -9.34045)

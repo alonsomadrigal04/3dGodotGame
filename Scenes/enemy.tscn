@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://kid8tg2xnj0" path="res://3dGodotGame/Scripts/enemiesMovement.cs" id="1_yfslq"]
 [ext_resource type="PackedScene" uid="uid://b8v7eos33v558" path="res://3dGodotGame/Models/enemies.fbx" id="2_1jgfu"]
-[ext_resource type="Script" uid="uid://lpt4f862jxxs" path="res://3dGodotGame/Scenes/DetectionGizmo.cs" id="3_f2eph"]
+[ext_resource type="Script" uid="uid://lpt4f862jxxs" path="res://3dGodotGame/Scripts/DetectionGizmo.cs" id="3_f2eph"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xypuf"]
 

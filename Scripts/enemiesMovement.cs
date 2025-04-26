@@ -21,23 +21,24 @@ public partial class enemiesMovement : RigidBody3D
 
     public override void _Ready()
     {
-        //player = GetNode<RigidBody3D>("player");
+        player = GetNode<RigidBody3D>("/root/AnotherScenario/player");
+
         PickNewDirection();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        // float distanceToPlayer = GlobalPosition.DistanceTo(player.GlobalPosition);
+        float distanceToPlayer = GlobalPosition.DistanceTo(player.GlobalPosition);
 
-        // // Cambia el comportamiento según la distancia
-        // if (distanceToPlayer <= detectionRadius)
-        // {
-        //     isChasing = true;
-        // }
-        // else
-        // {
-        //     isChasing = false;
-        // }
+        // Cambia el comportamiento según la distancia
+        if (distanceToPlayer <= detectionRadius)
+        {
+            isChasing = true;
+        }
+        else
+        {
+            isChasing = false;
+        }
 
         if (isChasing)
         {

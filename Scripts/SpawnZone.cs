@@ -67,16 +67,21 @@ public partial class SpawnZone : Area3D
 
     private void RemoveFruit(Node3D fruit)
     {
-        if (fruit == null)
+        if (fruit == null || !IsInstanceValid(fruit))
         {
-            GD.PrintErr("SZ: NO FRUIT ADDED");
+            GD.PrintErr("SZ: FRUIT ALREADY REMOVED");
             return;
         }
 
         Tween tween = CreateTween();
         tween.TweenProperty(fruit, "scale", Vector3.One * 0.01f, 0.5f).SetTrans(Tween.TransitionType.Quad);
+        tween.Finished += () => 
+        {
+            if (IsInstanceValid(fruit))
+                fruit.QueueFree();
+        };
         tween.Play();
-        tween.Finished += () => fruit.QueueFree();
     }
+
 
 }

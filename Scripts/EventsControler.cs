@@ -16,7 +16,8 @@ public partial class EventsControler : Node
         
         await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
 
-        BeginCountDown();
+        //BeginCountDown();
+        StartGame();
     }
 
     private async void BeginCountDown()
