@@ -1,8 +1,9 @@
-[gd_scene load_steps=49 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=52 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
 [ext_resource type="Script" uid="uid://c8bhcpq0vv6ay" path="res://3dGodotGame/Scripts/FlyMovement.cs" id="2_7lpgg"]
+[ext_resource type="PackedScene" uid="uid://d0ocfkcm6q5u6" path="res://3dGodotGame/Scenes/deathScene.tscn" id="2_lmt0w"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_gknf6"]
 [ext_resource type="Script" uid="uid://cbmf7n1n3gylq" path="res://3dGodotGame/Scripts/SpawnZone.cs" id="4_qoe48"]
 [ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="5_44cn4"]
@@ -37,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="30_o07ff"]
 [ext_resource type="AudioStream" uid="uid://bjtghum6m6crp" path="res://3dGodotGame/Sounds/DoomMusic.mp3" id="30_xypuf"]
 [ext_resource type="AudioStream" uid="uid://cgwm0vexrxd6u" path="res://3dGodotGame/Sounds/hit.wav" id="32_rqt3y"]
+[ext_resource type="AudioStream" uid="uid://dqkg40nvdsdof" path="res://3dGodotGame/Sounds/mosca_ready.wav" id="33_1p7w8"]
 [ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
@@ -56,7 +58,12 @@ fog_enabled = true
 fog_light_color = Color(0.722217, 0.466271, 0.516637, 1)
 fog_density = 0.0438
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_rqt3y"]
+radius = 1.01601
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7awta"]
+radius = 0.524517
+height = 1.80249
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_6q0ho"]
 noise_type = 5
@@ -100,13 +107,15 @@ shader_parameter/Alpha = 1.0
 
 [node name="AnotherScenario" type="Node3D"]
 
-[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown")]
+[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown", "deathScreen")]
 process_mode = 3
 script = ExtResource("1_gknf6")
 transitionSprite = NodePath("../Transicion")
 playerMovementSc = NodePath("../player")
 countLabel2 = NodePath("../CountDown/GO!")
 countDown = NodePath("../CountDown/CountDown")
+deathScene = ExtResource("2_lmt0w")
+deathScreen = NodePath("../UI/Dead")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_2rvpb")
@@ -120,13 +129,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 6.2583)
 script = ExtResource("1_7o0r7")
 _target = NodePath("../player")
 
-[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines", "saturation", "energyBar", "energyLabel", "energyBarMarc")]
+[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("speedText", "ShaderLines", "saturation", "energyBar", "energyLabel", "energyBarMarc", "detectionArea")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
+collision_mask = 2
 gravity_scale = 0.0
 script = ExtResource("2_7lpgg")
 minSpeed = 10.0
 maxSpeed = 9.0
 rotationSpeed = 4.0
+speedText = NodePath("../UI/speedText")
 ShaderLines = NodePath("ColorRect")
 MinIntensityOfLines = 0.8
 MaxIntensityOfLines = 1.7
@@ -136,6 +147,12 @@ timeSpeedArc = 3.0
 energyBar = NodePath("../UI/Relleno")
 energyLabel = NodePath("../UI/Label")
 energyBarMarc = NodePath("../UI/Tail")
+detectionArea = NodePath("Area3D")
+
+[node name="Area3D" type="Area3D" parent="player"]
+
+[node name="AreaEnemigos" type="CollisionShape3D" parent="player/Area3D"]
+shape = SubResource("SphereShape3D_rqt3y")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
 shape = SubResource("CapsuleShape3D_7awta")
@@ -173,7 +190,6 @@ script = ExtResource("13_7kg48")
 enemyScene = ExtResource("34_68hwm")
 
 [node name="Desaturado" type="ColorRect" parent="player"]
-visible = false
 material = SubResource("ShaderMaterial_rqt3y")
 offset_right = 1158.0
 offset_bottom = 658.0
@@ -185,7 +201,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
 transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 13.5757, -14.0587)
 
 [node name="Transicion" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -214,16 +229,15 @@ Sounds = Dictionary[String, AudioStream]({
 "hover": ExtResource("16_rqvth"),
 "metal": ExtResource("17_c6hgj"),
 "metalMusicFondo": ExtResource("23_iyibn"),
+"mosca_ready": ExtResource("33_1p7w8"),
 "pausa": ExtResource("26_6vx1e"),
 "pick": ExtResource("25_o4us8"),
 "press": ExtResource("18_1cye3")
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
-volume_db = -80.0
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
-volume_db = -80.0
 
 [node name="CountDown" type="Control" parent="."]
 layout_mode = 3
@@ -281,6 +295,27 @@ scale = Vector2(0.445455, 0.445455)
 texture = ExtResource("27_o1qp2")
 centered = false
 offset = Vector2(0, -54.545)
+
+[node name="speedText" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 577.0
+offset_right = 1142.0
+offset_bottom = 640.0
+pivot_offset = Vector2(50, 30)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("26_iyibn")
+theme_override_font_sizes/font_size = 26
+text = "0 m/s"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Dead" type="Sprite2D" parent="UI"]
+visible = false
+modulate = Color(0.244776, 0.244776, 0.244776, 1)
+position = Vector2(559, 320)
+scale = Vector2(1.91406, 1.02507)
+texture = ExtResource("12_7lpgg")
 
 [node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc")]
 process_mode = 3

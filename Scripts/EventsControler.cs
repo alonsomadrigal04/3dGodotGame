@@ -9,6 +9,9 @@ public partial class EventsControler : Node
     [Export] private FlyMovement playerMovementSc;
     [Export] public Label countLabel2;
     [Export] public Label countDown;
+    [Export] public PackedScene deathScene;
+    private bool isDeadHandled = false; // Para evitar que se dispare múltiples veces
+    [Export] public Sprite2D deathScreen;
 
     public override async void _Ready()
     {
@@ -16,8 +19,38 @@ public partial class EventsControler : Node
         
         await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
 
-        //BeginCountDown();
-        StartGame();
+        BeginCountDown();
+        //StartGame();
+    }
+
+    public override void _Process(double delta)
+    {
+        checkifDead(delta);
+    }
+
+
+    
+
+    private void checkifDead(double delta)
+    {
+        if (playerMovementSc.energy <= 0 && !isDeadHandled)
+        {
+            isDeadHandled = true;
+
+            deathScreen.Visible = true;
+            deathScreen.Modulate = new Color(0, 0, 0, 0); // Transparente al inicio
+
+            Tween tween = GetTree().CreateTween();
+            tween.SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic);
+
+            tween.Parallel().TweenProperty(deathScreen, "modulate", new Color(0, 0, 0, 1), 1.0f); // Fade in
+            tween.Parallel().TweenProperty(deathScreen, "scale", deathScreen.Scale * 2f, 1.0f); // Escalar
+
+            tween.TweenCallback(Callable.From(() =>
+            {
+                GetTree().ChangeSceneToPacked(deathScene);
+            }));
+        }
     }
 
     private async void BeginCountDown()

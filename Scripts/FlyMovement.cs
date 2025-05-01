@@ -8,6 +8,9 @@ public partial class FlyMovement : RigidBody3D
     [Export] private float minSpeed = 3f;
     [Export] private float maxSpeed = 8f;
     [Export] private float rotationSpeed = 2f;
+    [Export] private Label speedText;
+    private bool feedbackTriggered = false; // Asegura que solo se active una vez
+
 
     [ExportGroup("Control")]
     [Export] private float speedLerpFactor = 5f;
@@ -29,6 +32,8 @@ public partial class FlyMovement : RigidBody3D
     [Export] private Sprite2D energyBar;
     [Export] private Label energyLabel;
     [Export] private Sprite2D energyBarMarc;
+
+    [Export] private Area3D detectionArea;
     private float barShakeTime = 0f;
     public int energy = 100;
     private int maxEnergy = 100; // Define the maximum energy
@@ -36,11 +41,6 @@ public partial class FlyMovement : RigidBody3D
     private Vector2 originalLabelScale;
     private float energyTickCooldown = 0.3f; // cada cuántos segundos se aplica daño
     private float energyTickTimer = 0f;
-
-
-
-
-
 
     private Vector2 mouseDelta = Vector2.Zero;
     private float currentSpeed;
@@ -52,10 +52,33 @@ public partial class FlyMovement : RigidBody3D
         originalBarScaleX = energyBar.Scale.X;
         originalLabelScale = energyLabel.Scale;
 
+        detectionArea.BodyEntered += _on_enemy_entered;
 
         ArcTimerSetUp();
-        
     }
+
+    private void _on_enemy_entered(Node body)
+    {
+        if (body is enemiesMovement enemy)
+        {
+            if(currentSpeed < 19f){
+                float percentageToRemove = 0.05f; 
+                int damage = Mathf.RoundToInt(energy * percentageToRemove);
+                energy = Mathf.Max(0, energy - damage);
+
+                AudioManager.Instance?.PlaySound("hit");
+            }
+            else{
+                EatStraw();
+
+                AudioManager.Instance?.PlaySound("pick");
+
+            }
+
+            enemy.PlayDead(); 
+        }
+    }
+
 
     private void ArcTimerSetUp()
     {
@@ -189,8 +212,6 @@ public partial class FlyMovement : RigidBody3D
         }
     }
 
-
-
     private void LinesAnimation(double delta){
         if (ShaderLines.Material is ShaderMaterial shaderMat)
         {
@@ -248,17 +269,54 @@ public partial class FlyMovement : RigidBody3D
 
     private void MovePlayer(double delta)
     {
-
+        float targetSpeed;
 
         if (Input.IsMouseButtonPressed(MouseButton.Left))
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed * aceleration, (float)delta * speedLerpFactor);
+            targetSpeed = maxSpeed * aceleration;
+        }
+        else
+        {
+            targetSpeed = minSpeed;
         }
 
-        Vector3 targetVelocity = -GlobalTransform.Basis.Z * currentSpeed;
+        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, (float)delta * 2f);
 
+        Vector3 targetVelocity = -GlobalTransform.Basis.Z * currentSpeed;
         LinearVelocity = targetVelocity;
+
+        speedText.Text = Mathf.RoundToInt(currentSpeed) + " m/s";
+
+        // Feedback cuando supera 13 m/s
+        if (currentSpeed > 19f && !feedbackTriggered)
+        {
+            feedbackTriggered = true;
+
+            var tween = GetTree().CreateTween();
+            tween.SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic);
+
+            // Aumentar tamaño y rotar
+            tween.Parallel().TweenProperty(speedText, "scale", new Vector2(1.5f, 1.5f), 0.3f);
+            tween.Parallel().TweenProperty(speedText, "rotation", Mathf.DegToRad(10f), 0.3f);
+            tween.Parallel().TweenProperty(speedText, "modulate", new Color(1, 0, 0), 0.3f);
+
+            // Revertir después
+            tween.TweenInterval(0.5f);
+            tween.Parallel().TweenProperty(speedText, "scale", Vector2.One, 0.3f);
+            tween.Parallel().TweenProperty(speedText, "rotation", 0f, 0.3f);
+            tween.Parallel().TweenProperty(speedText, "modulate", Colors.White, 0.3f);
+
+            AudioManager.Instance?.PlaySound("mosca_ready"); // Asegúrate de tener este sonido
+
+        }
+        else if (currentSpeed <= 13f && feedbackTriggered)
+        {
+            feedbackTriggered = false; // Permite que se vuelva a activar si baja y sube otra vez
+        }
+
     }
+
+
 
     private void animateBar(double delta)
     {
@@ -282,7 +340,6 @@ public partial class FlyMovement : RigidBody3D
         if (saturation.Material is ShaderMaterial satMat)
         {
             satMat.SetShaderParameter("saturation", del0al1);
-            GD.Print(del0al1);
         }
     }
 

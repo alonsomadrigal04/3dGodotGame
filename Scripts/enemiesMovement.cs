@@ -24,9 +24,24 @@ public partial class enemiesMovement : RigidBody3D
     public override void _Ready()
     {
         player = GetNode<RigidBody3D>("/root/AnotherScenario/player");
+        CollisionLayer = 1;
 
         PickNewDirection();
     }
+
+    public void PlayDead()
+    {
+        Tween tween = GetTree().CreateTween();
+
+        tween.SetTrans(Tween.TransitionType.Expo);
+        tween.SetEase(Tween.EaseType.Out);
+
+        tween.TweenProperty(this, "scale", Vector3.Zero, 0.5f);
+        tween.Parallel().TweenProperty(this, "rotation_degrees", RotationDegrees + new Vector3(0, 360, 0), 0.5f);
+
+        tween.TweenCallback(Callable.From(() => QueueFree()));
+    }
+
 
     public override void _PhysicsProcess(double delta)
     {
