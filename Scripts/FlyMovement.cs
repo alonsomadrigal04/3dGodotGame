@@ -18,6 +18,7 @@ public partial class FlyMovement : RigidBody3D
     [Export] private ColorRect ShaderLines;
     [Export] private float MinIntensityOfLines = 0.2f;
     [Export] private float MaxIntensityOfLines = 1.5f;
+    [Export] private ColorRect saturation;
     [ExportGroup("Arc")]
     [Export] public bool InArc = false;
     [Export] private float maxSpeedArc = 11f;
@@ -27,6 +28,8 @@ public partial class FlyMovement : RigidBody3D
     [ExportGroup("energyBar")]
     [Export] private Sprite2D energyBar;
     [Export] private Label energyLabel;
+    [Export] private Sprite2D energyBarMarc;
+    private float barShakeTime = 0f;
     public int energy = 100;
     private int maxEnergy = 100; // Define the maximum energy
     private float originalBarScaleX;
@@ -81,10 +84,6 @@ public partial class FlyMovement : RigidBody3D
             .SetTrans(Tween.TransitionType.Back)
             .SetEase(Tween.EaseType.Out);
         
-        tween.Parallel().TweenProperty(energyBar, "rotation", Mathf.DegToRad(5.0f), 0.3f)
-            .SetTrans(Tween.TransitionType.Elastic)
-            .SetEase(Tween.EaseType.Out);
-
         tween.Parallel().TweenProperty(energyBar, "modulate", new Color(0f, 1f, 0f), 0.3f)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.Out);
@@ -94,9 +93,6 @@ public partial class FlyMovement : RigidBody3D
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.In);
 
-        tween.Parallel().TweenProperty(energyBar, "rotation", 0, 0.3f)
-            .SetTrans(Tween.TransitionType.Elastic)
-            .SetEase(Tween.EaseType.Out);
 
         ////////////////////////////////////
         
@@ -152,7 +148,6 @@ public partial class FlyMovement : RigidBody3D
     }
 
     public void CameraSchake(int intensity){
-        // Intensidad máxima del sacudido
         float shakeMagnitude = intensity * 0.1f;
         float duration = 0.4f;
 
@@ -163,7 +158,6 @@ public partial class FlyMovement : RigidBody3D
 
         Vector3 originalPosition = camera.GlobalTransform.Origin;
 
-        // Sacudir hacia adelante y atrás varias veces
         for (int i = 0; i < 5; i++)
         {
             Vector3 randomOffset = new Vector3(
@@ -177,7 +171,6 @@ public partial class FlyMovement : RigidBody3D
                 .SetTrans(Tween.TransitionType.Sine);
         }
 
-        // Volver a la posición original
         tween.TweenProperty(camera, "global_transform:origin", originalPosition, duration / 2f)
             .SetEase(Tween.EaseType.Out)
             .SetTrans(Tween.TransitionType.Sine);
@@ -192,6 +185,7 @@ public partial class FlyMovement : RigidBody3D
             MovePlayer(delta);
             LinesAnimation(delta);
             ChangeEnergy(delta);
+            animateBar(delta);
         }
     }
 
@@ -199,14 +193,14 @@ public partial class FlyMovement : RigidBody3D
 
     private void LinesAnimation(double delta){
         if (ShaderLines.Material is ShaderMaterial shaderMat)
-    {
-        float speed = LinearVelocity.Length();
+        {
+            float speed = LinearVelocity.Length();
 
-        float normalizedSpeed = Mathf.InverseLerp(minSpeed, maxSpeed * aceleration, speed);
-        float lineDensity = Mathf.Lerp(MinIntensityOfLines, MaxIntensityOfLines, normalizedSpeed);
+            float normalizedSpeed = Mathf.InverseLerp(minSpeed, maxSpeed * aceleration, speed);
+            float lineDensity = Mathf.Lerp(MinIntensityOfLines, MaxIntensityOfLines, normalizedSpeed);
 
-        shaderMat.SetShaderParameter("line_density", lineDensity);
-    }
+            shaderMat.SetShaderParameter("line_density", lineDensity);
+        }
     }
 
     public void ArcAnimation()
@@ -265,6 +259,36 @@ public partial class FlyMovement : RigidBody3D
 
         LinearVelocity = targetVelocity;
     }
+
+    private void animateBar(double delta)
+    {
+        if (energy <= 0) return;
+
+        barShakeTime += (float)delta;
+
+        float energyPercent = (float)energy / maxEnergy;
+        float del0al1 = energyPercent; 
+
+        float shakeIntensity = Mathf.Lerp(10f, 5f, del0al1); // más intensidad con poca energía
+        float frequency = Mathf.Lerp(12f, 4f, del0al1);
+        float angle = Mathf.DegToRad(Mathf.Sin(barShakeTime * frequency) * shakeIntensity);
+        energyBarMarc.Rotation = angle;
+
+        Color fullEnergyColor = new Color(1f, 1f, 1f);  // blanco
+        Color lowEnergyColor = new Color(1f, 0f, 0f);   // rojo
+        energyBar.Modulate = lowEnergyColor.Lerp(fullEnergyColor, del0al1);
+        energyBarMarc.Modulate = lowEnergyColor.Lerp(fullEnergyColor, del0al1);
+
+        if (saturation.Material is ShaderMaterial satMat)
+        {
+            satMat.SetShaderParameter("saturation", del0al1);
+            GD.Print(del0al1);
+        }
+    }
+
+
+
+
 
     private void ChangeEnergy(double delta){
 

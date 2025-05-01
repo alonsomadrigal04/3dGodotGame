@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=49 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://cc5s5ahltctwg" path="res://3dGodotGame/Scripts/EnemiesGenerator.cs" id="13_7kg48"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="14_5eaic"]
 [ext_resource type="AudioStream" uid="uid://coynposfw5wx3" path="res://3dGodotGame/Sounds/explosion.wav" id="15_1plvy"]
+[ext_resource type="Shader" uid="uid://klq82bo0pcsm" path="res://3dGodotGame/Scenes/desaturado.gdshader" id="15_bpbsg"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="16_rqvth"]
 [ext_resource type="AudioStream" uid="uid://b7h0p48pryjch" path="res://3dGodotGame/Sounds/MetalIntro.mp3" id="17_c6hgj"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="18_1cye3"]
@@ -34,6 +35,8 @@
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="29_t7aau"]
 [ext_resource type="Script" uid="uid://cdfp2ko0ygvg5" path="res://3dGodotGame/Scripts/Pause_menu.cs" id="30_mf7sh"]
 [ext_resource type="Texture2D" uid="uid://c0wib3h80ynji" path="res://3dGodotGame/Sprites/44773.png" id="30_o07ff"]
+[ext_resource type="AudioStream" uid="uid://bjtghum6m6crp" path="res://3dGodotGame/Sounds/DoomMusic.mp3" id="30_xypuf"]
+[ext_resource type="AudioStream" uid="uid://cgwm0vexrxd6u" path="res://3dGodotGame/Sounds/hit.wav" id="32_rqt3y"]
 [ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
@@ -73,6 +76,13 @@ shader_parameter/mask_size = 0.0
 shader_parameter/mask_edge = 1.0
 shader_parameter/animation_speed = 20.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rqt3y"]
+shader = ExtResource("15_bpbsg")
+shader_parameter/monochrome_color = Color(0.145, 0.145, 0.145, 1)
+shader_parameter/target_color = Color(0.59975, 8.1341e-06, 0.407344, 1)
+shader_parameter/color_grace = 0.001
+shader_parameter/saturation = 1.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o07ff"]
 shader = ExtResource("29_t7aau")
 shader_parameter/Line_Smoothness = 0.045
@@ -110,7 +120,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 6.2583)
 script = ExtResource("1_7o0r7")
 _target = NodePath("../player")
 
-[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines", "energyBar", "energyLabel")]
+[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("ShaderLines", "saturation", "energyBar", "energyLabel", "energyBarMarc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
 gravity_scale = 0.0
 script = ExtResource("2_7lpgg")
@@ -120,10 +130,12 @@ rotationSpeed = 4.0
 ShaderLines = NodePath("ColorRect")
 MinIntensityOfLines = 0.8
 MaxIntensityOfLines = 1.7
+saturation = NodePath("Desaturado")
 maxSpeedArc = 15.0
 timeSpeedArc = 3.0
 energyBar = NodePath("../UI/Relleno")
 energyLabel = NodePath("../UI/Label")
+energyBarMarc = NodePath("../UI/Tail")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
 shape = SubResource("CapsuleShape3D_7awta")
@@ -160,6 +172,12 @@ grow_vertical = 2
 script = ExtResource("13_7kg48")
 enemyScene = ExtResource("34_68hwm")
 
+[node name="Desaturado" type="ColorRect" parent="player"]
+visible = false
+material = SubResource("ShaderMaterial_rqt3y")
+offset_right = 1158.0
+offset_bottom = 658.0
+
 [node name="Arcs" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
 
@@ -167,6 +185,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
 transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 13.5757, -14.0587)
 
 [node name="Transicion" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -184,12 +203,14 @@ audioStreamMusic = NodePath("AudioStreamMusic")
 audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
 "Beber": ExtResource("19_5bcww"),
+"DoomMusic": ExtResource("30_xypuf"),
 "exclamation": ExtResource("29_68hwm"),
 "explosion": ExtResource("15_1plvy"),
 "go": ExtResource("24_5bcww"),
 "guitar1": ExtResource("20_1cye3"),
 "guitar2": ExtResource("21_5bcww"),
 "guitar3": ExtResource("22_fw6st"),
+"hit": ExtResource("32_rqt3y"),
 "hover": ExtResource("16_rqvth"),
 "metal": ExtResource("17_c6hgj"),
 "metalMusicFondo": ExtResource("23_iyibn"),
@@ -199,8 +220,10 @@ Sounds = Dictionary[String, AudioStream]({
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -80.0
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
+volume_db = -80.0
 
 [node name="CountDown" type="Control" parent="."]
 layout_mode = 3

@@ -8,6 +8,7 @@ public partial class enemiesMovement : RigidBody3D
     [Export] public float detectionRadius = 5.0f;
     [Export] public NodePath playerPath;
     [Export] private GpuParticles3D exclamation;
+    [Export] private bool exclamationPlayed;
     
     private Node3D player;
     private Vector3 currentDirection;
@@ -35,11 +36,15 @@ public partial class enemiesMovement : RigidBody3D
         {
             isChasing = true;
             exclamation.Emitting = true;
-            AudioManager.Instance.PlaySound("exclamation");
+            if(!exclamationPlayed){
+                AudioManager.Instance.PlaySound("exclamation");
+                exclamationPlayed = true;
+            }
         }
         else
         {
             isChasing = false;
+            exclamationPlayed = false;
         }
 
         if (isChasing)
@@ -51,6 +56,23 @@ public partial class enemiesMovement : RigidBody3D
             MoveErratically((float)delta);
         }
     }
+
+    private void _on_body_entered(Node body)
+    {
+        if (body is FlyMovement player)
+        {
+            float percentageToRemove = 0.3f; // 30% de la energía actual
+            int damage = Mathf.RoundToInt(player.energy * percentageToRemove);
+
+            player.energy = Mathf.Max(0, player.energy - damage);
+
+            AudioManager.Instance?.PlaySound("hit");
+
+            QueueFree();
+        }
+    }
+
+
 
     private void MoveErratically(float delta)
     {

@@ -104,6 +104,23 @@ public partial class AudioManager : Node
 		.SetEase(Tween.EaseType.InOut);
 	}
 
+	public void FadeInMusic(float duration = 2.0f)
+	{
+		if (audioStreamMusic == null || !audioStreamMusic.Playing)
+			return;
+
+		var tween = GetTree().CreateTween();
+		
+		// Tween del volumen dB desde el volumen actual hasta -80
+		tween.TweenProperty(
+			audioStreamMusic, 
+			"volume_db", 
+			0f, 
+			duration
+		).SetTrans(Tween.TransitionType.Sine)
+		.SetEase(Tween.EaseType.InOut);
+	}
+
 
 
 }

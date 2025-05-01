@@ -81,6 +81,8 @@ public partial class EventsControler : Node
         }
         // Al terminar, oculta el label o lo limpia
         playerMovementSc.canMove = true;
+        AudioManager.Instance.PlayMusic("DoomMusic");
+        //AudioManager.Instance.FadeInMusic();
         countLabel2.Text = "";
     }
 
