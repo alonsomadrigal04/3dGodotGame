@@ -1,10 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://d0ocfkcm6q5u6"]
+[gd_scene load_steps=9 format=3 uid="uid://d0ocfkcm6q5u6"]
 
 [ext_resource type="Texture2D" uid="uid://c7rk3rp0d17x8" path="res://3dGodotGame/Sprites/447732.png" id="1_2s835"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="2_t34ax"]
 [ext_resource type="AudioStream" uid="uid://c0v5fexy2usr8" path="res://3dGodotGame/Sounds/DeadMusic.wav" id="3_hhlfd"]
 [ext_resource type="Script" uid="uid://c4yrqmrjnkps6" path="res://3dGodotGame/Scenes/AnimationDeadScreen.cs" id="4_2mis0"]
 [ext_resource type="FontFile" uid="uid://dx3bbcidfjome" path="res://3dGodotGame/Sprites/minecraft/Minecraft.ttf" id="4_hhlfd"]
+[ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="6_6jxp7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vuj75"]
+shader = ExtResource("6_6jxp7")
+shader_parameter/Line_Smoothness = 0.045
+shader_parameter/Line_Width = 0.09
+shader_parameter/Brightness = 3.0
+shader_parameter/Rotation_deg = 30.0
+shader_parameter/Distortion = 1.8
+shader_parameter/Speed = 0.7
+shader_parameter/Position = 0.0
+shader_parameter/Position_Min = 0.25
+shader_parameter/Position_Max = 0.5
+shader_parameter/Alpha = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_v30tl"]
 
 [node name="DeathScene" type="Control"]
 layout_mode = 3
@@ -15,7 +31,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Dead" type="Sprite2D" parent="."]
-modulate = Color(0.244776, 0.244776, 0.244776, 1)
+modulate = Color(0, 0, 0, 1)
 position = Vector2(559, 320)
 scale = Vector2(2.70313, 1.46875)
 texture = ExtResource("1_2s835")
@@ -32,21 +48,97 @@ Sounds = Dictionary[String, AudioStream]({
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." node_paths=PackedStringArray("deadText", "startAgain", "exit")]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("4_2mis0")
+deadText = NodePath("Dead")
+slideDistance = 120.0
+startAgain = NodePath("StartButton")
+exit = NodePath("StartButton2")
 
 [node name="Dead" type="RichTextLabel" parent="Control"]
 layout_mode = 0
 offset_top = 182.0
 offset_right = 1153.0
 offset_bottom = 485.0
+pivot_offset = Vector2(575.782, 137.815)
 theme_override_fonts/normal_font = ExtResource("4_hhlfd")
 theme_override_font_sizes/normal_font_size = 71
 bbcode_enabled = true
 text = "You have literally 
 [color=#c21807][shake rate=20.0 level=20 connected=1]DIED[/shake][/color]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.69779
+anchor_top = -1.68651
+anchor_right = 28.366
+anchor_bottom = 14.085
+offset_left = 539.912
+offset_top = 425.46
+offset_right = -459.64
+offset_bottom = -155.4
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Control/StartButton"]
+material = SubResource("ShaderMaterial_vuj75")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.995
+anchor_bottom = 1.0
+offset_right = 0.0149841
+texture = SubResource("CanvasTexture_v30tl")
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/StartButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0197044
+anchor_top = 0.24
+anchor_right = 0.980296
+anchor_bottom = 1.02
+offset_left = 54.0
+offset_right = -49.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[wave amp=50 freq=2]CHANGE FLY[/wave]"
+scroll_active = false
+metadata/_edit_use_anchors_ = true
+
+[node name="StartButton2" type="Button" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.69779
+anchor_top = -0.211506
+anchor_right = 28.366
+anchor_bottom = 15.56
+offset_left = 539.912
+offset_top = 425.46
+offset_right = -459.64
+offset_bottom = -155.4
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 25)
+action_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Control/StartButton2"]
+layout_mode = 0
+offset_right = 203.0
+offset_bottom = 49.0
+text = "Exit"
 horizontal_alignment = 1
 vertical_alignment = 1
