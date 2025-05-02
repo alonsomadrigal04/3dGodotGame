@@ -36,7 +36,6 @@ public partial class EnemiesGenerator : Node3D
 
                 if (distance > safeRadius)
                 {
-                    GD.Print("Un enemigo ha sido eliminado");
                     enemy.QueueFree(); 
                 }
             }

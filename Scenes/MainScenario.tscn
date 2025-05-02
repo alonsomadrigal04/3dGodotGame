@@ -107,7 +107,7 @@ shader_parameter/Alpha = 1.0
 
 [node name="AnotherScenario" type="Node3D"]
 
-[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown", "deathScreen")]
+[node name="EventsControler" type="Node" parent="." node_paths=PackedStringArray("transitionSprite", "playerMovementSc", "countLabel2", "countDown", "deathScreen", "musicSlider", "sfxSlider")]
 process_mode = 3
 script = ExtResource("1_gknf6")
 transitionSprite = NodePath("../Transicion")
@@ -116,6 +116,8 @@ countLabel2 = NodePath("../CountDown/GO!")
 countDown = NodePath("../CountDown/CountDown")
 deathScene = ExtResource("2_lmt0w")
 deathScreen = NodePath("../UI/Dead")
+musicSlider = NodePath("../PauseMenu/OPtionsMenu/MusicSlider")
+sfxSlider = NodePath("../PauseMenu/OPtionsMenu/SfxSlider")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_2rvpb")
@@ -317,7 +319,7 @@ position = Vector2(559, 320)
 scale = Vector2(1.91406, 1.02507)
 texture = ExtResource("12_7lpgg")
 
-[node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc")]
+[node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc", "startButton", "exitButton", "optionsMenu")]
 process_mode = 3
 process_priority = 5
 process_physics_priority = 1
@@ -334,6 +336,9 @@ pivot_offset = Vector2(583.36, 319.185)
 script = ExtResource("30_mf7sh")
 menuPanel = NodePath(".")
 playerMovementSc = NodePath("../player")
+startButton = NodePath("StartButton")
+exitButton = NodePath("ExitButton")
+optionsMenu = NodePath("OPtionsMenu")
 
 [node name="Sprite2D" type="Sprite2D" parent="PauseMenu"]
 modulate = Color(1, 1, 1, 0.592157)
@@ -380,24 +385,6 @@ bbcode_enabled = true
 text = "[wave amp=50 freq=2]START SWIMING[/wave]"
 scroll_active = false
 
-[node name="OptionsButton" type="Button" parent="PauseMenu"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.0352482
-anchor_top = 0.514826
-anchor_right = 0.212248
-anchor_bottom = 0.593826
-offset_left = 438.253
-offset_top = -72.1516
-offset_right = 438.349
-offset_bottom = -72.3438
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(100, 25)
-action_mode = 0
-text = "OPTIONS"
-metadata/_edit_use_anchors_ = true
-
 [node name="ExitButton" type="Button" parent="PauseMenu"]
 layout_mode = 1
 anchors_preset = -1
@@ -413,6 +400,75 @@ grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
 text = "EXIT"
+
+[node name="OPtionsMenu" type="Control" parent="PauseMenu"]
+process_mode = 3
+process_priority = 5
+process_physics_priority = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 14.0
+offset_top = -46.0
+offset_right = 54.0
+offset_bottom = -6.0
+
+[node name="Sprite2D" type="Sprite2D" parent="PauseMenu/OPtionsMenu"]
+modulate = Color(1, 1, 1, 0.556863)
+position = Vector2(898.125, 335.5)
+scale = Vector2(0.773926, 0.607422)
+texture = ExtResource("30_o07ff")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseMenu/OPtionsMenu"]
+layout_mode = 0
+offset_left = 741.25
+offset_top = 209.0
+offset_right = 1054.25
+offset_bottom = 469.0
+bbcode_enabled = true
+text = "[center][b][color=#f39c12]⚙️ Settings ⚙️[/color][/b][/center]
+
+[font_size=18][color=#ecf0f1][b][wave amp=50.0 freq=5.0 connected=1]Music[/wave] Volume:[/b][/color][/font_size]
+
+[font_size=18][color=#ecf0f1][b][wave amp=50.0 freq=5.0 connected=1]SFX[/wave] Volume:[/b][/color][/font_size]
+
+[font_size=18][color=#ecf0f1][b]Fog:[/b][/color][/font_size]
+
+[font_size=18][color=#ecf0f1][shake rate=20.0 level=10 connected=1][b]Metal Mode:[/b][/shake][/color][/font_size]
+"
+
+[node name="MusicSlider" type="HSlider" parent="PauseMenu/OPtionsMenu"]
+layout_mode = 0
+offset_left = 889.0
+offset_top = 257.0
+offset_right = 1066.0
+offset_bottom = 281.0
+value = 50.0
+
+[node name="SfxSlider" type="HSlider" parent="PauseMenu/OPtionsMenu"]
+layout_mode = 0
+offset_left = 889.0
+offset_top = 306.0
+offset_right = 1066.0
+offset_bottom = 330.0
+value = 50.0
+
+[node name="FogBox" type="CheckBox" parent="PauseMenu/OPtionsMenu"]
+layout_mode = 0
+offset_left = 786.0
+offset_top = 356.0
+offset_right = 810.0
+offset_bottom = 380.0
+disabled = true
+button_pressed = true
+
+[node name="MetalMode" type="CheckBox" parent="PauseMenu/OPtionsMenu"]
+layout_mode = 0
+offset_left = 867.0
+offset_top = 404.0
+offset_right = 891.0
+offset_bottom = 428.0
+disabled = true
+button_pressed = true
 
 [node name="Enemy" parent="." instance=ExtResource("34_68hwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62383, 5.51619, -9.34045)

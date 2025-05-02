@@ -1,11 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://d0ocfkcm6q5u6"]
+[gd_scene load_steps=15 format=3 uid="uid://d0ocfkcm6q5u6"]
 
 [ext_resource type="Texture2D" uid="uid://c7rk3rp0d17x8" path="res://3dGodotGame/Sprites/447732.png" id="1_2s835"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="2_t34ax"]
 [ext_resource type="AudioStream" uid="uid://c0v5fexy2usr8" path="res://3dGodotGame/Sounds/DeadMusic.wav" id="3_hhlfd"]
 [ext_resource type="Script" uid="uid://c4yrqmrjnkps6" path="res://3dGodotGame/Scenes/AnimationDeadScreen.cs" id="4_2mis0"]
+[ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="4_a5ofo"]
 [ext_resource type="FontFile" uid="uid://dx3bbcidfjome" path="res://3dGodotGame/Sprites/minecraft/Minecraft.ttf" id="4_hhlfd"]
+[ext_resource type="AudioStream" uid="uid://dw4cvdqty454b" path="res://3dGodotGame/Sounds/P4 All Out Attack Request.wav" id="5_7iibd"]
+[ext_resource type="PackedScene" uid="uid://b4x5kjpy2cw8l" path="res://3dGodotGame/Scenes/MainScenario.tscn" id="5_vuj75"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="6_6jxp7"]
+[ext_resource type="Shader" path="res://scrolling_texture.gdshader" id="10_7toyr"]
+[ext_resource type="Texture2D" uid="uid://bljl15v712oh3" path="res://3dGodotGame/Sprites/calavera.png" id="11_ij0n3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vuj75"]
 shader = ExtResource("6_6jxp7")
@@ -21,6 +26,14 @@ shader_parameter/Position_Max = 0.5
 shader_parameter/Alpha = 1.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_v30tl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fmuvj"]
+shader = ExtResource("10_7toyr")
+shader_parameter/scroll_texture = ExtResource("11_ij0n3")
+shader_parameter/tile_size_x = 100.0
+shader_parameter/tile_size_y = 100.0
+shader_parameter/scroll_pixels_per_sec_x = 20.0
+shader_parameter/scroll_pixels_per_sec_y = 15.0
 
 [node name="DeathScene" type="Control"]
 layout_mode = 3
@@ -41,14 +54,16 @@ script = ExtResource("2_t34ax")
 audioStreamMusic = NodePath("AudioStreamMusic")
 audioStreamSFX = NodePath("AudioStreamSFX")
 Sounds = Dictionary[String, AudioStream]({
-"DeadMusic": ExtResource("3_hhlfd")
+"DeadMusic": ExtResource("3_hhlfd"),
+"hover": ExtResource("4_a5ofo"),
+"press": ExtResource("5_7iibd")
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
 
 [node name="AudioStreamSFX" type="AudioStreamPlayer" parent="AudioControler"]
 
-[node name="Control" type="Control" parent="." node_paths=PackedStringArray("deadText", "startAgain", "exit")]
+[node name="Control" type="Control" parent="." node_paths=PackedStringArray("deadText", "startAgain", "exit", "transitionSprite")]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -57,6 +72,8 @@ deadText = NodePath("Dead")
 slideDistance = 120.0
 startAgain = NodePath("StartButton")
 exit = NodePath("StartButton2")
+transitionSprite = NodePath("../Transicion/Sprite2D")
+gameScene = ExtResource("5_vuj75")
 
 [node name="Dead" type="RichTextLabel" parent="Control"]
 layout_mode = 0
@@ -142,3 +159,18 @@ offset_bottom = 49.0
 text = "Exit"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Transicion" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 472.0
+offset_top = 358.0
+offset_right = 512.0
+offset_bottom = 398.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Transicion"]
+material = SubResource("ShaderMaterial_fmuvj")
+position = Vector2(-1102, -688)
+rotation = 0.541052
+scale = Vector2(2.6488, 2.4335)
+texture = ExtResource("1_2s835")

@@ -12,6 +12,9 @@ public partial class EventsControler : Node
     [Export] public PackedScene deathScene;
     private bool isDeadHandled = false; // Para evitar que se dispare múltiples veces
     [Export] public Sprite2D deathScreen;
+    [Export] private Slider musicSlider;
+    [Export] private Slider sfxSlider;
+
 
     public override async void _Ready()
     {
@@ -26,10 +29,9 @@ public partial class EventsControler : Node
     public override void _Process(double delta)
     {
         checkifDead(delta);
+        AudioManager.Instance.audioStreamMusic.VolumeDb = AudioManager.Instance.linearToDb(musicSlider.Value);
+        AudioManager.Instance.audioStreamSFX.VolumeDb = AudioManager.Instance.linearToDb(sfxSlider.Value);
     }
-
-
-    
 
     private void checkifDead(double delta)
     {
@@ -122,8 +124,8 @@ public partial class EventsControler : Node
     private void AnimateMoveToPosition(Node button, Vector2 targetPosition)
     {
         var tween = GetTree().CreateTween();
-        tween.TweenProperty(button, "position", targetPosition, 0.4f)
-            .SetTrans(Tween.TransitionType.Cubic)
+        tween.TweenProperty(button, "position", targetPosition, 2f)
+            .SetTrans(Tween.TransitionType.Back)
             .SetEase(Tween.EaseType.Out);
     }
 }

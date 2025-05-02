@@ -196,11 +196,7 @@ public partial class MenuBehaviour : Control
 
     private void ChangeScene(string escena)
     {
-        //Node level = GetTree().Root;
-        //GetTree().Root.RemoveChild(level);
-        //level.CallDeferred("free");
-
-        
+ 
         GetTree().ChangeSceneToPacked(gameScene);
     }
 

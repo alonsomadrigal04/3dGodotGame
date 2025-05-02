@@ -27,8 +27,7 @@ public partial class ArcBehaviour : MeshInstance3D
         if (body is FlyMovement player)
         {
             player.ArcAnimation();
-            AnimateDisappear(); // 🔥 Se activa la animación al atravesar el arco
-            GD.Print("Player entered the Arc!");
+            AnimateDisappear();
         }
     }
 
@@ -37,7 +36,6 @@ public partial class ArcBehaviour : MeshInstance3D
         if (body is FlyMovement player)
         {
             player.InArc = false;
-            GD.Print("Player left the Arc.");
         }
     }
 
