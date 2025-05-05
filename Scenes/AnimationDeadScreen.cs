@@ -105,13 +105,13 @@ public partial class AnimationDeadScreen : Control
             .SetTrans(Tween.TransitionType.Cubic)
             .SetEase(Tween.EaseType.Out);
 
-        tween.Finished += () => ChangeScene("Scenes/TuEscena.tscn"); // Llama cuando termina el tween
+        tween.Finished += () => ChangeScene("res://3dGodotGame/Scenes/MainScenario.tscn");
 
     }
     private void ChangeScene(string escena)
     { 
         GD.Print("holamundo");
-        GetTree().ChangeSceneToPacked(gameScene);
+        GetTree().ChangeSceneToFile(escena);
     }
 
     private void AnimateRelease(Button button)

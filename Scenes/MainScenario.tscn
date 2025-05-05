@@ -1,9 +1,9 @@
-[gd_scene load_steps=52 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=57 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
 [ext_resource type="Script" uid="uid://c8bhcpq0vv6ay" path="res://3dGodotGame/Scripts/FlyMovement.cs" id="2_7lpgg"]
-[ext_resource type="PackedScene" uid="uid://d0ocfkcm6q5u6" path="res://3dGodotGame/Scenes/deathScene.tscn" id="2_lmt0w"]
+[ext_resource type="PackedScene" uid="uid://d0ocfkcm6q5u6" path="res://3dGodotGame/Scenes/deathScene.tscn" id="2_28g4x"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_gknf6"]
 [ext_resource type="Script" uid="uid://cbmf7n1n3gylq" path="res://3dGodotGame/Scripts/SpawnZone.cs" id="4_qoe48"]
 [ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="5_44cn4"]
@@ -20,7 +20,9 @@
 [ext_resource type="Shader" uid="uid://klq82bo0pcsm" path="res://3dGodotGame/Scenes/desaturado.gdshader" id="15_bpbsg"]
 [ext_resource type="AudioStream" uid="uid://dg838mmru6j31" path="res://3dGodotGame/Sounds/P4 Hover.wav" id="16_rqvth"]
 [ext_resource type="AudioStream" uid="uid://b7h0p48pryjch" path="res://3dGodotGame/Sounds/MetalIntro.mp3" id="17_c6hgj"]
+[ext_resource type="Shader" uid="uid://dorp6yx8sd7ri" path="res://scrolling_texture.gdshader" id="17_swhh1"]
 [ext_resource type="AudioStream" uid="uid://c0eqn81f4oq2w" path="res://3dGodotGame/Sounds/P4 Select.wav" id="18_1cye3"]
+[ext_resource type="Texture2D" uid="uid://bq2ly1lc4h1om" path="res://3dGodotGame/Sprites/coffe_patternv2.png" id="18_28g4x"]
 [ext_resource type="AudioStream" uid="uid://bx12oo77uhot5" path="res://3dGodotGame/Sounds/straw-slurp-7066.mp3" id="19_5bcww"]
 [ext_resource type="AudioStream" uid="uid://cp6qrnw00don8" path="res://3dGodotGame/Sounds/guitar/perfunctory-careless-rock-guitar-one-shot_D#_major.wav" id="20_1cye3"]
 [ext_resource type="AudioStream" uid="uid://cqwtqvfvwbo71" path="res://3dGodotGame/Sounds/guitar/stir-forced-rock-guitar-one-shot_D#_major.wav" id="21_5bcww"]
@@ -40,6 +42,7 @@
 [ext_resource type="AudioStream" uid="uid://cgwm0vexrxd6u" path="res://3dGodotGame/Sounds/hit.wav" id="32_rqt3y"]
 [ext_resource type="AudioStream" uid="uid://dqkg40nvdsdof" path="res://3dGodotGame/Sounds/mosca_ready.wav" id="33_1p7w8"]
 [ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
+[ext_resource type="Texture2D" uid="uid://jfwgdtyu2gh7" path="res://3dGodotGame/Sprites/coffe_patternErasedGRAYv2.png" id="39_28g4x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -90,6 +93,22 @@ shader_parameter/target_color = Color(0.59975, 8.1341e-06, 0.407344, 1)
 shader_parameter/color_grace = 0.001
 shader_parameter/saturation = 1.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mhiku"]
+shader = ExtResource("17_swhh1")
+shader_parameter/scroll_texture = ExtResource("18_28g4x")
+shader_parameter/tile_size_x = 100.0
+shader_parameter/tile_size_y = 100.0
+shader_parameter/scroll_pixels_per_sec_x = 20.0
+shader_parameter/scroll_pixels_per_sec_y = 15.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5b4n5"]
+shader = ExtResource("17_swhh1")
+shader_parameter/scroll_texture = ExtResource("39_28g4x")
+shader_parameter/tile_size_x = 50.0
+shader_parameter/tile_size_y = 50.0
+shader_parameter/scroll_pixels_per_sec_x = 20.0
+shader_parameter/scroll_pixels_per_sec_y = 15.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o07ff"]
 shader = ExtResource("29_t7aau")
 shader_parameter/Line_Smoothness = 0.045
@@ -114,7 +133,7 @@ transitionSprite = NodePath("../Transicion")
 playerMovementSc = NodePath("../player")
 countLabel2 = NodePath("../CountDown/GO!")
 countDown = NodePath("../CountDown/CountDown")
-deathScene = ExtResource("2_lmt0w")
+deathScene = ExtResource("2_28g4x")
 deathScreen = NodePath("../UI/Dead")
 musicSlider = NodePath("../PauseMenu/OPtionsMenu/MusicSlider")
 sfxSlider = NodePath("../PauseMenu/OPtionsMenu/SfxSlider")
@@ -147,7 +166,7 @@ saturation = NodePath("Desaturado")
 maxSpeedArc = 15.0
 timeSpeedArc = 3.0
 energyBar = NodePath("../UI/Relleno")
-energyLabel = NodePath("../UI/Label")
+energyLabel = NodePath("../UI/Energia")
 energyBarMarc = NodePath("../UI/Tail")
 detectionArea = NodePath("Area3D")
 
@@ -209,6 +228,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
+material = SubResource("ShaderMaterial_mhiku")
 position = Vector2(568, 324)
 rotation = 0.541052
 scale = Vector2(2.6488, 2.4335)
@@ -277,11 +297,11 @@ position = Vector2(189.354, 35.75)
 scale = Vector2(0.449045, 0.449045)
 texture = ExtResource("25_fw6st")
 
-[node name="Label" type="Label" parent="UI"]
+[node name="Energia" type="Label" parent="UI"]
 layout_mode = 0
 offset_left = 376.0
 offset_top = 6.0
-offset_right = 477.0
+offset_right = 479.0
 offset_bottom = 69.0
 pivot_offset = Vector2(50, 30)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -292,6 +312,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Relleno" type="Sprite2D" parent="UI"]
+material = SubResource("ShaderMaterial_5b4n5")
 position = Vector2(15, 36)
 scale = Vector2(0.445455, 0.445455)
 texture = ExtResource("27_o1qp2")

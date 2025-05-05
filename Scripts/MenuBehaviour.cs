@@ -4,6 +4,11 @@ using System.IO;
 
 public partial class MenuBehaviour : Control
 {
+    [ExportGroup("Titles")]
+    [Export] private RichTextLabel principalText;
+    [Export] private RichTextLabel aditionalText;
+
+    
     [ExportGroup("botones")]
     private Button startButton;
     private Button optionsButton;
@@ -31,6 +36,10 @@ public partial class MenuBehaviour : Control
     [Export] private Control transitionSprite;
 
     [Export] private PackedScene gameScene;
+    [Export] private float startSizeButton;
+    [Export] private float optionsSizeButton;
+    [Export] private float exitSizeButton;
+
 
 
     public override void _Process(double delta)
@@ -111,6 +120,10 @@ public partial class MenuBehaviour : Control
         AnimateButtonEntry(optionsButton);
         AnimateButtonEntry(exitButton);
 
+        AnimateButtonEntry(principalText);
+        AnimateButtonEntry(aditionalText);
+
+
         SetupButtonAnimations(startButton);
         SetupButtonAnimations(optionsButton);
         SetupButtonAnimations(exitButton);
@@ -121,8 +134,6 @@ public partial class MenuBehaviour : Control
     }
 
 
-
-
     private void AnimateButtonEntry(Control button)
     {
         var tween = GetTree().CreateTween();
@@ -130,14 +141,14 @@ public partial class MenuBehaviour : Control
         Vector2 finalPosition = button.Position;
 
         button.Position += offsetPosition;
-        button.Scale = new Vector2(0.5f, 0.5f);
+        button.Scale = button.Scale * new Vector2(0.5f, 0.5f);
 
         tween.TweenProperty(button, "position", finalPosition, 0.3f)
             .SetTrans(Tween.TransitionType.Elastic)
             .SetEase(Tween.EaseType.Out)
             .SetDelay(animationDelay);
 
-        tween.TweenProperty(button, "scale", new Vector2(1.0f, 1.0f), 0.2f)
+        tween.TweenProperty(button, "scale", button.Scale * 2, 0.2f)
             .SetTrans(Tween.TransitionType.Back)
             .SetEase(Tween.EaseType.Out);
     }
@@ -159,15 +170,15 @@ public partial class MenuBehaviour : Control
     private void AnimateHover(Button button, bool isHovered)
     {
         var tween = GetTree().CreateTween();
-        float targetScale = isHovered ? 1.1f : 1.0f;
-        tween.TweenProperty(button, "scale", new Vector2(targetScale, targetScale), 0.2f)
+        Vector2 targetScale = isHovered ? (button.Scale * new Vector2(1.1f, 1.1f)) : button.Scale / new Vector2(1.1f, 1.1f);
+        tween.TweenProperty(button, "scale", targetScale, 0.2f)
              .SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
     }
 
     private void AnimatePress(Button button)
     {
         var tween = GetTree().CreateTween();
-        tween.TweenProperty(button, "scale", new Vector2(0.9f, 0.85f), 0.1f)
+        tween.TweenProperty(button, "scale", (button.Scale * new Vector2(0.9f, 0.85f)), 0.1f)
              .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.InOut);
         
         if (button == optionsButton && !optionsDisplay)

@@ -84,9 +84,6 @@ public partial class EventsControler : Node
             await ToSignal(tween, "finished");
 
             await ToSignal(GetTree().CreateTimer(0.1), "timeout");
-
-
-            GD.Print(countLabel2.Scale);
         }
         StartGame();
         GD.Print("Cuenta regresiva terminada!");

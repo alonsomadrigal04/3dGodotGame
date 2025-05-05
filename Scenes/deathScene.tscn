@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d0ocfkcm6q5u6"]
+[gd_scene load_steps=17 format=3 uid="uid://d0ocfkcm6q5u6"]
 
 [ext_resource type="Texture2D" uid="uid://c7rk3rp0d17x8" path="res://3dGodotGame/Sprites/447732.png" id="1_2s835"]
 [ext_resource type="Script" uid="uid://bmpcvgvf1eplf" path="res://3dGodotGame/Scripts/AudioManager.cs" id="2_t34ax"]
@@ -9,8 +9,19 @@
 [ext_resource type="AudioStream" uid="uid://dw4cvdqty454b" path="res://3dGodotGame/Sounds/P4 All Out Attack Request.wav" id="5_7iibd"]
 [ext_resource type="PackedScene" uid="uid://b4x5kjpy2cw8l" path="res://3dGodotGame/Scenes/MainScenario.tscn" id="5_vuj75"]
 [ext_resource type="Shader" uid="uid://dqqfhns1diidm" path="res://3dGodotGame/Scenes/ShiningShader.gdshader" id="6_6jxp7"]
-[ext_resource type="Shader" path="res://scrolling_texture.gdshader" id="10_7toyr"]
-[ext_resource type="Texture2D" uid="uid://bljl15v712oh3" path="res://3dGodotGame/Sprites/calavera.png" id="11_ij0n3"]
+[ext_resource type="Texture2D" uid="uid://jfwgdtyu2gh7" path="res://3dGodotGame/Sprites/coffe_patternErasedGRAYv2.png" id="9_ij0n3"]
+[ext_resource type="Shader" uid="uid://dorp6yx8sd7ri" path="res://scrolling_texture.gdshader" id="10_7toyr"]
+[ext_resource type="Texture2D" uid="uid://bq2ly1lc4h1om" path="res://3dGodotGame/Sprites/coffe_patternv2.png" id="11_7toyr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fmuvj"]
+shader = ExtResource("10_7toyr")
+shader_parameter/scroll_texture = ExtResource("9_ij0n3")
+shader_parameter/tile_size_x = 100.0
+shader_parameter/tile_size_y = 100.0
+shader_parameter/scroll_pixels_per_sec_x = 20.0
+shader_parameter/scroll_pixels_per_sec_y = 15.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_v30tl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vuj75"]
 shader = ExtResource("6_6jxp7")
@@ -25,15 +36,13 @@ shader_parameter/Position_Min = 0.25
 shader_parameter/Position_Max = 0.5
 shader_parameter/Alpha = 1.0
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_v30tl"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fmuvj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ij0n3"]
 shader = ExtResource("10_7toyr")
-shader_parameter/scroll_texture = ExtResource("11_ij0n3")
+shader_parameter/scroll_texture = ExtResource("11_7toyr")
 shader_parameter/tile_size_x = 100.0
 shader_parameter/tile_size_y = 100.0
-shader_parameter/scroll_pixels_per_sec_x = 20.0
-shader_parameter/scroll_pixels_per_sec_y = 15.0
+shader_parameter/scroll_pixels_per_sec_x = 40.0
+shader_parameter/scroll_pixels_per_sec_y = 30.0
 
 [node name="DeathScene" type="Control"]
 layout_mode = 3
@@ -81,7 +90,6 @@ offset_top = 182.0
 offset_right = 1153.0
 offset_bottom = 485.0
 pivot_offset = Vector2(575.782, 137.815)
-theme_override_fonts/normal_font = ExtResource("4_hhlfd")
 theme_override_font_sizes/normal_font_size = 71
 bbcode_enabled = true
 text = "You have literally 
@@ -107,6 +115,17 @@ pivot_offset = Vector2(100, 25)
 action_mode = 0
 metadata/_edit_use_anchors_ = true
 
+[node name="Fresitas" type="TextureRect" parent="Control/StartButton"]
+modulate = Color(1, 1, 1, 0.376471)
+material = SubResource("ShaderMaterial_fmuvj")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.995
+anchor_bottom = 1.0
+offset_right = 0.0149841
+texture = SubResource("CanvasTexture_v30tl")
+metadata/_edit_use_anchors_ = true
+
 [node name="TextureRect" type="TextureRect" parent="Control/StartButton"]
 material = SubResource("ShaderMaterial_vuj75")
 layout_mode = 1
@@ -118,6 +137,7 @@ texture = SubResource("CanvasTexture_v30tl")
 metadata/_edit_use_anchors_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control/StartButton"]
+modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.0197044
@@ -129,6 +149,7 @@ offset_right = -49.0
 offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/bold_font = ExtResource("4_hhlfd")
 bbcode_enabled = true
 text = "[wave amp=50 freq=2]CHANGE FLY[/wave]"
 scroll_active = false
@@ -169,7 +190,7 @@ offset_right = 512.0
 offset_bottom = 398.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
-material = SubResource("ShaderMaterial_fmuvj")
+material = SubResource("ShaderMaterial_ij0n3")
 position = Vector2(-1102, -688)
 rotation = 0.541052
 scale = Vector2(2.6488, 2.4335)

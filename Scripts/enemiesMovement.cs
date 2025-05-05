@@ -9,6 +9,7 @@ public partial class enemiesMovement : RigidBody3D
     [Export] public NodePath playerPath;
     [Export] private GpuParticles3D exclamation;
     [Export] private bool exclamationPlayed;
+    [Export] private GpuParticles3D deathParticles;
     
     private Node3D player;
     private Vector3 currentDirection;
@@ -32,6 +33,7 @@ public partial class enemiesMovement : RigidBody3D
     public void PlayDead()
     {
         Tween tween = GetTree().CreateTween();
+        deathParticles.Emitting = true;
 
         tween.SetTrans(Tween.TransitionType.Expo);
         tween.SetEase(Tween.EaseType.Out);

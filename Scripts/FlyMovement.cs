@@ -42,6 +42,18 @@ public partial class FlyMovement : RigidBody3D
     private float energyTickCooldown = 0.3f; // cada cuántos segundos se aplica daño
     private float energyTickTimer = 0f;
 
+    [ExportGroup("Bones")]
+    [Export] private Node3D wingL;
+    [Export] private Node3D wingR;
+    [Export] private Node3D tail;
+    [Export] private Node3D legFrontL;
+    [Export] private Node3D legFrontR;
+    [Export] private Node3D legMiddleL;
+    [Export] private Node3D legMiddleR;
+    [Export] private Node3D legBackL;
+    [Export] private Node3D legBackR;
+
+
     private Vector2 mouseDelta = Vector2.Zero;
     private float currentSpeed;
 
@@ -131,8 +143,8 @@ public partial class FlyMovement : RigidBody3D
         var tween = GetTree().CreateTween();
 
 
-        float targetScaleX = energyLabel.Scale.X * 1.5f;
-        float currentScaleY = energyLabel.Scale.Y * 1.5f;
+        float targetScaleX = energyLabel.Scale.X * 2f;
+        float currentScaleY = energyLabel.Scale.Y * 2f;
 
         tween.Parallel().TweenProperty(label, "scale", new Vector2(targetScaleX, currentScaleY), 0.3f)
             .SetTrans(Tween.TransitionType.Back)
@@ -155,7 +167,7 @@ public partial class FlyMovement : RigidBody3D
             .SetTrans(Tween.TransitionType.Elastic)
             .SetEase(Tween.EaseType.Out);
 
-            tween.Parallel().TweenProperty(label, "scale", new Vector2(targetScaleX / 1.5f, currentScaleY / 1.5f), 0.3f)
+            tween.Parallel().TweenProperty(label, "scale", new Vector2(targetScaleX * 0.5f, currentScaleY * 0.5f), 0.3f)
             .SetTrans(Tween.TransitionType.Back)
             .SetEase(Tween.EaseType.Out);
     }
@@ -247,6 +259,8 @@ public partial class FlyMovement : RigidBody3D
         
     }
 
+    
+
 
     private void RotatePlayer(double delta)
     {
@@ -327,7 +341,7 @@ public partial class FlyMovement : RigidBody3D
         float energyPercent = (float)energy / maxEnergy;
         float del0al1 = energyPercent; 
 
-        float shakeIntensity = Mathf.Lerp(10f, 5f, del0al1); // más intensidad con poca energía
+        float shakeIntensity = Mathf.Lerp(5f, 10f, del0al1); // más intensidad con poca energía
         float frequency = Mathf.Lerp(12f, 4f, del0al1);
         float angle = Mathf.DegToRad(Mathf.Sin(barShakeTime * frequency) * shakeIntensity);
         energyBarMarc.Rotation = angle;
@@ -375,6 +389,7 @@ public partial class FlyMovement : RigidBody3D
             energyLabel.Text = "< " + energy.ToString() + "% >";
         }
     }
+    
 
 
 }
