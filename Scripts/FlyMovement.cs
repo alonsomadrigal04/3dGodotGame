@@ -24,6 +24,7 @@ public partial class FlyMovement : RigidBody3D
     [Export] private ColorRect saturation;
     [ExportGroup("Arc")]
     [Export] public bool InArc = false;
+    [Export] public Label arcTimeLabel;
     [Export] private float maxSpeedArc = 11f;
     [Export] private float timeSpeedArc = 11f;
     private Timer arcTimer;
@@ -42,17 +43,9 @@ public partial class FlyMovement : RigidBody3D
     private float energyTickCooldown = 0.3f; // cada cuántos segundos se aplica daño
     private float energyTickTimer = 0f;
 
-    [ExportGroup("Bones")]
-    [Export] private Node3D wingL;
-    [Export] private Node3D wingR;
-    [Export] private Node3D tail;
-    [Export] private Node3D legFrontL;
-    [Export] private Node3D legFrontR;
-    [Export] private Node3D legMiddleL;
-    [Export] private Node3D legMiddleR;
-    [Export] private Node3D legBackL;
-    [Export] private Node3D legBackR;
-
+    [ExportGroup("Shooting")]
+    [Export] private PackedScene bulletScene;
+    [Export] private Node3D bulletSpawnPoint; // opcional si quieres un punto específico
 
     private Vector2 mouseDelta = Vector2.Zero;
     private float currentSpeed;
@@ -63,6 +56,11 @@ public partial class FlyMovement : RigidBody3D
         currentSpeed = maxSpeed;
         originalBarScaleX = energyBar.Scale.X;
         originalLabelScale = energyLabel.Scale;
+
+    if (saturation.Material is ShaderMaterial satMat)
+        {
+            satMat.SetShaderParameter("saturation", 1);
+        }
 
         detectionArea.BodyEntered += _on_enemy_entered;
 
@@ -180,6 +178,12 @@ public partial class FlyMovement : RigidBody3D
         {
             mouseDelta = mouseMotion.Relative;
         }
+
+        if (@event is InputEventMouseButton mouseButton && mouseButton.ButtonIndex == MouseButton.Right && mouseButton.Pressed)
+        {
+            Shoot();
+        }
+        
     }
 
     public void CameraSchake(int intensity){
@@ -221,8 +225,41 @@ public partial class FlyMovement : RigidBody3D
             LinesAnimation(delta);
             ChangeEnergy(delta);
             animateBar(delta);
+            animateTimeArc(delta);
         }
     }
+
+    private void animateTimeArc(double delta)
+{
+    if (InArc)
+    {
+        if (arcTimer.TimeLeft > 0)
+        {
+            float timeLeft = (float)arcTimer.TimeLeft;
+
+            arcTimeLabel.Text = timeLeft.ToString("0.00");
+
+            float t = Mathf.InverseLerp(0f, (float)arcTimer.WaitTime, timeLeft);
+            Color startColor = new Color(1f, 1f, 1f); // blanco
+            Color endColor = new Color(1f, 0f, 0f);   // rojo
+            arcTimeLabel.Modulate = endColor.Lerp(startColor, t);
+
+            float baseScale = 1.0f;
+            float maxScale = 1.5f;
+            float scaleFactor = Mathf.Lerp(maxScale, baseScale, t);
+            arcTimeLabel.Scale = new Vector2(scaleFactor, scaleFactor);
+        }
+        else
+        {
+            arcTimeLabel.Text = "";
+        }
+    }
+    else
+    {
+        arcTimeLabel.Text = "";
+    }
+}
+
 
     private void LinesAnimation(double delta){
         if (ShaderLines.Material is ShaderMaterial shaderMat)
@@ -243,7 +280,6 @@ public partial class FlyMovement : RigidBody3D
         InArc = true;
         arcTimer.Start();
 
-        maxSpeed = maxSpeedArc; 
         MaxIntensityOfLines = 2.0f; 
 
         Tween tween = GetTree().CreateTween();
@@ -334,6 +370,16 @@ public partial class FlyMovement : RigidBody3D
 
     private void animateBar(double delta)
     {
+        if (InArc)
+        {
+            float t = (float)Time.GetTicksMsec() / 500f;
+            float r = 0.5f + 0.5f * Mathf.Sin(t);
+            float g = 0.5f + 0.5f * Mathf.Sin(t + 2f);
+            float b = 0.5f + 0.5f * Mathf.Sin(t + 4f);
+            energyBar.Modulate = new Color(r, g, b);
+            energyBarMarc.Modulate = new Color(r, g, b);
+        }
+
         if (energy <= 0) return;
 
         barShakeTime += (float)delta;
@@ -357,11 +403,9 @@ public partial class FlyMovement : RigidBody3D
         }
     }
 
-
-
-
-
     private void ChangeEnergy(double delta){
+        if (InArc) return; // No gastar energía durante el arco
+
 
         energyTickTimer += (float)delta;
 
@@ -389,7 +433,25 @@ public partial class FlyMovement : RigidBody3D
             energyLabel.Text = "< " + energy.ToString() + "% >";
         }
     }
-    
 
+    private void Shoot()
+    {
+        if (bulletScene == null){
+            GD.PrintErr("FM: No bullet Scene added");
+        }
 
+        var bulletInstance = (RigidBody3D)bulletScene.Instantiate();
+
+        if (bulletSpawnPoint != null)
+        {
+            bulletInstance.GlobalTransform = bulletSpawnPoint.GlobalTransform;
+        }
+        else
+        {
+            bulletInstance.GlobalTransform = GlobalTransform;
+        }
+
+        GetTree().Root.AddChild(bulletInstance);
+        //AudioManager.Instance?.PlaySound("shoot"); // si tienes un sonido
+    }
 }

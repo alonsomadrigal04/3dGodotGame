@@ -55,6 +55,7 @@ public partial class ArcGenerator : Area3D
 
     private void RemoveArc(Node3D arc)
     {
+        if(arc == null) return;
         Tween tween = CreateTween();
         tween.TweenProperty(arc, "scale", Vector3.One * 0.05f, 0.5f).SetTrans(Tween.TransitionType.Quad);
         tween.Finished += () => arc.QueueFree();

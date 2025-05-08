@@ -462,6 +462,8 @@ action_mode = 0
 material = SubResource("ShaderMaterial_og5f5")
 layout_mode = 1
 anchors_preset = -1
+anchor_left = -0.021645
+anchor_top = -0.0739815
 anchor_right = -0.021645
 anchor_bottom = -0.0739815
 offset_right = 204.0
@@ -608,6 +610,7 @@ offset_right = 891.0
 offset_bottom = 428.0
 
 [node name="Edition" type="RichTextLabel" parent="Menu"]
+layout_mode = 0
 offset_left = 33.0
 offset_top = 147.0
 offset_right = 366.0

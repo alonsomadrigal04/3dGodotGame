@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
 [ext_resource type="Script" uid="uid://c8bhcpq0vv6ay" path="res://3dGodotGame/Scripts/FlyMovement.cs" id="2_7lpgg"]
-[ext_resource type="PackedScene" uid="uid://d0ocfkcm6q5u6" path="res://3dGodotGame/Scenes/deathScene.tscn" id="2_28g4x"]
 [ext_resource type="PackedScene" uid="uid://dsumpsx1fvr3e" path="res://3dGodotGame/Scenes/Generator.tscn" id="3_gknf6"]
 [ext_resource type="Script" uid="uid://cbmf7n1n3gylq" path="res://3dGodotGame/Scripts/SpawnZone.cs" id="4_qoe48"]
 [ext_resource type="PackedScene" uid="uid://bivjpc528r3o3" path="res://3dGodotGame/Scenes/StrawBerry.tscn" id="5_44cn4"]
+[ext_resource type="PackedScene" uid="uid://b6078uhmaopj5" path="res://3dGodotGame/Scenes/Bullet.tscn" id="5_mhiku"]
 [ext_resource type="PackedScene" uid="uid://dt3aga88dsyep" path="res://3dGodotGame/Scenes/ArcGenerator.tscn" id="6_ef8kw"]
 [ext_resource type="Script" uid="uid://chgwpw1fhm3sk" path="res://3dGodotGame/Scripts/ArcGenerator.cs" id="7_2k2wy"]
 [ext_resource type="PackedScene" uid="uid://djl2w82i7nicq" path="res://3dGodotGame/Scenes/Arc.tscn" id="8_7mway"]
@@ -133,7 +133,6 @@ transitionSprite = NodePath("../Transicion")
 playerMovementSc = NodePath("../player")
 countLabel2 = NodePath("../CountDown/GO!")
 countDown = NodePath("../CountDown/CountDown")
-deathScene = ExtResource("2_28g4x")
 deathScreen = NodePath("../UI/Dead")
 musicSlider = NodePath("../PauseMenu/OPtionsMenu/MusicSlider")
 sfxSlider = NodePath("../PauseMenu/OPtionsMenu/SfxSlider")
@@ -150,7 +149,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 6.2583)
 script = ExtResource("1_7o0r7")
 _target = NodePath("../player")
 
-[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("speedText", "ShaderLines", "saturation", "energyBar", "energyLabel", "energyBarMarc", "detectionArea")]
+[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("speedText", "ShaderLines", "saturation", "arcTimeLabel", "energyBar", "energyLabel", "energyBarMarc", "detectionArea")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
 collision_mask = 2
 gravity_scale = 0.0
@@ -163,12 +162,14 @@ ShaderLines = NodePath("ColorRect")
 MinIntensityOfLines = 0.8
 MaxIntensityOfLines = 1.7
 saturation = NodePath("Desaturado")
+arcTimeLabel = NodePath("../UI/ArcSeconds")
 maxSpeedArc = 15.0
 timeSpeedArc = 3.0
 energyBar = NodePath("../UI/Relleno")
 energyLabel = NodePath("../UI/Energia")
 energyBarMarc = NodePath("../UI/Tail")
 detectionArea = NodePath("Area3D")
+bulletScene = ExtResource("5_mhiku")
 
 [node name="Area3D" type="Area3D" parent="player"]
 
@@ -222,12 +223,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04957)
 transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 0, 13.5757, -14.0587)
 
 [node name="Transicion" type="Control" parent="."]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
+process_mode = 3
+visible = false
 material = SubResource("ShaderMaterial_mhiku")
 position = Vector2(568, 324)
 rotation = 0.541052
@@ -340,7 +344,23 @@ position = Vector2(559, 320)
 scale = Vector2(1.91406, 1.02507)
 texture = ExtResource("12_7lpgg")
 
-[node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc", "startButton", "exitButton", "optionsMenu")]
+[node name="ArcSeconds" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 13.0
+anchor_top = 10.2
+anchor_right = 15.575
+anchor_bottom = 11.775
+offset_left = -6.10352e-05
+pivot_offset = Vector2(50, 30)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("26_iyibn")
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc", "transitionSprite", "startButton", "exitButton", "optionsMenu")]
 process_mode = 3
 process_priority = 5
 process_physics_priority = 1
@@ -357,6 +377,7 @@ pivot_offset = Vector2(583.36, 319.185)
 script = ExtResource("30_mf7sh")
 menuPanel = NodePath(".")
 playerMovementSc = NodePath("../player")
+transitionSprite = NodePath("../Transicion/Sprite2D")
 startButton = NodePath("StartButton")
 exitButton = NodePath("ExitButton")
 optionsMenu = NodePath("OPtionsMenu")
@@ -374,10 +395,10 @@ anchor_left = -1.62279
 anchor_top = 0.138494
 anchor_right = -1.44579
 anchor_bottom = 0.217494
-offset_left = 2354.95
-offset_top = 108.84
-offset_right = 2355.04
-offset_bottom = 108.648
+offset_left = 2190.95
+offset_top = 120.84
+offset_right = 2191.04
+offset_bottom = 120.648
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(100, 25)
@@ -409,18 +430,19 @@ scroll_active = false
 [node name="ExitButton" type="Button" parent="PauseMenu"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.041
-anchor_top = 0.665
-anchor_right = 0.218
-anchor_bottom = 0.744
-offset_left = 431.604
-offset_top = -101.915
-offset_right = 431.7
-offset_bottom = -102.107
+anchor_left = 0.272
+anchor_top = 0.476619
+anchor_right = 0.45
+anchor_bottom = 0.554619
+offset_left = 0.567993
+offset_top = -0.278992
+offset_right = -0.492004
+offset_bottom = 0.180023
 grow_vertical = 2
 pivot_offset = Vector2(100, 25)
 action_mode = 0
 text = "EXIT"
+metadata/_edit_use_anchors_ = true
 
 [node name="OPtionsMenu" type="Control" parent="PauseMenu"]
 process_mode = 3
@@ -428,10 +450,10 @@ process_priority = 5
 process_physics_priority = 1
 layout_mode = 3
 anchors_preset = 0
-offset_left = 14.0
-offset_top = -46.0
-offset_right = 54.0
-offset_bottom = -6.0
+offset_left = -63.0
+offset_top = -61.0
+offset_right = -23.0
+offset_bottom = -21.0
 
 [node name="Sprite2D" type="Sprite2D" parent="PauseMenu/OPtionsMenu"]
 modulate = Color(1, 1, 1, 0.556863)

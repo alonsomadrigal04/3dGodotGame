@@ -9,7 +9,7 @@ public partial class EventsControler : Node
     [Export] private FlyMovement playerMovementSc;
     [Export] public Label countLabel2;
     [Export] public Label countDown;
-    [Export] public PackedScene deathScene;
+    //public PackedScene deathScene;
     private bool isDeadHandled = false; // Para evitar que se dispare múltiples veces
     [Export] public Sprite2D deathScreen;
     [Export] private Slider musicSlider;
@@ -21,6 +21,7 @@ public partial class EventsControler : Node
         AnimateMoveToPosition(transitionSprite, new Vector2(1769.0f, 1003.0f));
         
         await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
+        
 
         BeginCountDown();
         //StartGame();
@@ -50,7 +51,7 @@ public partial class EventsControler : Node
 
             tween.TweenCallback(Callable.From(() =>
             {
-                GetTree().ChangeSceneToPacked(deathScene);
+                GetTree().ChangeSceneToFile("res://3dGodotGame/Scenes/deathScene.tscn");
             }));
         }
     }

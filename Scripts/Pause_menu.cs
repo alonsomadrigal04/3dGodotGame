@@ -8,6 +8,7 @@ public partial class Pause_menu : Control
     [Export] private Control menuPanel;
     [Export] private FlyMovement playerMovementSc;
     [Export] public bool pauseDisplayed = false;
+    [Export] public Sprite2D transitionSprite;
     [ExportGroup("buttons")]
     [Export] private Button optionsButton;
     [Export] private Button startButton;
@@ -35,7 +36,6 @@ public partial class Pause_menu : Control
     public override void _Ready()
     {
         SetupButtonAnimations(startButton);
-        SetupButtonAnimations(optionsButton);
         SetupButtonAnimations(exitButton);
     }
 
@@ -143,17 +143,27 @@ public partial class Pause_menu : Control
         tween.TweenProperty(button, "scale", new Vector2(0.9f, 0.85f), 0.1f)
              .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.InOut);
         
-        if (button == optionsButton && !optionsDisplay)
-        {
-            DisplayOptions();
-        }
-        else if(button == optionsButton && optionsDisplay){
-            HideOptions();
+        if(button == exitButton){
+            returnToMainMenu();
         }
 
         if(button == startButton){
             HidePause();
         }
+    }
+
+    private void returnToMainMenu(){
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        var tween = GetTree().CreateTween();
+        tween.TweenProperty(transitionSprite, "position", new Vector2(1152.0f, 648.0f), 1f)
+            .SetTrans(Tween.TransitionType.Cubic)
+            .SetEase(Tween.EaseType.Out);
+
+        tween.TweenCallback(Callable.From(() =>
+        {
+            GetTree().ChangeSceneToFile("res://3dGodotGame/Scenes/Menu3d.tscn");
+        }));
     }
 
     private void AnimateRelease(Button button)
@@ -163,16 +173,4 @@ public partial class Pause_menu : Control
              .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
     }
 
-    private void DisplayOptions()
-    {
-        optionsDisplay = true;
-        Vector2 startPos = startButton.Position + new Vector2(-900, 0);
-        Vector2 exitPos = exitButton.Position + new Vector2(-900, 0);
-
-        AnimateMoveToPosition(startButton, startPos);
-        AnimateMoveToPosition(exitButton, exitPos);
-
-        AnimateMoveToPosition(optionsMenu, optionsControlPos);
-
-    }
 }

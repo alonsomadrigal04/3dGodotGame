@@ -17,7 +17,6 @@ public partial class ArcBehaviour : MeshInstance3D
             return;
         }
 
-        // Conectar las señales de detección
         detectionZone.BodyEntered += OnBodyEntered;
         detectionZone.BodyExited += OnBodyExited;
     }
@@ -35,7 +34,7 @@ public partial class ArcBehaviour : MeshInstance3D
     {
         if (body is FlyMovement player)
         {
-            player.InArc = false;
+            //player.InArc = false;
         }
     }
 
@@ -58,7 +57,6 @@ public partial class ArcBehaviour : MeshInstance3D
             Rotate(rotationAxis, 0.482f);
         }), 0, 1, 0.2f);
 
-        // Esperar y reaparecer
         tween.TweenCallback(Callable.From(() => QueueFree()));
     }
 
