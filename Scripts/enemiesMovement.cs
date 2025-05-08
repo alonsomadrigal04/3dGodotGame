@@ -22,12 +22,19 @@ public partial class enemiesMovement : RigidBody3D
     private Random random = new Random();
     private bool isChasing = false;
 
+    [Export] private Area3D bulletCollision;
+    [Export] private float stopDuration = 0.5f;
+
+    private bool canMove = true;
+
     public override void _Ready()
     {
         player = GetNode<RigidBody3D>("/root/AnotherScenario/player");
         CollisionLayer = 1;
 
         PickNewDirection();
+
+        bulletCollision.BodyEntered += _on_body_entered;
     }
 
     public void PlayDead()
@@ -47,6 +54,7 @@ public partial class enemiesMovement : RigidBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        if(!canMove) return;
         float distanceToPlayer = GlobalPosition.DistanceTo(player.GlobalPosition);
 
         if (distanceToPlayer <= detectionRadius)
@@ -76,19 +84,35 @@ public partial class enemiesMovement : RigidBody3D
 
     private void _on_body_entered(Node body)
     {
-        if (body is FlyMovement player)
-        {
-            float percentageToRemove = 0.3f; // 30% de la energía actual
-            int damage = Mathf.RoundToInt(player.energy * percentageToRemove);
-
-            player.energy = Mathf.Max(0, player.energy - damage);
-
-            AudioManager.Instance?.PlaySound("hit");
-
-            QueueFree();
+        if(body is Bullet bullet){
+            GD.Print("something has entered");
+            PlayStop();
         }
     }
 
+    private void PlayStop()
+    {
+        canMove = false;
+
+        var tween = GetTree().CreateTween();
+        Vector2 originalPosition = new Vector2(Position.X, Position.Z);
+
+        for (int i = 0; i < 4; i++) // 4 pequeños sacudones
+        {
+            Vector2 offset = new Vector2(
+                GD.Randf() * 10f - 5f, // X entre -5 y 5
+                GD.Randf() * 10f - 5f  // Y entre -5 y 5
+            );
+
+            tween.TweenProperty(this, "position", originalPosition + offset, 0.05f);
+            tween.TweenProperty(this, "position", originalPosition, 0.05f);
+        }
+
+        tween.TweenCallback(Callable.From(() =>
+        {
+            canMove = true;
+        })).SetDelay(stopDuration);
+    }
 
 
     private void MoveErratically(float delta)

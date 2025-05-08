@@ -1,10 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://iatq3n38h062"]
+[gd_scene load_steps=15 format=3 uid="uid://iatq3n38h062"]
 
 [ext_resource type="Script" uid="uid://kid8tg2xnj0" path="res://3dGodotGame/Scripts/enemiesMovement.cs" id="1_yfslq"]
 [ext_resource type="PackedScene" uid="uid://b8v7eos33v558" path="res://3dGodotGame/Models/enemies.fbx" id="2_1jgfu"]
 [ext_resource type="Script" uid="uid://lpt4f862jxxs" path="res://3dGodotGame/Scripts/DetectionGizmo.cs" id="3_f2eph"]
 [ext_resource type="PackedScene" uid="uid://dlgulx7i1a7nl" path="res://3dGodotGame/Scenes/exclamation.tscn" id="4_1jgfu"]
 [ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/Buble.png" id="5_f2eph"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f2eph"]
+radius = 0.958521
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xypuf"]
 
@@ -40,13 +43,23 @@ scale_curve = SubResource("CurveTexture_eypcm")
 
 [sub_resource type="QuadMesh" id="QuadMesh_o0aai"]
 
-[node name="Enemy" type="RigidBody3D" node_paths=PackedStringArray("exclamation", "deathParticles")]
+[node name="Enemy" type="RigidBody3D" node_paths=PackedStringArray("exclamation", "deathParticles", "bulletCollision")]
+collision_layer = 7
+collision_mask = 7
 gravity_scale = 0.0
 script = ExtResource("1_yfslq")
 moveSpeed = 5.0
 playerPath = NodePath("../../Fly")
 exclamation = NodePath("exclamation")
 deathParticles = NodePath("Explosion2")
+bulletCollision = NodePath("Area3D")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0820959, 0)
+
+[node name="bulletArea" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0820959, 0)
+shape = SubResource("SphereShape3D_f2eph")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0820959, 0)

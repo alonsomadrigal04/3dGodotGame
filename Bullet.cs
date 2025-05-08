@@ -4,7 +4,7 @@ using System;
 public partial class Bullet : RigidBody3D
 {
     [Export] public float Speed = 30f;
-    [Export] public float YOffset = 0.2f; // Ángulo hacia arriba, ajustable
+    [Export] public float YOffset = 0.2f;
 
     public override void _Ready()
     {
@@ -13,7 +13,6 @@ public partial class Bullet : RigidBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        // Dirección hacia adelante con una ligera inclinación hacia arriba
         Vector3 forward = -GlobalTransform.Basis.Z;
         Vector3 upward = GlobalTransform.Basis.Y * YOffset;
 

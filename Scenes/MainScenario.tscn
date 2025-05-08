@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=62 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -44,6 +44,7 @@
 [ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
 [ext_resource type="AudioStream" uid="uid://qa43tqr0t8je" path="res://3dGodotGame/Sounds/powerUp.wav" id="37_mhiku"]
 [ext_resource type="AudioStream" uid="uid://bpq548kpt3vjw" path="res://3dGodotGame/Sounds/shoot.wav" id="38_5b4n5"]
+[ext_resource type="AudioStream" uid="uid://csv1qvitr01v5" path="res://3dGodotGame/Sounds/Reload.mp3" id="39_0vapn"]
 [ext_resource type="Texture2D" uid="uid://jfwgdtyu2gh7" path="res://3dGodotGame/Sprites/coffe_patternErasedGRAYv2.png" id="39_28g4x"]
 [ext_resource type="Texture2D" uid="uid://dvx7q0dl1v5ik" path="res://3dGodotGame/Sprites/progress-bar-circle.png" id="43_otfab"]
 [ext_resource type="Texture2D" uid="uid://dr0icesu3qhmg" path="res://3dGodotGame/Sprites/progress-bar-frame.png" id="44_0vapn"]
@@ -153,7 +154,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 6.2583)
 script = ExtResource("1_7o0r7")
 _target = NodePath("../player")
 
-[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("speedText", "ShaderLines", "saturation", "arcTimeLabel", "energyBar", "energyLabel", "energyBarMarc", "detectionArea")]
+[node name="player" type="RigidBody3D" parent="." node_paths=PackedStringArray("speedText", "ShaderLines", "saturation", "arcTimeLabel", "energyBar", "energyLabel", "energyBarMarc", "detectionArea", "textureProgressBar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36901, 5.15935, 3.69496)
 collision_mask = 2
 gravity_scale = 0.0
@@ -174,6 +175,7 @@ energyLabel = NodePath("../UI/Energia")
 energyBarMarc = NodePath("../UI/Tail")
 detectionArea = NodePath("Area3D")
 bulletScene = ExtResource("5_mhiku")
+textureProgressBar = NodePath("../UI/disparo")
 
 [node name="Area3D" type="Area3D" parent="player"]
 
@@ -235,7 +237,6 @@ offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
 process_mode = 3
-visible = false
 material = SubResource("ShaderMaterial_mhiku")
 position = Vector2(568, 324)
 rotation = 0.541052
@@ -264,6 +265,7 @@ Sounds = Dictionary[String, AudioStream]({
 "pick": ExtResource("25_o4us8"),
 "powerUp": ExtResource("37_mhiku"),
 "press": ExtResource("18_1cye3"),
+"reload": ExtResource("39_0vapn"),
 "shoot": ExtResource("38_5b4n5")
 })
 
@@ -365,14 +367,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="UI"]
+[node name="disparo" type="TextureProgressBar" parent="UI"]
+visible = false
 layout_mode = 0
-offset_left = 685.0
-offset_top = 351.0
-offset_right = 813.0
-offset_bottom = 479.0
+offset_left = 588.0
+offset_top = 312.0
+offset_right = 716.0
+offset_bottom = 440.0
 scale = Vector2(0.315, 0.315)
-value = 33.0
+pivot_offset = Vector2(66.13, 71.805)
+value = 100.0
 fill_mode = 4
 texture_under = ExtResource("43_otfab")
 texture_over = ExtResource("44_0vapn")

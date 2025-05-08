@@ -46,6 +46,13 @@ public partial class FlyMovement : RigidBody3D
     [ExportGroup("Shooting")]
     [Export] private PackedScene bulletScene;
     [Export] private Node3D bulletSpawnPoint; // opcional si quieres un punto específico
+    [Export] private TextureProgressBar textureProgressBar;
+    [Export] private float shootCooldown = 1.5f;
+    [Export] private string reloadSoundName = "reload";
+
+    private float shootCooldownTimer = 0f;
+    private bool canShoot = true;
+
 
     private Vector2 mouseDelta = Vector2.Zero;
     private float currentSpeed;
@@ -191,7 +198,7 @@ public partial class FlyMovement : RigidBody3D
         float duration = 0.4f;
 
         var tween = GetTree().CreateTween();
-        var camera = GetViewport().GetCamera3D(); // O GetCamera2D() si es 2D
+        var camera = GetViewport().GetCamera3D(); 
 
         if (camera == null) return;
 
@@ -226,40 +233,94 @@ public partial class FlyMovement : RigidBody3D
             ChangeEnergy(delta);
             animateBar(delta);
             animateTimeArc(delta);
+            UpdateShootCooldown(delta);
         }
     }
 
-    private void animateTimeArc(double delta)
-{
-    if (InArc)
+    private void UpdateShootCooldown(double delta)
     {
-        if (arcTimer.TimeLeft > 0)
+        if (!canShoot)
         {
-            float timeLeft = (float)arcTimer.TimeLeft;
-            
-            arcTimeLabel.Text = timeLeft.ToString("INFINITE ENERGY\n");
-            arcTimeLabel.Text += timeLeft.ToString("0.00");
+            shootCooldownTimer -= (float)delta;
+            Vector2 tamañovanilla = textureProgressBar.Scale;
 
-            float t = Mathf.InverseLerp(0f, (float)arcTimer.WaitTime, timeLeft);
-            Color startColor = new Color(1f, 1f, 1f); // blanco
-            Color endColor = new Color(1f, 0f, 0f);   // rojo
-            arcTimeLabel.Modulate = endColor.Lerp(startColor, t);
 
-            float baseScale = 1.0f;
-            float maxScale = 1.5f;
-            float scaleFactor = Mathf.Lerp(maxScale, baseScale, t);
-            arcTimeLabel.Scale = new Vector2(scaleFactor, scaleFactor);
+            float progress = Mathf.Clamp((1f - (shootCooldownTimer / shootCooldown)) * 100f, 0f, 100f);
+            textureProgressBar.Value = progress;
+
+            if (shootCooldownTimer <= 0f)
+            {
+                
+                shootCooldownTimer = shootCooldown;
+
+                var tween = GetTree().CreateTween();
+                tween.TweenProperty(textureProgressBar, "scale", Vector2.Zero, 0.2f)
+                    .SetTrans(Tween.TransitionType.Back)
+                    .SetEase(Tween.EaseType.In);
+
+                tween.TweenCallback(Callable.From(() => {
+                    textureProgressBar.Visible = false;
+                    canShoot = true;
+                    textureProgressBar.Scale = tamañovanilla; 
+                }));
+
+                AudioManager.Instance?.PlaySound(reloadSoundName);
+            }
+        }
+    }
+
+
+
+    private void StartShootCooldown()
+    {
+        canShoot = false;
+        shootCooldownTimer = shootCooldown;
+        textureProgressBar.Visible = true;
+        textureProgressBar.Value = 0;
+
+        var tween = GetTree().CreateTween();
+        tween.SetTrans(Tween.TransitionType.Back)
+            .SetEase(Tween.EaseType.Out)
+            .SetProcessMode(Tween.TweenProcessMode.Physics);
+
+        Vector2 tamañovanilla = textureProgressBar.Scale;
+        textureProgressBar.Scale = textureProgressBar.Scale * new Vector2(0.5f, 0.5f); // tamaño inicial reducido
+        tween.TweenProperty(textureProgressBar, "scale", tamañovanilla, 0.4f);
+    }
+
+
+
+    private void animateTimeArc(double delta)
+    {
+        if (InArc)
+        {
+            if (arcTimer.TimeLeft > 0)
+            {
+                float timeLeft = (float)arcTimer.TimeLeft;
+                
+                arcTimeLabel.Text = timeLeft.ToString("INFINITE ENERGY\n");
+                arcTimeLabel.Text += timeLeft.ToString("0.00");
+
+                float t = Mathf.InverseLerp(0f, (float)arcTimer.WaitTime, timeLeft);
+                Color startColor = new Color(1f, 1f, 1f); // blanco
+                Color endColor = new Color(1f, 0f, 0f);   // rojo
+                arcTimeLabel.Modulate = endColor.Lerp(startColor, t);
+
+                float baseScale = 1.0f;
+                float maxScale = 1.5f;
+                float scaleFactor = Mathf.Lerp(maxScale, baseScale, t);
+                arcTimeLabel.Scale = new Vector2(scaleFactor, scaleFactor);
+            }
+            else
+            {
+                arcTimeLabel.Text = "";
+            }
         }
         else
         {
             arcTimeLabel.Text = "";
         }
     }
-    else
-    {
-        arcTimeLabel.Text = "";
-    }
-}
 
 
     private void LinesAnimation(double delta){
@@ -292,13 +353,8 @@ public partial class FlyMovement : RigidBody3D
 
         tween.TweenProperty(this, "scale", this.Scale * 0.5f, 0.3f);
         tween.Chain();
-        tween.TweenProperty(this, "scale", this.Scale, 0.6f);
-
-        
+        tween.TweenProperty(this, "scale", this.Scale, 0.6f);   
     }
-
-    
-
 
     private void RotatePlayer(double delta)
     {
@@ -439,9 +495,16 @@ public partial class FlyMovement : RigidBody3D
 
     private void Shoot()
     {
+        if(!canShoot || !canMove) return;
+        canShoot = false;
+        StartShootCooldown();
+
+
         if (bulletScene == null){
             GD.PrintErr("FM: No bullet Scene added");
         }
+
+
 
         var bulletInstance = (RigidBody3D)bulletScene.Instantiate();
 
@@ -455,6 +518,7 @@ public partial class FlyMovement : RigidBody3D
         }
 
         GetTree().Root.AddChild(bulletInstance);
-        AudioManager.Instance?.PlaySound("shoot"); // si tienes un sonido
+        AudioManager.Instance?.PlaySound("shoot");
     }
+
 }
