@@ -236,8 +236,9 @@ public partial class FlyMovement : RigidBody3D
         if (arcTimer.TimeLeft > 0)
         {
             float timeLeft = (float)arcTimer.TimeLeft;
-
-            arcTimeLabel.Text = timeLeft.ToString("0.00");
+            
+            arcTimeLabel.Text = timeLeft.ToString("INFINITE ENERGY\n");
+            arcTimeLabel.Text += timeLeft.ToString("0.00");
 
             float t = Mathf.InverseLerp(0f, (float)arcTimer.WaitTime, timeLeft);
             Color startColor = new Color(1f, 1f, 1f); // blanco
@@ -278,6 +279,7 @@ public partial class FlyMovement : RigidBody3D
         if (InArc) return;
 
         InArc = true;
+        AudioManager.Instance.PlaySound("powerUp");
         arcTimer.Start();
 
         MaxIntensityOfLines = 2.0f; 
@@ -370,6 +372,8 @@ public partial class FlyMovement : RigidBody3D
 
     private void animateBar(double delta)
     {
+        float energyPercent = (float)energy / maxEnergy;
+        float del0al1 = energyPercent; 
         if (InArc)
         {
             float t = (float)Time.GetTicksMsec() / 500f;
@@ -379,23 +383,22 @@ public partial class FlyMovement : RigidBody3D
             energyBar.Modulate = new Color(r, g, b);
             energyBarMarc.Modulate = new Color(r, g, b);
         }
+        else{
+            if (energy <= 0) return;
 
-        if (energy <= 0) return;
+            barShakeTime += (float)delta;
 
-        barShakeTime += (float)delta;
 
-        float energyPercent = (float)energy / maxEnergy;
-        float del0al1 = energyPercent; 
+            float shakeIntensity = Mathf.Lerp(5f, 10f, del0al1); // más intensidad con poca energía
+            float frequency = Mathf.Lerp(12f, 4f, del0al1);
+            float angle = Mathf.DegToRad(Mathf.Sin(barShakeTime * frequency) * shakeIntensity);
+            energyBarMarc.Rotation = angle;
 
-        float shakeIntensity = Mathf.Lerp(5f, 10f, del0al1); // más intensidad con poca energía
-        float frequency = Mathf.Lerp(12f, 4f, del0al1);
-        float angle = Mathf.DegToRad(Mathf.Sin(barShakeTime * frequency) * shakeIntensity);
-        energyBarMarc.Rotation = angle;
-
-        Color fullEnergyColor = new Color(1f, 1f, 1f);  // blanco
-        Color lowEnergyColor = new Color(1f, 0f, 0f);   // rojo
-        energyBar.Modulate = lowEnergyColor.Lerp(fullEnergyColor, del0al1);
-        energyBarMarc.Modulate = lowEnergyColor.Lerp(fullEnergyColor, del0al1);
+            Color fullEnergyColor = new Color(1f, 1f, 1f);  // blanco
+            Color lowEnergyColor = new Color(1f, 0f, 0f);   // rojo
+            energyBar.Modulate = lowEnergyColor.Lerp(fullEnergyColor, del0al1);
+            energyBarMarc.Modulate = lowEnergyColor.Lerp(fullEnergyColor, del0al1);
+        }
 
         if (saturation.Material is ShaderMaterial satMat)
         {
@@ -452,6 +455,6 @@ public partial class FlyMovement : RigidBody3D
         }
 
         GetTree().Root.AddChild(bulletInstance);
-        //AudioManager.Instance?.PlaySound("shoot"); // si tienes un sonido
+        AudioManager.Instance?.PlaySound("shoot"); // si tienes un sonido
     }
 }

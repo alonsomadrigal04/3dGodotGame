@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://b4x5kjpy2cw8l"]
+[gd_scene load_steps=61 format=3 uid="uid://b4x5kjpy2cw8l"]
 
 [ext_resource type="Script" uid="uid://bspsyfrx3jxo3" path="res://3dGodotGame/Scripts/CameraMovement.cs" id="1_7o0r7"]
 [ext_resource type="Script" uid="uid://dsgje43172y7x" path="res://3dGodotGame/Scripts/EventsControler.cs" id="1_gknf6"]
@@ -42,7 +42,11 @@
 [ext_resource type="AudioStream" uid="uid://cgwm0vexrxd6u" path="res://3dGodotGame/Sounds/hit.wav" id="32_rqt3y"]
 [ext_resource type="AudioStream" uid="uid://dqkg40nvdsdof" path="res://3dGodotGame/Sounds/mosca_ready.wav" id="33_1p7w8"]
 [ext_resource type="PackedScene" uid="uid://iatq3n38h062" path="res://3dGodotGame/Scenes/enemy.tscn" id="34_68hwm"]
+[ext_resource type="AudioStream" uid="uid://qa43tqr0t8je" path="res://3dGodotGame/Sounds/powerUp.wav" id="37_mhiku"]
+[ext_resource type="AudioStream" uid="uid://bpq548kpt3vjw" path="res://3dGodotGame/Sounds/shoot.wav" id="38_5b4n5"]
 [ext_resource type="Texture2D" uid="uid://jfwgdtyu2gh7" path="res://3dGodotGame/Sprites/coffe_patternErasedGRAYv2.png" id="39_28g4x"]
+[ext_resource type="Texture2D" uid="uid://dvx7q0dl1v5ik" path="res://3dGodotGame/Sprites/progress-bar-circle.png" id="43_otfab"]
+[ext_resource type="Texture2D" uid="uid://dr0icesu3qhmg" path="res://3dGodotGame/Sprites/progress-bar-frame.png" id="44_0vapn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i886c"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -258,7 +262,9 @@ Sounds = Dictionary[String, AudioStream]({
 "mosca_ready": ExtResource("33_1p7w8"),
 "pausa": ExtResource("26_6vx1e"),
 "pick": ExtResource("25_o4us8"),
-"press": ExtResource("18_1cye3")
+"powerUp": ExtResource("37_mhiku"),
+"press": ExtResource("18_1cye3"),
+"shoot": ExtResource("38_5b4n5")
 })
 
 [node name="AudioStreamMusic" type="AudioStreamPlayer" parent="AudioControler"]
@@ -347,18 +353,32 @@ texture = ExtResource("12_7lpgg")
 [node name="ArcSeconds" type="Label" parent="UI"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 13.0
-anchor_top = 10.2
-anchor_right = 15.575
-anchor_bottom = 11.775
-offset_left = -6.10352e-05
-pivot_offset = Vector2(50, 30)
+anchor_left = 10.725
+anchor_top = 5.275
+anchor_right = 17.85
+anchor_bottom = 6.85
+pivot_offset = Vector2(140.535, 27.905)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("26_iyibn")
 theme_override_font_sizes/font_size = 26
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UI"]
+layout_mode = 0
+offset_left = 685.0
+offset_top = 351.0
+offset_right = 813.0
+offset_bottom = 479.0
+scale = Vector2(0.315, 0.315)
+value = 33.0
+fill_mode = 4
+texture_under = ExtResource("43_otfab")
+texture_over = ExtResource("44_0vapn")
+texture_progress = ExtResource("43_otfab")
+tint_under = Color(0, 0, 0, 0.380392)
+tint_progress = Color(1, 0, 0.501961, 1)
 
 [node name="PauseMenu" type="Control" parent="." node_paths=PackedStringArray("menuPanel", "playerMovementSc", "transitionSprite", "startButton", "exitButton", "optionsMenu")]
 process_mode = 3
