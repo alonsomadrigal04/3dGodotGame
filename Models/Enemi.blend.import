@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-path="res://.godot/imported/fly dest.blend-cfb05e1126b201d303ace11c14f8a8b2.scn"
+uid="uid://ch81qlsyujjb6"
+path="res://.godot/imported/Enemi.blend-2482a6eed440d4f834ac2c437112ceea.scn"
 
 [deps]
 
-source_file="res://3dGodotGame/Models/fly dest.blend"
-dest_files=["res://.godot/imported/fly dest.blend-cfb05e1126b201d303ace11c14f8a8b2.scn"]
+source_file="res://3dGodotGame/Models/Enemi.blend"
+dest_files=["res://.godot/imported/Enemi.blend-2482a6eed440d4f834ac2c437112ceea.scn"]
 
 [params]
 

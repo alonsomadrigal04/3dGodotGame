@@ -44,8 +44,8 @@ scale_curve = SubResource("CurveTexture_eypcm")
 [sub_resource type="QuadMesh" id="QuadMesh_o0aai"]
 
 [node name="Enemy" type="RigidBody3D" node_paths=PackedStringArray("exclamation", "deathParticles", "bulletCollision")]
-collision_layer = 7
-collision_mask = 7
+collision_layer = 9
+collision_mask = 5
 gravity_scale = 0.0
 script = ExtResource("1_yfslq")
 moveSpeed = 5.0
@@ -56,6 +56,7 @@ bulletCollision = NodePath("Area3D")
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0820959, 0)
+collision_mask = 5
 
 [node name="bulletArea" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0820959, 0)

@@ -30,7 +30,6 @@ public partial class enemiesMovement : RigidBody3D
     public override void _Ready()
     {
         player = GetNode<RigidBody3D>("/root/AnotherScenario/player");
-        CollisionLayer = 1;
 
         PickNewDirection();
 
@@ -84,8 +83,9 @@ public partial class enemiesMovement : RigidBody3D
 
     private void _on_body_entered(Node body)
     {
+        GD.Print("holamundo");
         if(body is Bullet bullet){
-            GD.Print("something has entered");
+            bullet.QueueFree();
             PlayStop();
         }
     }
