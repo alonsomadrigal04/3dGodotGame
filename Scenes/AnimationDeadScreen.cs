@@ -93,9 +93,21 @@ public partial class AnimationDeadScreen : Control
         tween.TweenProperty(button, "scale", new Vector2(0.9f, 0.85f), 0.1f)
              .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.InOut);
 
+        tween.Finished += () => endGame(button);
+
+    }
+
+    private void endGame(Button button){
         if(button == startAgain){
             StartGame();
         }
+        if(button == exit){
+            ReturnMainMenu();
+        }
+    }
+
+    private void ReturnMainMenu(){
+        ChangeScene("res://3dGodotGame/Scenes/Menu3d.tscn");
     }
 
     private void StartGame(){

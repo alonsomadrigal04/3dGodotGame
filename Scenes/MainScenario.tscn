@@ -237,6 +237,7 @@ offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Transicion"]
 process_mode = 3
+visible = false
 material = SubResource("ShaderMaterial_mhiku")
 position = Vector2(558, 310)
 rotation = 0.541052
@@ -290,8 +291,10 @@ vertical_alignment = 1
 
 [node name="CountDown" type="Label" parent="CountDown"]
 layout_mode = 0
-offset_right = 1151.0
-offset_bottom = 649.0
+offset_left = -68.0
+offset_top = 7.0
+offset_right = 1083.0
+offset_bottom = 656.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 80
@@ -368,7 +371,6 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="disparo" type="TextureProgressBar" parent="UI"]
-visible = false
 layout_mode = 0
 offset_left = 588.0
 offset_top = 312.0
@@ -376,7 +378,8 @@ offset_right = 716.0
 offset_bottom = 440.0
 scale = Vector2(0.315, 0.315)
 pivot_offset = Vector2(66.13, 71.805)
-value = 100.0
+max_value = 90.035
+value = 90.0
 fill_mode = 4
 texture_under = ExtResource("43_otfab")
 texture_over = ExtResource("44_0vapn")
