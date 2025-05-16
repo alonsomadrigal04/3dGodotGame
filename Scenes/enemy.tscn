@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://iatq3n38h062"]
+[gd_scene load_steps=16 format=3 uid="uid://iatq3n38h062"]
 
 [ext_resource type="Script" uid="uid://kid8tg2xnj0" path="res://3dGodotGame/Scripts/enemiesMovement.cs" id="1_yfslq"]
 [ext_resource type="PackedScene" uid="uid://b8v7eos33v558" path="res://3dGodotGame/Models/enemies.fbx" id="2_1jgfu"]
 [ext_resource type="Script" uid="uid://lpt4f862jxxs" path="res://3dGodotGame/Scripts/DetectionGizmo.cs" id="3_f2eph"]
 [ext_resource type="PackedScene" uid="uid://dlgulx7i1a7nl" path="res://3dGodotGame/Scenes/exclamation.tscn" id="4_1jgfu"]
 [ext_resource type="Texture2D" uid="uid://bdvh8drnmtw2g" path="res://3dGodotGame/Sprites/Buble.png" id="5_f2eph"]
+[ext_resource type="PackedScene" uid="uid://k22iu8t2kv3s" path="res://3dGodotGame/Scenes/Enemies2.tscn" id="6_hav61"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_f2eph"]
 radius = 0.958521
@@ -68,6 +69,7 @@ shape = SubResource("CapsuleShape3D_xypuf")
 
 [node name="enemies" parent="." instance=ExtResource("2_1jgfu")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+visible = false
 
 [node name="Gizmo" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0382028, -0.0205364)
@@ -90,3 +92,6 @@ explosiveness = 1.0
 transform_align = 3
 process_material = SubResource("ParticleProcessMaterial_5xboh")
 draw_pass_1 = SubResource("QuadMesh_o0aai")
+
+[node name="enemies2" parent="." instance=ExtResource("6_hav61")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

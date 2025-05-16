@@ -101,18 +101,15 @@ public partial class EventsControler : Node
             countLabel2.Text = "GO!";
             countLabel2.AddThemeFontSizeOverride("font_size", size);
 
-            // Pequeño efecto de escala visual (opcional)
             var tween = GetTree().CreateTween();
             countLabel2.Scale = new Vector2(0.8f, 0.8f);
             tween.TweenProperty(countLabel2, "scale", new Vector2(1.0f, 1.0f), 0.25f)
                 .SetTrans(Tween.TransitionType.Elastic)
                 .SetEase(Tween.EaseType.Out);
 
-            // Espera entre cada "GO"
             playerMovementSc.CameraSchake(shakeintensity++);
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
         }
-        // Al terminar, oculta el label o lo limpia
         playerMovementSc.canMove = true;
         AudioManager.Instance.PlayMusic("DoomMusic");
         //AudioManager.Instance.FadeInMusic();

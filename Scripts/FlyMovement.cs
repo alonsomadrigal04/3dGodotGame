@@ -67,6 +67,8 @@ public partial class FlyMovement : RigidBody3D
     if (saturation.Material is ShaderMaterial satMat)
         {
             satMat.SetShaderParameter("saturation", 1);
+            satMat.SetShaderParameter("contrast", 1);
+
         }
 
         detectionArea.BodyEntered += _on_enemy_entered;
@@ -459,6 +461,11 @@ public partial class FlyMovement : RigidBody3D
         if (saturation.Material is ShaderMaterial satMat)
         {
             satMat.SetShaderParameter("saturation", del0al1);
+            float contrastValue = Mathf.Lerp(2.0f, 1.0f, del0al1);
+            satMat.SetShaderParameter("contrast", contrastValue);
+
+            GD.Print(del0al1);
+
         }
     }
 
